@@ -21,8 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route("contracts.index") }}">
-                <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40" class="me-3">
-                <span>MDS Doors</span>
+                <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

@@ -232,24 +232,19 @@ body {
 .sidebar-logo {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--spacing-md);
+    justify-content: center;
     width: 100%;
+    padding: var(--spacing-md);
 }
 
 .logo-content {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
-    flex: 1;
+    justify-content: center;
 }
 
 .logo-image {
     flex-shrink: 0;
-}
-
-.logo-text {
-    flex: 1;
 }
 
 .logo-title {

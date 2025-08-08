@@ -15,14 +15,7 @@
             <div class="sidebar-header">
                 <div class="sidebar-logo">
                     <div class="logo-content">
-                        <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="32" class="logo-image">
-                        <div class="logo-text">
-                            <div class="logo-title">MDS Doors</div>
-                            <div class="logo-subtitle">Enterprise</div>
-                        </div>
-                    </div>
-                    <div class="logo-toggle">
-                        <i class="fas fa-chevron-down"></i>
+                        <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40" class="logo-image">
                     </div>
                 </div>
             </div>
