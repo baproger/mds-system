@@ -19,6 +19,7 @@
                     </div>
                 </div>
 
+                @if(Auth::user()->role === 'admin')
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-chart-bar"></i>
@@ -67,7 +68,58 @@
                         </div>
                     </div>
                 </div>
+                @elseif(Auth::user()->role === 'manager')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Моя статистика</span>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $stats['total_contracts'] }}</div>
+                                <div class="stat-label">Мои договоры</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ number_format($stats['total_revenue']) }} ₸</div>
+                                <div class="stat-label">Общая сумма</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $stats['contracts_this_month'] }}</div>
+                                <div class="stat-label">За этот месяц</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ number_format($stats['average_contract_value']) }} ₸</div>
+                                <div class="stat-label">Средний договор</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
+                @if(Auth::user()->role === 'admin')
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-building"></i>
@@ -93,7 +145,36 @@
                         @endforeach
                     </div>
                 </div>
+                @elseif(Auth::user()->role === 'manager')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i>
+                        <span>Мой филиал</span>
+                    </div>
+                    
+                    <div class="personnel-section">
+                        @foreach($branches as $branch)
+                            <div class="personnel-item branch-item">
+                                <div class="personnel-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="personnel-content">
+                                    <div class="personnel-title">{{ $branch->name }}</div>
+                                    <div class="personnel-list">
+                                        <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} моих договоров</span>
+                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
+                                        @if($stats['last_contract_date'])
+                                            <span class="personnel-tag date-tag">Последний: {{ $stats['last_contract_date']->format('d.m.Y') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
 
+                @if(Auth::user()->role === 'admin')
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-chart-pie"></i>
@@ -142,12 +223,62 @@
                         </div>
                     </div>
                 </div>
+                @elseif(Auth::user()->role === 'manager')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Мои показатели</span>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $stats['contracts_this_year'] }}</div>
+                                <div class="stat-label">За этот год</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-money-bill-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ number_format($stats['revenue_this_month']) }} ₸</div>
+                                <div class="stat-label">Доход за месяц</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-bar"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ number_format($stats['revenue_this_year']) }} ₸</div>
+                                <div class="stat-label">Доход за год</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $stats['total_contracts'] > 0 ? round(($stats['contracts_this_month'] / $stats['total_contracts']) * 100) : 0 }}%</div>
+                                <div class="stat-label">Активность</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 @if($recent_contracts->count() > 0)
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-clock"></i>
-                        <span>Последние договоры</span>
+                        <span>{{ Auth::user()->role === 'manager' ? 'Мои последние договоры' : 'Последние договоры' }}</span>
                     </div>
                     
                     <div class="personnel-section">
@@ -162,7 +293,7 @@
                                         <span class="personnel-tag client-tag">{{ $contract->client }}</span>
                                         <span class="personnel-tag amount-tag">{{ number_format($contract->order_total) }} ₸</span>
                                         <span class="personnel-tag date-tag">{{ $contract->date->format('d.m.Y') }}</span>
-                                        @if($contract->user)
+                                        @if(Auth::user()->role === 'admin' && $contract->user)
                                             <span class="personnel-tag manager-tag">{{ $contract->user->name }}</span>
                                         @endif
                                     </div>

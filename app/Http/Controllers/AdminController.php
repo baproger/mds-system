@@ -46,17 +46,19 @@ class AdminController extends Controller
 
         } elseif ($user->role === 'manager') {
             // Менеджер видит только свою статистику
+            $userContracts = Contract::where('user_id', $user->id);
+            $userContractsThisMonth = Contract::where('user_id', $user->id)->whereMonth('created_at', now()->month);
+            $userContractsThisYear = Contract::where('user_id', $user->id)->whereYear('created_at', now()->year);
+            
             $stats = [
-                'total_contracts' => Contract::where('user_id', $user->id)->count(),
-                'total_users' => 1, // Только себя
-                'total_branches' => 1, // Только свой филиал
-                'total_sales_staff' => 1,
-                'total_managers' => 1,
-                'total_rop' => 0,
-                'contracts_this_month' => Contract::where('user_id', $user->id)->whereMonth('created_at', now()->month)->count(),
-                'contracts_this_year' => Contract::where('user_id', $user->id)->whereYear('created_at', now()->year)->count(),
-                'revenue_this_month' => Contract::where('user_id', $user->id)->whereMonth('created_at', now()->month)->sum('order_total') ?? 0,
-                'revenue_this_year' => Contract::where('user_id', $user->id)->whereYear('created_at', now()->year)->sum('order_total') ?? 0,
+                'total_contracts' => $userContracts->count(),
+                'total_revenue' => $userContracts->sum('order_total') ?? 0,
+                'contracts_this_month' => $userContractsThisMonth->count(),
+                'revenue_this_month' => $userContractsThisMonth->sum('order_total') ?? 0,
+                'contracts_this_year' => $userContractsThisYear->count(),
+                'revenue_this_year' => $userContractsThisYear->sum('order_total') ?? 0,
+                'average_contract_value' => $userContracts->count() > 0 ? round($userContracts->sum('order_total') / $userContracts->count()) : 0,
+                'last_contract_date' => $userContracts->latest()->first()?->created_at,
             ];
 
             $recent_contracts = Contract::where('user_id', $user->id)
