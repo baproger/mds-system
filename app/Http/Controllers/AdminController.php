@@ -50,14 +50,21 @@ class AdminController extends Controller
             $userContractsThisMonth = Contract::where('user_id', $user->id)->whereMonth('created_at', now()->month);
             $userContractsThisYear = Contract::where('user_id', $user->id)->whereYear('created_at', now()->year);
             
+            $totalContracts = $userContracts->count();
+            $totalRevenue = $userContracts->sum('order_total') ?? 0;
+            $contractsThisMonth = $userContractsThisMonth->count();
+            $revenueThisMonth = $userContractsThisMonth->sum('order_total') ?? 0;
+            $contractsThisYear = $userContractsThisYear->count();
+            $revenueThisYear = $userContractsThisYear->sum('order_total') ?? 0;
+            
             $stats = [
-                'total_contracts' => $userContracts->count(),
-                'total_revenue' => $userContracts->sum('order_total') ?? 0,
-                'contracts_this_month' => $userContractsThisMonth->count(),
-                'revenue_this_month' => $userContractsThisMonth->sum('order_total') ?? 0,
-                'contracts_this_year' => $userContractsThisYear->count(),
-                'revenue_this_year' => $userContractsThisYear->sum('order_total') ?? 0,
-                'average_contract_value' => $userContracts->count() > 0 ? round($userContracts->sum('order_total') / $userContracts->count()) : 0,
+                'total_contracts' => $totalContracts,
+                'total_revenue' => $totalRevenue,
+                'contracts_this_month' => $contractsThisMonth,
+                'revenue_this_month' => $revenueThisMonth,
+                'contracts_this_year' => $contractsThisYear,
+                'revenue_this_year' => $revenueThisYear,
+                'average_contract_value' => $totalContracts > 0 ? round($totalRevenue / $totalContracts) : 0,
                 'last_contract_date' => $userContracts->latest()->first()?->created_at,
             ];
 
