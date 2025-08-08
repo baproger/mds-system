@@ -14,7 +14,7 @@
     @vite(['resources/css/app.css'])
     
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/mds-doors-logo.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-light">
     <!-- Навигация -->
@@ -22,7 +22,7 @@
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route("contracts.index") }}">
                 <div class="brand-icon me-3">
-                    <img src="{{ asset('images/mds-doors-logo.svg') }}" alt="MDS Doors" height="40" class="me-2">
+                    <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40" class="me-2">
                 </div>
                 <span>MDS Doors</span>
             </a>

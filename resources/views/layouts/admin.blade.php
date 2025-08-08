@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', Auth::user()->role === 'admin' ? 'Администратор сайта' : (Auth::user()->role === 'manager' ? 'Менеджер' : 'Панель управления')) - MDS Doors</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/mds-doors-logo.svg') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
     @vite(['resources/css/app.css'])
 </head>
 <body>
@@ -15,7 +15,7 @@
             <div class="sidebar-header">
                 <div class="sidebar-logo">
                     <div class="logo-icon">
-                        <img src="{{ asset('images/mds-doors-logo.svg') }}" alt="MDS Doors" height="32" class="me-2">
+                        <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="32" class="me-2">
                     </div>
                     <div class="logo-text">
                         <div class="logo-title">MDS Doors</div>
