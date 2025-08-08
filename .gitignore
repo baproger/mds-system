@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+.env.production
 .phpunit.result.cache
 docker-compose.override.yml
 Homestead.json
@@ -13,9 +14,18 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+/.vagrant
 *.log
 storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
 database.sqlite
+/public/build
+/storage/pail
+.phpactor.json
+auth.json
+bootstrap/compiled.php
+app/storage/
+public_html/storage
+public_html/hot
