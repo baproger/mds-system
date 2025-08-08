@@ -81,7 +81,7 @@
                                 <i class="fas fa-file-contract"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $stats['total_contracts'] }}</div>
+                                <div class="stat-number">{{ $stats['total_contracts'] ?? 0 }}</div>
                                 <div class="stat-label">Мои договоры</div>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                                 <i class="fas fa-money-bill-wave"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ number_format($stats['total_revenue']) }} ₸</div>
+                                <div class="stat-number">{{ number_format($stats['total_revenue'] ?? 0) }} ₸</div>
                                 <div class="stat-label">Общая сумма</div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $stats['contracts_this_month'] }}</div>
+                                <div class="stat-number">{{ $stats['contracts_this_month'] ?? 0 }}</div>
                                 <div class="stat-label">За этот месяц</div>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
                                 <i class="fas fa-chart-line"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ number_format($stats['average_contract_value']) }} ₸</div>
+                                <div class="stat-number">{{ number_format($stats['average_contract_value'] ?? 0) }} ₸</div>
                                 <div class="stat-label">Средний договор</div>
                             </div>
                         </div>
@@ -163,7 +163,7 @@
                                     <div class="personnel-list">
                                         <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} моих договоров</span>
                                         <span class="personnel-tag code-tag">{{ $branch->code }}</span>
-                                        @if($stats['last_contract_date'])
+                                        @if(isset($stats['last_contract_date']) && $stats['last_contract_date'])
                                             <span class="personnel-tag date-tag">Последний: {{ $stats['last_contract_date']->format('d.m.Y') }}</span>
                                         @endif
                                     </div>
@@ -236,7 +236,7 @@
                                 <i class="fas fa-calendar-check"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $stats['contracts_this_year'] }}</div>
+                                <div class="stat-number">{{ $stats['contracts_this_year'] ?? 0 }}</div>
                                 <div class="stat-label">За этот год</div>
                             </div>
                         </div>
@@ -246,7 +246,7 @@
                                 <i class="fas fa-money-bill-alt"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ number_format($stats['revenue_this_month']) }} ₸</div>
+                                <div class="stat-number">{{ number_format($stats['revenue_this_month'] ?? 0) }} ₸</div>
                                 <div class="stat-label">Доход за месяц</div>
                             </div>
                         </div>
@@ -256,7 +256,7 @@
                                 <i class="fas fa-chart-bar"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ number_format($stats['revenue_this_year']) }} ₸</div>
+                                <div class="stat-number">{{ number_format($stats['revenue_this_year'] ?? 0) }} ₸</div>
                                 <div class="stat-label">Доход за год</div>
                             </div>
                         </div>
@@ -266,7 +266,7 @@
                                 <i class="fas fa-percentage"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $stats['total_contracts'] > 0 ? round(($stats['contracts_this_month'] / $stats['total_contracts']) * 100) : 0 }}%</div>
+                                <div class="stat-number">{{ ($stats['total_contracts'] ?? 0) > 0 ? round((($stats['contracts_this_month'] ?? 0) / ($stats['total_contracts'] ?? 1)) * 100) : 0 }}%</div>
                                 <div class="stat-label">Активность</div>
                             </div>
                         </div>
