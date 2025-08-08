@@ -3,6 +3,15 @@
 @section('title', 'Новый договор')
 
 @section('content')
+@if($errors->has('validation'))
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->get('validation') as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
@@ -147,6 +156,15 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label for="address" class="form-label">Адрес установки</label>
+                                <textarea class="form-control @error('address') is-invalid @enderror" 
+                                          id="address" name="address" rows="3">{{ old('address') }}</textarea>
+                                @error('address')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -200,6 +218,98 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="form-group">
+                                <label for="design" class="form-label">Дизайн</label>
+                                <select class="form-control @error('design') is-invalid @enderror" 
+                                        id="design" name="design">
+                                    <option value="Меняется" {{ old('design', 'Меняется') == 'Меняется' ? 'selected' : '' }}>Меняется</option>
+                                    <option value="Не меняется" {{ old('design') == 'Не меняется' ? 'selected' : '' }}>Не меняется</option>
+                                </select>
+                                @error('design')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="leaf" class="form-label required">Створка</label>
+                                <select class="form-control @error('leaf') is-invalid @enderror" 
+                                        id="leaf" name="leaf" required>
+                                    <option value="">— выберите —</option>
+                                    <option value="1" {{ old('leaf') == '1' ? 'selected' : '' }}>1</option>
+                                    <option value="2" {{ old('leaf') == '2' ? 'selected' : '' }}>2</option>
+                                    <option value="3" {{ old('leaf') == '3' ? 'selected' : '' }}>3</option>
+                                </select>
+                                @error('leaf')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="framugawidth" class="form-label required">Фрамуга боковая</label>
+                                <select class="form-control @error('framugawidth') is-invalid @enderror" 
+                                        id="framugawidth" name="framugawidth" required>
+                                    <option value="">— выберите —</option>
+                                    <option value="1" {{ old('framugawidth') == '1' ? 'selected' : '' }}>1</option>
+                                    <option value="2" {{ old('framugawidth') == '2' ? 'selected' : '' }}>2</option>
+                                    <option value="-" {{ old('framugawidth') == '-' ? 'selected' : '' }}>–</option>
+                                </select>
+                                @error('framugawidth')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="framugaheight" class="form-label required">Фрамуга верхняя</label>
+                                <select class="form-control @error('framugaheight') is-invalid @enderror" 
+                                        id="framugaheight" name="framugaheight" required>
+                                    <option value="">— выберите —</option>
+                                    <option value="1" {{ old('framugaheight') == '1' ? 'selected' : '' }}>1</option>
+                                    <option value="-" {{ old('framugaheight') == '-' ? 'selected' : '' }}>–</option>
+                                </select>
+                                @error('framugaheight')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="forging" class="form-label">Ковка</label>
+                                <select class="form-control @error('forging') is-invalid @enderror" 
+                                        id="forging" name="forging">
+                                    <option value="">— выберите —</option>
+                                    <option value="Внутри стеклопакета" {{ old('forging') == 'Внутри стеклопакета' ? 'selected' : '' }}>Внутри стеклопакета</option>
+                                    <option value="Снаружи стеклопакета" {{ old('forging') == 'Снаружи стеклопакета' ? 'selected' : '' }}>Снаружи стеклопакета</option>
+                                    <option value="-" {{ old('forging') == '-' ? 'selected' : '' }}>–</option>
+                                </select>
+                                @error('forging')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="opening" class="form-label">Открывание</label>
+                                <select class="form-control @error('opening') is-invalid @enderror" 
+                                        id="opening" name="opening">
+                                    <option value="Правое" {{ old('opening', 'Правое') == 'Правое' ? 'selected' : '' }}>Правое</option>
+                                    <option value="Левое" {{ old('opening') == 'Левое' ? 'selected' : '' }}>Левое</option>
+                                </select>
+                                @error('opening')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="frame" class="form-label">Обналичники</label>
+                                <select class="form-control @error('frame') is-invalid @enderror" 
+                                        id="frame" name="frame">
+                                    <option value="Стандарт" {{ old('frame', 'Стандарт') == 'Стандарт' ? 'selected' : '' }}>Стандарт</option>
+                                    <option value="Стандарт 2" {{ old('frame') == 'Стандарт 2' ? 'selected' : '' }}>Стандарт 2</option>
+                                    <option value="Нестандарт" {{ old('frame') == 'Нестандарт' ? 'selected' : '' }}>Нестандарт</option>
+                                </select>
+                                @error('frame')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
 
@@ -212,7 +322,16 @@
                         
                         <div class="form-grid">
                             <div class="form-group">
-                                <label for="outer_cover" class="form-label required">Внешняя отделка</label>
+                                <label for="outer_panel" class="form-label">Наружная панель</label>
+                                <input type="text" class="form-control @error('outer_panel') is-invalid @enderror" 
+                                       id="outer_panel" name="outer_panel" value="{{ old('outer_panel') }}" readonly>
+                                @error('outer_panel')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="outer_cover" class="form-label required">Покрытие наружной панели</label>
                                 <select class="form-control @error('outer_cover') is-invalid @enderror" 
                                         id="outer_cover" name="outer_cover" required>
                                     <option value="">— выберите —</option>
@@ -223,12 +342,59 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="inner_trim" class="form-label required">Внутренняя отделка</label>
+                                <label for="outer_cover_color" class="form-label">Цвет покрытия наружной панели</label>
+                                <input type="text" class="form-control @error('outer_cover_color') is-invalid @enderror" 
+                                       id="outer_cover_color" name="outer_cover_color" value="{{ old('outer_cover_color') }}" placeholder="Пример: RAL 9010">
+                                @error('outer_cover_color')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="metal_cover_hidden" class="form-label">Покрытие металла</label>
+                                <input type="text" class="form-control @error('metal_cover_hidden') is-invalid @enderror" 
+                                       id="metal_cover_hidden" name="metal_cover_hidden" value="Порошково-полимерное" readonly>
+                                @error('metal_cover_hidden')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="metal_cover_color" class="form-label">Цвет покрытия металла</label>
+                                <input type="text" class="form-control @error('metal_cover_color') is-invalid @enderror" 
+                                       id="metal_cover_color" name="metal_cover_color" value="{{ old('metal_cover_color') }}" placeholder="Пример: RAL 9010">
+                                @error('metal_cover_color')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inner_trim" class="form-label required">Внутренняя обшивка</label>
                                 <select class="form-control @error('inner_trim') is-invalid @enderror" 
                                         id="inner_trim" name="inner_trim" required>
                                     <option value="">— выберите —</option>
                                 </select>
                                 @error('inner_trim')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inner_cover" class="form-label required">Покрытие внутренней обшивки</label>
+                                <select class="form-control @error('inner_cover') is-invalid @enderror" 
+                                        id="inner_cover" name="inner_cover" required>
+                                    <option value="">— выберите —</option>
+                                </select>
+                                @error('inner_cover')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="inner_trim_color" class="form-label">Цвет покрытия внутренней обшивки</label>
+                                <input type="text" class="form-control @error('inner_trim_color') is-invalid @enderror" 
+                                       id="inner_trim_color" name="inner_trim_color" value="{{ old('inner_trim_color') }}" placeholder="Пример: RAL 9010">
+                                @error('inner_trim_color')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -251,6 +417,85 @@
                                     <option value="">— выберите —</option>
                                 </select>
                                 @error('lock')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="handle" class="form-label required">Ручка</label>
+                                <input type="text" class="form-control @error('handle') is-invalid @enderror" 
+                                       id="handle" name="handle" value="{{ old('handle') }}" required>
+                                @error('handle')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="steel_thickness" class="form-label">Толщина стали (мм)</label>
+                                <input type="text" class="form-control @error('steel_thickness') is-invalid @enderror" 
+                                       id="steel_thickness" name="steel_thickness" value="{{ old('steel_thickness') }}" readonly>
+                                @error('steel_thickness')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="canvas_thickness" class="form-label">Толщина полотна (мм)</label>
+                                <input type="text" class="form-control @error('canvas_thickness') is-invalid @enderror" 
+                                       id="canvas_thickness" name="canvas_thickness" value="{{ old('canvas_thickness') }}" readonly>
+                                @error('canvas_thickness')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="extra" class="form-label">Дополнительно</label>
+                                <input type="text" class="form-control @error('extra') is-invalid @enderror" 
+                                       id="extra" name="extra" value="{{ old('extra') }}">
+                                @error('extra')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Услуги -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-tools"></i>
+                            <span>Услуги</span>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="measurement" class="form-label">Замер</label>
+                                <select class="form-control @error('measurement') is-invalid @enderror" 
+                                        id="measurement" name="measurement">
+                                    <option value="online" {{ old('measurement', 'online') == 'online' ? 'selected' : '' }}>онлайн</option>
+                                    <option value="offline" {{ old('measurement') == 'offline' ? 'selected' : '' }}>оффлайн</option>
+                                </select>
+                                @error('measurement')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="delivery" class="form-label">Доставка</label>
+                                <select class="form-control @error('delivery') is-invalid @enderror" 
+                                        id="delivery" name="delivery">
+                                    <option value="+" {{ old('delivery', '+') == '+' ? 'selected' : '' }}>+</option>
+                                    <option value="-" {{ old('delivery') == '-' ? 'selected' : '' }}>-</option>
+                                </select>
+                                @error('delivery')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="installation" class="form-label">Установка</label>
+                                <input type="text" class="form-control @error('installation') is-invalid @enderror" 
+                                       id="installation" name="installation" value="{{ old('installation') }}">
+                                @error('installation')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -303,9 +548,39 @@
                         </div>
                     </div>
 
+                    <!-- Файлы -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-file-upload"></i>
+                            <span>Файлы</span>
+                        </div>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="photo" class="form-label">Фото двери</label>
+                                <input type="file" class="form-control @error('photo') is-invalid @enderror" 
+                                       id="photo" name="photo" accept="image/*">
+                                <small class="form-text text-muted">Допустимые форматы: JPG, PNG, GIF</small>
+                                @error('photo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="attachment" class="form-label">Дополнительные фото</label>
+                                <input type="file" class="form-control @error('attachment') is-invalid @enderror" 
+                                       id="attachment" name="attachment" accept="image/*">
+                                <small class="form-text text-muted">Допустимые форматы: JPG, PNG, GIF</small>
+                                @error('attachment')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Действия -->
                     <div class="form-actions">
-                        <a href="{{ route('admin.contracts.index') }}" class="btn btn-secondary">
+                        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.index' : (Auth::user()->role === 'manager' ? 'manager.contracts.index' : 'rop.contracts.index')) }}" class="btn btn-secondary">
                             <i class="fas fa-times"></i>
                             Отмена
                         </a>
@@ -540,3 +815,155 @@
     }
 }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const price = @json($price);
+    const fusionModels = @json($fusionModels);
+
+    const cat = document.getElementById('category');
+    const mdl = document.getElementById('model');
+    const outerPanel = document.getElementById('outer_panel');
+    const outerCover = document.getElementById('outer_cover');
+    const innerTrim = document.getElementById('inner_trim');
+    const innerCover = document.getElementById('inner_cover');
+    const extra = document.getElementById('extra');
+    const glassUnit = document.getElementById('glass_unit');
+    const lock = document.getElementById('lock');
+    const steelThickness = document.getElementById('steel_thickness');
+    const canvasThickness = document.getElementById('canvas_thickness');
+
+    const config = {
+        outer_panel: { Lux: "Оцинкованная сталь", Premium: "Оцинкованная сталь", Comfort: "Холоднокатанная сталь" },
+        fusion_outer_cover: ["МДФ-эмаль", "Шпон-марилька"],
+        default_outer_cover: {
+              Lux: ["Оцинкованная сталь"],
+              Premium: ["Оцинкованная сталь"],
+              Comfort: ["Холоднокатанная сталь"]
+            },
+        inner_trim: {
+            Lux: ["МДФ", "металл", "шпон"],
+            Premium: ["МДФ", "металл", "шпон (за доплату)"],
+            Comfort: ["МДФ", "металл"]
+        },
+        inner_cover: {
+            Lux: ["Марилька", "Эмаль", "ПВХ пленка"],
+            Premium: ["Эмаль", "ПВХ пленка", "Шпон-марилька (за доплату)"],
+            Comfort: ["металл", "Эмаль (за доплату)"]
+        },
+        glass: {
+            Lux: ["синий зеркальный (калёный)", "йодовый зеркальный (калёный)", "йодовый (калёный)", "прозрачный (калёный)"],
+            Premium: ["синий зеркальный (некалёный)", "йодовый зеркальный (некалёный)", "йодовый (некалёный)", "прозрачный (некалёный)", "синий зеркальный (калёный)", "йодовый зеркальный (калёный)", "йодовый (калёный)", "прозрачный (калёный)"],
+            Comfort: ["синий зеркальный (некалёный)", "йодовый зеркальный (некалёный)", "йодовый (некалёный)", "прозрачный (некалёный)"]
+        },
+        lock: { Lux: ["Kale", "Guardian"], Premium: ["Kale", "Guardian", "Galeon"], Comfort: ["Argus", "Galeon"] }
+    };
+
+    function updateModels() {
+        mdl.innerHTML = '<option value="">— выберите —</option>';
+        if (price[cat.value]) {
+            Object.keys(price[cat.value]).forEach(function (m) {
+                const opt = document.createElement('option');
+                opt.value = m; opt.textContent = m;
+                mdl.appendChild(opt);
+            });
+        }
+        if (window.modelOld) mdl.value = window.modelOld;
+    }
+
+    function updateFields() {
+        const category = cat.value;
+        const model = mdl.value;
+        const isFusion = fusionModels.includes(model);
+
+        if (outerPanel) {
+            outerPanel.value = isFusion ? "МДФ" : config.outer_panel[category];
+        }
+
+        if (outerCover) {
+            outerCover.innerHTML = '';
+            const covers = isFusion ? config.fusion_outer_cover : config.default_outer_cover[category];
+            if (covers) {
+              covers.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                outerCover.appendChild(opt);
+              });
+            }
+        }
+
+        if (innerTrim) {
+            innerTrim.innerHTML = '<option value="">— выберите —</option>';
+            config.inner_trim[category]?.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                innerTrim.appendChild(opt);
+            });
+        }
+
+        if (innerCover) {
+            innerCover.innerHTML = '<option value="">— выберите —</option>';
+            config.inner_cover[category]?.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                innerCover.appendChild(opt);
+            });
+        }
+    }
+
+    function updateGlass() {
+        if (glassUnit) {
+            glassUnit.innerHTML = '<option value="">— выберите —</option>';
+            config.glass[cat.value]?.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                glassUnit.appendChild(opt);
+            });
+        }
+    }
+
+    function updateLock() {
+        if (lock) {
+            lock.innerHTML = '<option value="">— выберите —</option>';
+            config.lock[cat.value]?.forEach(v => {
+                const opt = document.createElement('option');
+                opt.value = v; opt.textContent = v;
+                lock.appendChild(opt);
+            });
+        }
+    }
+
+    function updateThickness() {
+        let base = { Lux: 110, Premium: 90, Comfort: 80 }[cat.value];
+        const steel = { Lux: "1.8", Premium: "1.5", Comfort: "1.4" }[cat.value];
+        if (fusionModels.includes(mdl.value)) base += 10;
+        
+        if (canvasThickness) canvasThickness.value = base;
+        if (steelThickness) steelThickness.value = steel;
+    }
+
+    function updateExtra() {
+        if (extra) {
+            extra.value = "";
+            if (innerTrim && innerTrim.value.includes('доплату')) extra.value += "внутренняя обшивка - шпон (доплата); ";
+            if (innerCover && innerCover.value.includes('доплату')) extra.value += innerCover.value + "; ";
+            if (cat.value === "Premium" && glassUnit && glassUnit.value.includes('калёный')) extra.value += "калёный стеклопакет (доплата); ";
+        }
+    }
+
+    if (cat) cat.addEventListener('change', () => { updateModels(); updateFields(); updateGlass(); updateLock(); updateThickness(); });
+    if (mdl) mdl.addEventListener('change', () => { updateFields(); updateThickness(); });
+    if (innerTrim) innerTrim.addEventListener('change', updateExtra);
+    if (innerCover) innerCover.addEventListener('change', updateExtra);
+    if (glassUnit) glassUnit.addEventListener('change', updateExtra);
+
+    // Инициализация
+    if (cat && mdl) {
+        updateModels();
+        updateFields();
+        updateGlass();
+        updateLock();
+        updateThickness();
+    }
+});
+</script>

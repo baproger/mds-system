@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contract;
 use App\Models\Branch;
 use App\Services\ContractService;
+use App\Services\ContractCalculationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -44,10 +45,12 @@ class ContractController extends Controller
 
     public function create()
     {
+        $calculationService = new ContractCalculationService();
+        
         $branches = Branch::all();
-        $managers = ContractService::$managers;
-        $price = ContractService::$price;
-        $fusionModels = ContractService::$fusionModels;
+        $managers = ['Самал','Арман','Даулет','Зухра','Жанерке','Арай','Ербол','Тоқмұсбек','Сымбат'];
+        $price = $calculationService->getPrice();
+        $fusionModels = $calculationService->getFusionModels();
         $userBranch = Auth::user()->branch;
         
         // Добавляем отладочную информацию
@@ -61,79 +64,82 @@ class ContractController extends Controller
         
         // Проверяем, если это админский маршрут
         if (request()->routeIs('admin.*')) {
-            return view('admin.contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch'));
+            return view('admin.contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch', 'calculationService'));
         }
         
         // Для менеджера и РОП используем админский шаблон
         if (request()->routeIs('manager.*') || request()->routeIs('rop.*')) {
-            return view('admin.contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch'));
+            return view('admin.contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch', 'calculationService'));
         }
         
-        return view('contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch'));
+        return view('contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch', 'calculationService'));
     }
 
     public function store(Request $request)
     {
+        $calculationService = new ContractCalculationService();
+        
+        // Используем валидацию из сервиса
+        $validationErrors = $calculationService->validateContract($request->all());
+        if (!empty($validationErrors)) {
+            return back()->withErrors(['validation' => $validationErrors])->withInput();
+        }
+
         $validated = $request->validate([
             'contract_number' => 'required|string|unique:contracts,contract_number',
+            'manager' => 'required',
             'client' => 'required',
             'instagram' => 'required',
             'iin' => 'required|size:12',
             'phone' => 'required',
             'phone2' => 'required',
+            'address' => 'nullable|string',
+            'payment' => 'nullable|string',
             'date' => 'required|date',
             'category' => 'required|in:Lux,Premium,Comfort',
             'model' => 'required',
             'width' => 'required|numeric|min:850',
             'height' => 'required|numeric|min:850',
-            'leaf' => 'nullable',
+            'design' => 'nullable|string',
+            'leaf' => 'required',
             'framugawidth' => 'required',
             'framugaheight' => 'required',
+            'forging' => 'nullable|string',
+            'opening' => 'nullable|string',
+            'frame' => 'nullable|string',
+            'outer_panel' => 'nullable|string',
             'outer_cover' => 'required',
+            'outer_cover_color' => 'nullable|string',
+            'metal_cover_hidden' => 'nullable|string',
+            'metal_cover_color' => 'nullable|string',
             'inner_trim' => 'required',
             'inner_cover' => 'required',
+            'inner_trim_color' => 'nullable|string',
             'glass_unit' => 'required',
+            'extra' => 'nullable|string',
             'lock' => 'required',
             'handle' => 'required',
+            'steel_thickness' => 'nullable|string',
+            'canvas_thickness' => 'nullable|string',
+            'measurement' => 'nullable|string',
+            'delivery' => 'nullable|string',
+            'installation' => 'nullable|string',
             'order_total' => 'required|numeric|min:0',
             'order_deposit' => 'required|numeric|min:0',
             'order_remainder' => 'required|numeric|min:0',
             'order_due' => 'required|numeric|min:0',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            'attachment' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
-
-        // Проверка Fusion модели
-        $fusionError = ContractService::validateFusionModel($validated['model'], $validated['outer_cover']);
-        if ($fusionError) {
-            return back()->withErrors(['outer_cover' => $fusionError])->withInput();
-        }
-
-        // Проверка ИИН
-        if (!preg_match('/^\d{12}$/', $validated['iin'])) {
-            return back()->withErrors(['iin' => 'ИИН клиента должен состоять ровно из 12 цифр.'])->withInput();
-        }
-
-        // Проверка модели для категории
-        if (!isset(ContractService::$price[$validated['category']][$validated['model']])) {
-            return back()->withErrors(['model' => 'Неверная модель для выбранной категории.'])->withInput();
-        }
 
         $validated['user_id'] = Auth::id();
         $validated['branch_id'] = Auth::user()->branch_id;
 
-        // Проверка диапазона номера договора
-        $rangeError = ContractService::validateContractNumberRange($validated['contract_number'], $validated['branch_id']);
-        if ($rangeError) {
-            return back()->withErrors(['contract_number' => $rangeError])->withInput();
-        }
-        $validated['outer_panel'] = ContractService::getOuterPanel($validated['category'], $validated['model']);
-        $validated['steel_thickness'] = ContractService::getSteelThickness($validated['category']);
-        $validated['canvas_thickness'] = ContractService::getCanvasThickness($validated['category'], $validated['model']);
-        $validated['extra'] = ContractService::calculateExtra(
-            $validated['category'], 
-            $validated['inner_trim'], 
-            $validated['inner_cover'], 
-            $validated['glass_unit']
-        );
+        // Используем методы из нового сервиса
+        $validated['outer_panel'] = $calculationService->getOuterPanel($validated['category'], $validated['model']);
+        $validated['steel_thickness'] = $calculationService->getSteelThickness($validated['category']);
+        $validated['canvas_thickness'] = $calculationService->getCanvasThickness($validated['category'], $validated['model']);
+        $validated['extra'] = $calculationService->calculateExtra($validated);
 
         if ($request->hasFile('photo')) {
             $validated['photo_path'] = $request->file('photo')->store('contracts/photos', 'public');
@@ -350,6 +356,15 @@ class ContractController extends Controller
 
         $contract->delete();
 
+        // Перенаправляем в зависимости от маршрута
+        if (request()->routeIs('admin.*')) {
+            return redirect()->route('admin.contracts.index')->with('success', 'Договор удален успешно!');
+        } elseif (request()->routeIs('manager.*')) {
+            return redirect()->route('manager.contracts.index')->with('success', 'Договор удален успешно!');
+        } elseif (request()->routeIs('rop.*')) {
+            return redirect()->route('rop.contracts.index')->with('success', 'Договор удален успешно!');
+        }
+        
         return redirect()->route('contracts.index')->with('success', 'Договор удален успешно!');
     }
 

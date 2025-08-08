@@ -33,7 +33,15 @@
                             </div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $contracts->total() }}</div>
-                                <div class="stat-label">Всего договоров</div>
+                                <div class="stat-label">
+                                    @if(Auth::user()->role === 'manager')
+                                        Моих договоров
+                                    @elseif(Auth::user()->role === 'rop')
+                                        Договоров филиала
+                                    @else
+                                        Всего договоров
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         
@@ -43,10 +51,19 @@
                             </div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ number_format($contracts->sum('order_total')) }} ₸</div>
-                                <div class="stat-label">Общая сумма</div>
+                                <div class="stat-label">
+                                    @if(Auth::user()->role === 'manager')
+                                        Моя общая сумма
+                                    @elseif(Auth::user()->role === 'rop')
+                                        Общая сумма филиала
+                                    @else
+                                        Общая сумма
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         
+                        @if(Auth::user()->role === 'admin')
                         <div class="stat-card">
                             <div class="stat-icon">
                                 <i class="fas fa-building"></i>
@@ -66,6 +83,27 @@
                                 <div class="stat-label">Менеджеров</div>
                             </div>
                         </div>
+                        @else
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $contracts->where('date', '>=', now()->startOfMonth())->count() }}</div>
+                                <div class="stat-label">За этот месяц</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $contracts->count() > 0 ? number_format($contracts->sum('order_total') / $contracts->count()) : 0 }} ₸</div>
+                                <div class="stat-label">Средний договор</div>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
 
@@ -76,7 +114,7 @@
                         <span>Поиск и фильтры</span>
                     </div>
                     
-                    <form method="GET" action="{{ route('admin.contracts.index') }}" class="search-form">
+                    <form method="GET" action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.index' : (Auth::user()->role === 'manager' ? 'manager.contracts.index' : 'rop.contracts.index')) }}" class="search-form">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="search" class="form-label">
@@ -88,6 +126,7 @@
                                        value="{{ request('search') }}">
                             </div>
                             
+                            @if(Auth::user()->role === 'admin')
                             <div class="form-group">
                                 <label for="branch" class="form-label">
                                     <i class="fas fa-building"></i>
@@ -117,6 +156,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
                             
                             <div class="form-group">
                                 <label for="date_from" class="form-label">
@@ -146,7 +186,7 @@
                                         <i class="fas fa-search"></i>
                                         Поиск
                                     </button>
-                                    <a href="{{ route('admin.contracts.index') }}" class="btn btn-cancel">
+                                    <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.index' : (Auth::user()->role === 'manager' ? 'manager.contracts.index' : 'rop.contracts.index')) }}" class="btn btn-cancel">
                                         <i class="fas fa-times"></i>
                                         Сброс
                                     </a>
@@ -194,6 +234,10 @@
                                         <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.edit' : (Auth::user()->role === 'manager' ? 'manager.contracts.edit' : 'rop.contracts.edit'), $contract) }}" class="btn btn-sm btn-save" title="Редактировать">
                                             <i class="fas fa-edit"></i>
                                         </a>
+                                        <button type="button" class="btn btn-sm btn-danger" title="Удалить"
+                                                onclick="showDeleteModal('{{ $contract->id }}', '{{ $contract->contract_number }}', 'contract')">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
                             @endforeach
@@ -333,8 +377,8 @@
 }
 
 .stat-number {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: #111827;
     margin-bottom: 4px;
 }
@@ -609,4 +653,173 @@
     }
 }
 </style>
+
+<!-- Модальное окно удаления -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title">Подтверждение удаления</h3>
+            <p class="modal-subtitle">
+                Вы действительно хотите удалить договор <strong id="deleteItemName"></strong>?
+                Это действие нельзя отменить.
+            </p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="modal-btn modal-btn-cancel" onclick="hideDeleteModal()">
+                <i class="fas fa-times"></i>
+                Отмена
+            </button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="modal-btn modal-btn-delete">
+                    <i class="fas fa-trash"></i>
+                    Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDeleteModal(id, name, type) {
+    document.getElementById('deleteItemName').textContent = name;
+    
+    // Создаем базовый URL для удаления
+    let baseUrl = '';
+    @if(Auth::user()->role === 'admin')
+        baseUrl = '{{ url("/admin/contracts") }}';
+    @elseif(Auth::user()->role === 'manager')
+        baseUrl = '{{ url("/manager/contracts") }}';
+    @elseif(Auth::user()->role === 'rop')
+        baseUrl = '{{ url("/rop/contracts") }}';
+    @endif
+    
+    document.getElementById('deleteForm').action = type === 'contract' ? `${baseUrl}/${id}` : '';
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function hideDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+// Закрытие модального окна при клике вне его
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        hideDeleteModal();
+    }
+});
+</script>
+
+<style>
+/* Модальное окно */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.modal-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fef3c7;
+    color: #d97706;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 20px;
+}
+
+.modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.modal-subtitle {
+    color: #6b7280;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.modal-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.modal-btn-cancel {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.modal-btn-cancel:hover {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.modal-btn-delete {
+    background: #ef4444;
+    color: white;
+}
+
+.modal-btn-delete:hover {
+    background: #dc2626;
+    color: white;
+}
+
+/* Кнопка удаления */
+.btn-danger {
+    background: #ef4444;
+    color: white;
+    border: 1px solid #ef4444;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    color: white;
+    border-color: #dc2626;
+}
+</style>
+
 @endsection 

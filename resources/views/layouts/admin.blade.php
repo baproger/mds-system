@@ -94,7 +94,7 @@
                         <span>Настройки</span>
                         <i class="fas fa-chevron-right nav-arrow"></i>
                     </a>
-                    <form method="POST" action="{{ route('logout') }}" style="display: inline;">
+                    <form method="POST" action="{{ route(Auth::user()->role === 'admin' ? 'admin.logout' : (Auth::user()->role === 'manager' ? 'manager.logout' : 'rop.logout')) }}" style="display: inline;">
                         @csrf
                         <button type="submit" class="nav-item" style="width: 100%; text-align: left; background: none; border: none;">
                             <i class="fas fa-sign-out-alt"></i>

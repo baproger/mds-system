@@ -51,11 +51,12 @@ class AdminController extends Controller
             $userContractsThisYear = Contract::where('user_id', $user->id)->whereYear('created_at', now()->year);
             
             $totalContracts = $userContracts->count();
-            $totalRevenue = $userContracts->sum('order_total') ?? 0;
+            $totalRevenue = $userContracts->sum('order_total');
             $contractsThisMonth = $userContractsThisMonth->count();
-            $revenueThisMonth = $userContractsThisMonth->sum('order_total') ?? 0;
+            $revenueThisMonth = $userContractsThisMonth->sum('order_total');
             $contractsThisYear = $userContractsThisYear->count();
-            $revenueThisYear = $userContractsThisYear->sum('order_total') ?? 0;
+            $revenueThisYear = $userContractsThisYear->sum('order_total');
+            $lastContract = Contract::where('user_id', $user->id)->latest()->first();
             
             $stats = [
                 'total_contracts' => $totalContracts,
@@ -65,8 +66,15 @@ class AdminController extends Controller
                 'contracts_this_year' => $contractsThisYear,
                 'revenue_this_year' => $revenueThisYear,
                 'average_contract_value' => $totalContracts > 0 ? round($totalRevenue / $totalContracts) : 0,
-                'last_contract_date' => $userContracts->latest()->first()?->created_at,
+                'last_contract_date' => $lastContract?->created_at,
             ];
+            
+            // Отладочная информация
+            \Log::info('Manager Dashboard Stats', [
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                'stats' => $stats
+            ]);
 
             $recent_contracts = Contract::where('user_id', $user->id)
                 ->with(['user', 'branch'])
@@ -432,6 +440,20 @@ class AdminController extends Controller
             $branches = collect();
             $users = collect();
         }
+
+        // Добавляем отладочную информацию
+        \Log::info('Contracts index accessed', [
+            'user_role' => $user->role,
+            'user_id' => $user->id,
+            'contracts_count' => $contracts->count(),
+            'total_contracts' => $contracts->total(),
+            'current_page' => $contracts->currentPage(),
+            'search' => $request->search,
+            'branch_filter' => $request->branch,
+            'user_filter' => $request->user,
+            'date_from' => $request->date_from,
+            'date_to' => $request->date_to
+        ]);
 
         return view('admin.contracts.index', compact('contracts', 'branches', 'users'));
     }

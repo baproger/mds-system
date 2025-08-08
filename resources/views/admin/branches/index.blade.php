@@ -283,8 +283,8 @@
 }
 
 .stat-number {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: #111827;
     margin-bottom: 4px;
 }

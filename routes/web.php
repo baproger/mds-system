@@ -34,7 +34,7 @@ Route::middleware("guest")->group(function () {
     Route::post("/register", [AuthController::class, "register"]);
 });
 
-Route::middleware("auth")->group(function () {
+Route::middleware(['auth', 'user-only'])->group(function () {
     Route::post("/logout", [AuthController::class, "logout"])->name("logout");
     // Общие маршруты договоров без прав на создание/редактирование
     Route::resource("contracts", ContractController::class)->only(["index", "show"]);
@@ -45,6 +45,11 @@ Route::middleware("auth")->group(function () {
     Route::put('/profile/{id?}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
 
+// Общий logout маршрут для всех авторизованных пользователей
+Route::middleware('auth')->group(function () {
+    Route::post("/logout", [AuthController::class, "logout"])->name("logout");
+});
+
 Route::middleware("auth")->group(function () {
     Route::get("contracts/{contract}/print", [ContractController::class, "print"])->name("contracts.print");
     Route::get("contracts/{contract}/export-word", [ContractController::class, "exportWord"])->name("contracts.export-word");
@@ -52,6 +57,7 @@ Route::middleware("auth")->group(function () {
 
 // Роуты для менеджеров (префикс /manager)
 Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');
     // Профиль
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
@@ -63,9 +69,12 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     Route::get('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'show'])->name('contracts.show');
     Route::get('/contracts/{contract}/edit', [App\Http\Controllers\ContractController::class, 'edit'])->name('contracts.edit');
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
+    Route::delete('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'destroy'])->name('contracts.delete');
     
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
+    
+
     
     // Тестовый маршрут
     Route::get('/test', function() {
@@ -83,6 +92,7 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
 
 // Роуты для РОП (префикс /rop)
 Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');
     // Профиль
     Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
@@ -94,6 +104,7 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::get('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'show'])->name('contracts.show');
     Route::get('/contracts/{contract}/edit', [App\Http\Controllers\ContractController::class, 'edit'])->name('contracts.edit');
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
+    Route::delete('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'destroy'])->name('contracts.delete');
     
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
@@ -101,6 +112,7 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
 
 // Админские маршруты (только для admin)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     // Админский дашборд (только для admin)
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     

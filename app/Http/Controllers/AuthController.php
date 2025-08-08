@@ -25,9 +25,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             
-            // Перенаправляем админа на админ панель
+            // Перенаправляем пользователей на соответствующие дашборды
             if (Auth::user()->role === 'admin') {
                 return redirect()->intended(route('admin.dashboard'));
+            } elseif (Auth::user()->role === 'manager') {
+                return redirect()->intended(route('manager.dashboard'));
+            } elseif (Auth::user()->role === 'rop') {
+                return redirect()->intended(route('rop.dashboard'));
             }
             
             return redirect()->intended(route('contracts.index'));
@@ -71,6 +75,15 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        // Перенаправляем на соответствующий дашборд
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        } elseif ($user->role === 'manager') {
+            return redirect()->route('manager.dashboard');
+        } elseif ($user->role === 'rop') {
+            return redirect()->route('rop.dashboard');
+        }
+        
         return redirect()->route('contracts.index');
     }
 }
