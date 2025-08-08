@@ -75,6 +75,11 @@
                         <span>Новый договор</span>
                         <i class="fas fa-chevron-right nav-arrow"></i>
                     </a>
+                    <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.calculator.index' : (Auth::user()->role === 'manager' ? 'manager.calculator.index' : 'rop.calculator.index')) }}" class="nav-item {{ (request()->routeIs('admin.calculator.*') || request()->routeIs('manager.calculator.*') || request()->routeIs('rop.calculator.*')) ? 'active' : '' }}">
+                        <i class="fas fa-calculator"></i>
+                        <span>Калькулятор</span>
+                        <i class="fas fa-chevron-right nav-arrow"></i>
+                    </a>
                 </div>
 
                 <div class="nav-section">

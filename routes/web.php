@@ -64,6 +64,9 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     Route::get('/contracts/{contract}/edit', [App\Http\Controllers\ContractController::class, 'edit'])->name('contracts.edit');
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
     
+    // Калькулятор дверей
+    Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
+    
     // Тестовый маршрут
     Route::get('/test', function() {
         return 'Manager test route works! User: ' . Auth::user()->name . ' Role: ' . Auth::user()->role;
@@ -91,6 +94,9 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::get('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'show'])->name('contracts.show');
     Route::get('/contracts/{contract}/edit', [App\Http\Controllers\ContractController::class, 'edit'])->name('contracts.edit');
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
+    
+    // Калькулятор дверей
+    Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
 });
 
 // Админские маршруты (только для admin)
@@ -135,4 +141,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/branches/{branch}/edit', [AdminController::class, 'editBranch'])->name('branches.edit');
     Route::put('/branches/{branch}', [AdminController::class, 'updateBranch'])->name('branches.update');
     Route::delete('/branches/{branch}', [AdminController::class, 'deleteBranch'])->name('branches.delete');
+    
+    // Калькулятор дверей
+    Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
 });
