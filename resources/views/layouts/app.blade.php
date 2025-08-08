@@ -21,9 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route("contracts.index") }}">
-                <div class="brand-icon me-3">
-                    <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40" class="me-2">
-                </div>
+                <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40" class="me-3">
                 <span>MDS Doors</span>
             </a>
             

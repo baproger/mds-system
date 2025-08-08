@@ -232,20 +232,20 @@ body {
 .sidebar-logo {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: var(--spacing-md);
     width: 100%;
 }
 
-.logo-icon {
-    width: 32px;
-    height: 32px;
-    background: var(--accent-primary);
-    border-radius: var(--radius-sm);
+.logo-content {
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1rem;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.logo-image {
+    flex-shrink: 0;
 }
 
 .logo-text {
