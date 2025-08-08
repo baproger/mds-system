@@ -182,6 +182,31 @@
                         @endforeach
                     </div>
                 </div>
+                @elseif(Auth::user()->role === 'rop')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-building"></i>
+                        <span>Мой филиал</span>
+                    </div>
+                    
+                    <div class="personnel-section">
+                        @foreach($branches as $branch)
+                            <div class="personnel-item branch-item">
+                                <div class="personnel-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="personnel-content">
+                                    <div class="personnel-title">{{ $branch->name }}</div>
+                                    <div class="personnel-list">
+                                        <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} договоров филиала</span>
+                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
+                                        <span class="personnel-tag manager-tag">{{ $branch->users_count }} пользователей</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
                 @endif
 
                 @if(Auth::user()->role === 'admin')

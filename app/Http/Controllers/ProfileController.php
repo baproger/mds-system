@@ -24,7 +24,7 @@ class ProfileController extends Controller
                 $query->where('user_id', $user->id);
             }, 'branch']);
         } elseif ($user->role === 'rop') {
-            // РОП видит только договоры своего филиала
+            // РОП видит договоры своего филиала в профиле
             $user->load(['contracts' => function($query) use ($user) {
                 $query->whereHas('user', function($q) use ($user) {
                     $q->where('branch_id', $user->branch_id);
