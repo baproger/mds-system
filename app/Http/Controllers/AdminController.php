@@ -251,6 +251,22 @@ class AdminController extends Controller
         return redirect()->route('admin.users.index')->with('success', "Пользователь '{$userName}' удален успешно!");
     }
 
+    public function deleteManager(User $manager)
+    {
+        if ($manager->id === Auth::id()) {
+            return back()->with('error', 'Нельзя удалить самого себя!');
+        }
+
+        if (!in_array($manager->role, ['manager', 'rop'])) {
+            return back()->with('error', 'Можно удалять только менеджеров и РОП!');
+        }
+
+        $managerName = $manager->name;
+        $manager->delete();
+
+        return redirect()->route('admin.managers.index')->with('success', "Менеджер '{$managerName}' удален успешно!");
+    }
+
     public function branches()
     {
         $user = Auth::user();

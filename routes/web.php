@@ -119,7 +119,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/managers/{manager}', [AdminManagerController::class, 'show'])->name('managers.show');
     Route::get('/managers/{manager}/edit', [AdminManagerController::class, 'edit'])->name('managers.edit');
     Route::put('/managers/{manager}', [AdminManagerController::class, 'update'])->name('managers.update');
-    Route::delete('/managers/{manager}', [AdminManagerController::class, 'destroy'])->name('managers.delete');
+    Route::delete('/managers/{manager}', [AdminController::class, 'deleteManager'])->name('managers.delete');
     // Управление пользователями (только для admin)
     Route::get('/users', [AdminController::class, 'usersIndex'])->name('users.index');
     Route::get('/users/create', [AdminController::class, 'createUser'])->name('users.create');
