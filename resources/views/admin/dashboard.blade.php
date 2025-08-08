@@ -52,8 +52,18 @@
                                 <i class="fas fa-user-tie"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $stats['total_sales_staff'] }}</div>
-                                <div class="stat-label">Продавцов</div>
+                                <div class="stat-number">{{ $stats['total_managers'] ?? 0 }}</div>
+                                <div class="stat-label">Менеджеров</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">{{ $stats['total_rops'] ?? 0 }}</div>
+                                <div class="stat-label">РОП</div>
                             </div>
                         </div>
                         
