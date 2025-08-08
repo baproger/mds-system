@@ -197,7 +197,7 @@
                                 <i class="fas fa-crown"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $stats['total_rop'] }}</div>
+                                <div class="stat-number">{{ $stats['total_rops'] ?? 0 }}</div>
                                 <div class="stat-label">РОП</div>
                             </div>
                         </div>
