@@ -80,7 +80,7 @@
                                 <i class="fas fa-file-contract"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ $manager->contracts_count ?? 0 }}</div>
+                                <div class="stat-number">{{ $manager->contracts_count ?? $manager->contracts()->count() }}</div>
                                 <div class="stat-label">Договоров</div>
                             </div>
                         </div>
@@ -90,28 +90,8 @@
                                 <i class="fas fa-money-bill-wave"></i>
                             </div>
                             <div class="stat-content">
-                                <div class="stat-number">{{ number_format($manager->total_revenue ?? 0) }} ₸</div>
+                                <div class="stat-number">{{ number_format(($manager->contracts_sum_order_total ?? null) ?? $manager->contracts()->sum('order_total')) }} ₸</div>
                                 <div class="stat-label">Доход</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-check-circle"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ $manager->approved_contracts_count ?? 0 }}</div>
-                                <div class="stat-label">Одобренных</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ $manager->pending_contracts_count ?? 0 }}</div>
-                                <div class="stat-label">Ожидающих</div>
                             </div>
                         </div>
                     </div>

@@ -126,9 +126,17 @@ class AdminManagerController extends Controller
 
     public function show(User $manager)
     {
-        $manager->load(['branch', 'contracts' => function($query) {
-            $query->latest();
-        }]);
+        // Подгружаем филиал, список договоров (для карточки последних) и агрегаты по договорам
+        $manager->load([
+            'branch',
+            'contracts' => function($query) {
+                $query->latest();
+            }
+        ]);
+
+        // Счётчики и суммы для отображения статистики
+        $manager->loadCount(['contracts']);
+        $manager->loadSum('contracts', 'order_total');
 
         return view('admin.managers.show', compact('manager'));
     }
