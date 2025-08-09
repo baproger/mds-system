@@ -21,33 +21,35 @@
 
                 <div class="calculator-section">
                     <div class="calculator-card">
-                        <!-- ЛОГОТИП -->
+                        <!-- ЛОГОТИП 
                         <div class="logo-container">
                             <img src="https://calc.mds-doors.kz/uploads/logo.png" alt="MDS Doors" class="logo">
-                        </div>
+                        </div>-->
 
                         <form id="calculatorForm" class="calculator-form">
-                            <div class="form-group">
-                                <label for="category" class="form-label">
-                                    <i class="fas fa-tag"></i>
-                                    Категория двери
-                                </label>
-                                <select id="category" class="form-control" onchange="loadModels()">
-                                    <option value="">— Выберите категорию —</option>
-                                    <option value="Lux">Lux</option>
-                                    <option value="Premium">Premium</option>
-                                    <option value="Comfort">Comfort</option>
-                                </select>
-                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="category" class="form-label">
+                                        <i class="fas fa-tag"></i>
+                                        Категория двери
+                                    </label>
+                                    <select id="category" class="form-control" onchange="loadModels()">
+                                        <option value="">— Выберите категорию —</option>
+                                        <option value="Lux">Lux</option>
+                                        <option value="Premium">Premium</option>
+                                        <option value="Comfort">Comfort</option>
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="model" class="form-label">
-                                    <i class="fas fa-door-open"></i>
-                                    Модель
-                                </label>
-                                <select id="model" class="form-control" disabled>
-                                    <option value="">— Выберите модель —</option>
-                                </select>
+                                <div class="form-group">
+                                    <label for="model" class="form-label">
+                                        <i class="fas fa-door-open"></i>
+                                        Модель
+                                    </label>
+                                    <select id="model" class="form-control" disabled>
+                                        <option value="">— Выберите модель —</option>
+                                    </select>
+                                </div>
                             </div>
 
                             <div class="form-row">
@@ -68,12 +70,25 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="discount" class="form-label">
-                                    <i class="fas fa-percentage"></i>
-                                    Скидка (% только на дверь)
-                                </label>
-                                <input type="number" id="discount" class="form-control" step="1" value="0" min="0" max="100" oninput="calculate()">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="discount" class="form-label">
+                                        <i class="fas fa-percentage"></i>
+                                        Скидка (% только на дверь)
+                                    </label>
+                                    <input type="number" id="discount" class="form-control" step="1" value="0" min="0" max="100" oninput="calculate()">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="thermobreak" class="form-label">
+                                        <i class="fas fa-snowflake"></i>
+                                        Терморазрыв
+                                    </label>
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" id="thermobreak" class="form-checkbox" onchange="calculate()">
+                                        <label for="thermobreak" class="checkbox-label">Добавить терморазрыв (70 000 ₸/м²)</label>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -92,8 +107,14 @@
 
                         <div class="result-container" id="output" style="display:none;">
                             <div class="result-header">
-                                <i class="fas fa-receipt"></i>
-                                <span>Результат расчета</span>
+                                <div class="result-header-left">
+                                    <i class="fas fa-receipt"></i>
+                                    <span>Результат расчета</span>
+                                </div>
+                                <button type="button" class="btn-copy" onclick="copyResults()">
+                                    <i class="fas fa-copy"></i>
+                                    Копировать
+                                </button>
                             </div>
                             <div class="result-content" id="resultContent"></div>
                         </div>
@@ -217,6 +238,36 @@
     cursor: not-allowed;
 }
 
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #fafafa;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-container:hover {
+    border-color: #667eea;
+    background: white;
+}
+
+.form-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: #667eea;
+    cursor: pointer;
+}
+
+.checkbox-label {
+    font-size: 14px;
+    color: #374151;
+    cursor: pointer;
+    margin: 0;
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -261,8 +312,28 @@
     font-size: 16px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: space-between;
+    gap: 12px;
 }
+
+.result-header-left { display: flex; align-items: center; gap: 8px; }
+
+.btn-copy {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-copy:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
 
 .result-content {
     padding: 24px;
@@ -369,8 +440,18 @@ const data = {
 function loadModels() {
   const category = document.getElementById("category").value;
   const modelSelect = document.getElementById("model");
+  const thermobreakContainer = document.querySelector('.form-group:has(#thermobreak)');
+  
   modelSelect.innerHTML = "";
   modelSelect.disabled = true;
+
+  // Скрываем/показываем терморазрыв в зависимости от категории
+  if (category === "Comfort") {
+    thermobreakContainer.style.display = "none";
+    document.getElementById("thermobreak").checked = false;
+  } else {
+    thermobreakContainer.style.display = "block";
+  }
 
   if (data[category]) {
     modelSelect.disabled = false;
@@ -390,6 +471,7 @@ function calculate() {
   const discount = parseFloat(document.getElementById("discount").value) || 0;
   const installationValue = parseInt(document.getElementById("installation").value);
   const hasInstallation = !isNaN(installationValue) && installationValue > 0;
+  const hasThermobreak = document.getElementById("thermobreak").checked;
   const output = document.getElementById("output");
   const resultContent = document.getElementById("resultContent");
 
@@ -398,7 +480,11 @@ function calculate() {
     const area = width * height;
     const totalDoorOnly = Math.round(priceM2 * area);
     const discountedDoor = Math.round(totalDoorOnly * (1 - discount / 100));
-    const finalTotal = hasInstallation ? discountedDoor + installationValue : discountedDoor;
+    
+    // Расчет терморазрыва
+    const thermobreakCost = hasThermobreak ? Math.round(70000 * area) : 0;
+    
+    const finalTotal = discountedDoor + thermobreakCost + (hasInstallation ? installationValue : 0);
 
     resultContent.innerHTML = `
       <div class="result-item">
@@ -425,6 +511,12 @@ function calculate() {
         <span class="result-label">Цена двери со скидкой:</span>
         <span class="result-value">${discountedDoor.toLocaleString('ru-RU')} ₸</span>
       </div>
+      ${hasThermobreak ? `
+      <div class="result-item">
+        <span class="result-label">Терморазрыв:</span>
+        <span class="result-value">${thermobreakCost.toLocaleString('ru-RU')} ₸</span>
+      </div>
+      ` : ''}
       <div class="result-item">
         <span class="result-label">Установка:</span>
         <span class="result-value">${hasInstallation ? installationValue.toLocaleString('ru-RU') + ' ₸' : 'Нет'}</span>
@@ -438,6 +530,63 @@ function calculate() {
   } else {
     output.style.display = "none";
   }
+}
+
+function copyResults() {
+  const output = document.getElementById('output');
+  const resultContent = document.getElementById('resultContent');
+  if (!output || output.style.display === 'none') { return; }
+
+  // Сформируем читаемый текст из текущего результата
+  const lines = [];
+  const items = resultContent.querySelectorAll('.result-item');
+  items.forEach((item) => {
+    const label = item.querySelector('.result-label')?.textContent?.trim() || '';
+    const value = item.querySelector('.result-value')?.textContent?.trim() || '';
+    if (label || value) {
+      lines.push(`${label} ${value}`.trim());
+    }
+  });
+
+  const textToCopy = lines.join('\n');
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      showCopyToast();
+    }).catch(() => fallbackCopy(textToCopy));
+  } else {
+    fallbackCopy(textToCopy);
+  }
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'absolute';
+  textarea.style.left = '-9999px';
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand('copy');
+  document.body.removeChild(textarea);
+  showCopyToast();
+}
+
+function showCopyToast() {
+  const toast = document.createElement('div');
+  toast.textContent = 'Скопировано';
+  toast.style.position = 'fixed';
+  toast.style.right = '20px';
+  toast.style.bottom = '20px';
+  toast.style.background = 'rgba(40,167,69,0.95)';
+  toast.style.color = '#fff';
+  toast.style.padding = '10px 14px';
+  toast.style.borderRadius = '8px';
+  toast.style.fontSize = '12px';
+  toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  toast.style.zIndex = '9999';
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.remove(); }, 1500);
 }
 </script>
 @endsection

@@ -207,7 +207,7 @@ body {
 
 /* Sidebar */
 .sidebar {
-    background: linear-gradient(180deg, var(--bg-sidebar) 0%, var(--bg-secondary) 100%);
+    background: var(--bg-sidebar);
     border-right: 1px solid var(--border-color);
     min-height: 100vh;
     position: fixed;
@@ -217,7 +217,6 @@ body {
     z-index: 1000;
     padding: var(--spacing-xl);
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
 }
 
 .sidebar-header {
@@ -227,25 +226,59 @@ body {
     margin-bottom: var(--spacing-2xl);
     padding: var(--spacing-lg);
     border-bottom: 1px solid var(--border-color);
+    background: transparent;
 }
 
 .sidebar-logo {
     display: flex;
     align-items: center;
-    gap: var(--spacing-md);
+    justify-content: center;
     width: 100%;
+    padding: var(--spacing-md) 0;
+    background: transparent;
+    position: relative;
 }
 
-.logo-icon {
-    width: 32px;
-    height: 32px;
-    background: var(--accent-primary);
-    border-radius: var(--radius-sm);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1rem;
+.logo-image {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: transparent;
+    position: relative;
+    z-index: 2;
+    filter: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+.sidebar-logo::before,
+.sidebar-logo::after {
+    display: none !important;
+}
+
+/* Дополнительные стили для логотипа */
+.sidebar-logo {
+    background: transparent !important;
+}
+
+.sidebar-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    filter: none;
+    transform: none;
 }
 
 .logo-text {
@@ -799,8 +832,8 @@ body {
 }
 
 .stat-number {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: var(--text-primary);
     margin-bottom: var(--spacing-xs);
     transition: color 0.3s ease;

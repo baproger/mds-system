@@ -1,165 +1,1316 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Договор №' . $contract->contract_number)
 
-@section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="fw-bold text-primary"><i class="fas fa-file-contract me-2"></i>Договор №{{ $contract->contract_number }}</h2>
-    <div class="d-flex gap-2">
-        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.edit' : (Auth::user()->role === 'manager' ? 'manager.contracts.edit' : 'rop.contracts.edit'), $contract) }}" class="btn btn-warning shadow-sm">
-            <i class="fas fa-edit me-1"></i> Редактировать
-        </a>
-        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.index' : (Auth::user()->role === 'manager' ? 'manager.contracts.index' : 'rop.contracts.index')) }}" class="btn btn-secondary shadow-sm">
-            <i class="fas fa-arrow-left me-1"></i> Назад
-        </a>
-        <button onclick="window.print()" class="btn btn-primary shadow-sm d-print-none">
-            <i class="fas fa-print me-1"></i> Печать
-        </button>
-    </div>
-</div>
+<style>
+/* Кастомные стили для страницы договора */
+/* Переопределяем стили для страницы договора */
+body .container-fluid {
+    background: #f8f9fa !important;
+    min-height: 100vh;
+    padding: 20px;
+}
 
-<div class="row g-4">
-    <!-- Основная информация -->
-    <div class="col-lg-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-light py-3">
-                <h5 class="mb-0"><i class="fas fa-info-circle me-2 text-primary"></i>Информация о договоре</h5>
+/* Заголовок страницы */
+.page-header {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.header-text {
+    flex: 1;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #495057;
+    margin: 0 0 8px 0;
+}
+
+.page-subtitle {
+    font-size: 16px;
+    color: #6c757d;
+    margin: 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header-actions .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.header-actions .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.breadcrumb-custom {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin-top: 15px;
+    position: relative;
+    z-index: 2;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.breadcrumb-custom a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.breadcrumb-custom a:hover {
+    color: #764ba2;
+}
+
+.breadcrumb-custom .breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: center;
+    margin-top: var(--spacing-sm);
+    position: relative;
+    z-index: 2;
+}
+
+.btn-admin-custom {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+    background: #667eea;
+    color: white;
+}
+
+.btn-admin-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    background: #764ba2;
+    color: white;
+}
+
+.btn-admin-custom.animate-pulse {
+    background: #ef4444;
+}
+
+.btn-admin-custom.animate-pulse:hover {
+    background: #dc2626;
+}
+
+/* Стили для кнопок в карточках действий */
+.d-grid .btn-admin-custom {
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 30px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.d-grid .btn-admin-custom:hover {
+    background: #764ba2;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    text-decoration: none;
+}
+
+.d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #0ea5e9"] {
+    background: #0ea5e9 !important;
+}
+
+.d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #0ea5e9"]:hover {
+    background: #0284c7 !important;
+}
+
+.d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #10b981"] {
+    background: #10b981 !important;
+}
+
+.d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #10b981"]:hover {
+    background: #059669 !important;
+}
+
+.btn-admin-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+}
+
+.table-card-custom {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.table-card-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-header-custom {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    padding: 20px 30px;
+    position: relative;
+}
+
+.card-header-custom h5 {
+    margin: 0;
+    font-weight: 600;
+    color: #495057;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-header-custom h5 i {
+    color: #667eea;
+    font-size: 18px;
+}
+
+.card-body-custom {
+    background: white;
+    padding: 30px;
+}
+
+.card-body-custom {
+    padding: var(--spacing-xl);
+}
+
+.stat-card-custom {
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.stat-card-custom:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-color: #667eea;
+}
+
+.stat-icon-custom {
+    font-size: 20px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.stat-content-custom {
+    flex: 1;
+    position: relative;
+    z-index: 2;
+}
+
+.stat-label-custom {
+    font-size: 11px;
+    color: #6c757d;
+    margin-bottom: 5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value-custom {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #495057;
+}
+
+.info-table-custom {
+    border: none;
+}
+
+.info-table-custom {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+}
+
+.info-table-custom td {
+    border: none;
+    padding: 15px 20px;
+    vertical-align: top;
+    position: relative;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.info-table-custom td:first-child {
+    font-weight: 600;
+    color: #6c757d;
+    width: 40%;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    background: #f8f9fa;
+}
+
+.info-table-custom td:last-child {
+    color: #495057;
+    font-weight: 500;
+    font-size: 14px;
+    position: relative;
+}
+
+.info-table-custom tr:last-child td {
+    border-bottom: none;
+}
+
+/* Стили для адреса установки */
+.address-container {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.address-container i {
+    color: #667eea;
+    font-size: 24px;
+    margin-right: 15px;
+}
+
+.address-container span {
+    color: #495057;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.badge-custom {
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--radius-xl);
+    font-weight: 600;
+    font-size: var(--font-size-xs);
+}
+
+.gallery-custom {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    position: relative;
+    border: 1px solid #e9ecef;
+}
+
+.gallery-custom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0,0,0,0.1), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.gallery-custom:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.gallery-custom:hover::before {
+    opacity: 1;
+}
+
+.gallery-custom img {
+    width: 100%;
+    height: auto;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    border-radius: 12px;
+}
+
+.gallery-custom:hover img {
+    transform: scale(1.05);
+}
+
+.empty-state-custom {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    text-align: center;
+    color: var(--text-muted);
+    position: relative;
+}
+
+.empty-state-custom::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(45deg, var(--bg-secondary), var(--bg-tertiary));
+    border-radius: 50%;
+    opacity: 0.1;
+    z-index: 1;
+}
+
+.empty-state-custom i {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.5;
+    position: relative;
+    z-index: 2;
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Переопределение основных стилей для страницы договора */
+body .container-fluid {
+    background: #f8f9fa !important;
+    min-height: 100vh;
+}
+
+body .main-content {
+    background: #f8f9fa !important;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .contract-title {
+        font-size: 2rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .btn-admin-custom {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .stat-card-custom {
+        margin-bottom: 15px;
+    }
+}
+
+/* Дополнительные улучшения */
+.contract-header {
+    background-attachment: fixed;
+}
+
+/* Стили для основного контента */
+.main-content {
+    background: #f8f9fa;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Переопределяем основные стили для страницы договора */
+body .container-fluid {
+    background: #f8f9fa !important;
+    min-height: 100vh;
+}
+
+/* Секция статистики */
+.stats-section {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.section-header i {
+    color: #667eea;
+    font-size: 18px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-number {
+    font-size: 16px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 10px;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Секция информации */
+.info-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+}
+
+.info-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.info-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-header i {
+    color: #667eea;
+    font-size: 16px;
+}
+
+.info-header span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 11px;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.info-value {
+    font-size: 12px;
+    color: #495057;
+    font-weight: 500;
+}
+
+/* Финансовая секция */
+.finance-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+    }
+    
+    .finance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.finance-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.finance-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.finance-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.finance-content {
+    flex: 1;
+}
+
+.finance-label {
+    font-size: 11px;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.finance-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #495057;
+}
+
+/* Секция адреса и действий */
+.address-actions-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.address-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .address-actions-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+/* Секция адреса */
+.address-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.address-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s ease;
+}
+
+.address-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.address-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.address-content span {
+    font-size: 14px;
+    color: #495057;
+    font-weight: 600;
+}
+
+/* Секция действий */
+.actions-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.action-btn {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    text-decoration: none;
+    color: #495057;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: #495057;
+}
+
+.action-btn i {
+    font-size: 20px;
+    color: inherit;
+}
+
+/* Цветовые варианты кнопок действий */
+.action-btn.edit {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+.action-btn.delete {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+.action-btn.print {
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+.action-btn.export {
+    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.action-btn.edit:hover,
+.action-btn.delete:hover,
+.action-btn.print:hover,
+.action-btn.export:hover {
+    filter: brightness(0.95);
+    color: #ffffff;
+}
+
+.action-btn span {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Градиентные кнопки в шапке */
+.btn-gradient-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #ffffff !important; border: none; }
+.btn-gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #ffffff !important; border: none; }
+.btn-gradient-green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: #ffffff !important; border: none; }
+.btn-gradient-indigo { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: #ffffff !important; border: none; }
+.btn-gradient-red:hover, .btn-gradient-blue:hover, .btn-gradient-green:hover, .btn-gradient-indigo:hover { filter: brightness(0.95); color: #ffffff !important; }
+
+.print-btn:hover {
+    border-color: #0ea5e9;
+}
+
+.print-btn:hover i {
+    color: #0ea5e9;
+}
+
+.export-btn:hover {
+    border-color: #10b981;
+}
+
+.export-btn:hover i {
+    color: #10b981;
+}
+
+/* Секция фотографий */
+.photos-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.photo-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.photo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-color: #667eea;
+}
+
+.photo-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.photo-header i {
+    color: #667eea;
+    font-size: 14px;
+}
+
+.photo-header span {
+    font-size: 12px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.photo-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.photo-content img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.empty-photos {
+    text-align: center;
+    padding: 40px 20px;
+    color: #6c757d;
+}
+
+.empty-photos i {
+    font-size: 48px;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
+
+.empty-photos p {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* Стили для строк и колонок */
+.row {
+    margin: 0;
+}
+
+.col-lg-8, .col-lg-4 {
+    padding: 0 15px;
+}
+
+/* Стили для карточек */
+.card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Улучшенные тени */
+.table-card-custom,
+.stat-card-custom,
+.btn-admin-custom {
+    box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.table-card-custom:hover,
+.stat-card-custom:hover,
+.btn-admin-custom:hover {
+    box-shadow: 
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+</style>
+
+@section('content')
+<div class="container-fluid">
+    <!-- Заголовок страницы -->
+    <div class="page-header">
+        <div class="header-content">
+            <div class="header-icon">
+                <i class="fas fa-file-contract"></i>
             </div>
-            <div class="card-body">
-                <div class="row">
-                    <!-- Клиент -->
-                    <div class="col-md-6 mb-3">
-                        <div class="border-bottom pb-2 mb-3">
-                            <h6 class="text-muted"><i class="fas fa-user me-1"></i> Клиент</h6>
-                            <p class="mb-1"><strong>ФИО:</strong> {{ $contract->client }}</p>
-                            <p class="mb-1"><strong>ИИН:</strong> {{ $contract->iin }}</p>
-                            <p class="mb-1"><strong>Телефон:</strong> {{ $contract->phone }}</p>
+            <div class="header-text">
+                <h1 class="page-title">Договор №{{ $contract->contract_number }}</h1>
+                <p class="page-subtitle">Детальная информация о договоре</p>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button type="button" class="btn btn-gradient-red btn-sm" onclick="showDeleteModal('{{ $contract->id }}', '{{ $contract->contract_number }}', 'contract')">
+                <i class="fas fa-trash"></i> Удалить
+                </button>
+            <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.edit' : (Auth::user()->role === 'manager' ? 'manager.contracts.edit' : 'rop.contracts.edit'), $contract) }}" class="btn btn-gradient-blue btn-sm">
+                <i class="fas fa-edit"></i> Редактировать
+            </a>
+            <a href="{{ route('contracts.print', $contract) }}" target="_blank" class="btn btn-gradient-green btn-sm">
+                <i class="fas fa-print"></i> Печать
+            </a>
+            <a href="{{ route('contracts.export-word', $contract) }}" class="btn btn-gradient-indigo btn-sm">
+                <i class="fas fa-file-word"></i> Экспорт в Word
+            </a>
+            </div>
+        </div>
+
+    <!-- Статистика договора -->
+    <div class="stats-section">
+        <div class="section-header">
+            <i class="fas fa-chart-bar"></i>
+            <span>Статистика договора</span>
+    </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-file-contract"></i>
+                        </div>
+                <div class="stat-content">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">ДОГОВОР</div>
+                    </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</div>
+                    <div class="stat-label">ОБЩАЯ СУММА</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ $contract->date->format('d.m.Y') }}</div>
+                    <div class="stat-label">ДАТА СОЗДАНИЯ</div>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number">{{ $contract->user->name }}</div>
+                    <div class="stat-label">МЕНЕДЖЕР</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Основная информация -->
+    <div class="info-section">
+        <div class="section-header">
+            <i class="fas fa-info-circle"></i>
+            <span>Информация о договоре</span>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="info-header">
+                    <i class="fas fa-user"></i>
+                    <span>Клиент</span>
+                </div>
+                <div class="info-content">
+                            <div class="info-item">
+                                <span class="info-label">ФИО:</span>
+                                <span class="info-value">{{ $contract->client }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">ИИН:</span>
+                                <span class="info-value">{{ $contract->iin }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Телефон:</span>
+                                <span class="info-value">{{ $contract->phone }}</span>
+                            </div>
                             @if($contract->phone2)
-                            <p class="mb-1"><strong>Доп. телефон:</strong> {{ $contract->phone2 }}</p>
+                            <div class="info-item">
+                                <span class="info-label">Доп. телефон:</span>
+                                <span class="info-value">{{ $contract->phone2 }}</span>
+                            </div>
                             @endif
                             @if($contract->instagram)
-                            <p class="mb-1"><strong>Instagram:</strong> {{ $contract->instagram }}</p>
+                            <div class="info-item">
+                                <span class="info-label">Instagram:</span>
+                                <span class="info-value">{{ $contract->instagram }}</span>
+                            </div>
                             @endif
-                        </div>
-                    </div>
-                    
-                    <!-- Детали заказа -->
-                    <div class="col-md-6 mb-3">
-                        <div class="border-bottom pb-2 mb-3">
-                            <h6 class="text-muted"><i class="fas fa-clipboard-list me-1"></i> Детали заказа</h6>
-                            <p class="mb-1"><strong>Менеджер:</strong> {{ $contract->user->name }}</p>
-                            <p class="mb-1"><strong>Филиал:</strong> {{ $contract->branch->name }}</p>
-                            <p class="mb-1"><strong>Дата:</strong> {{ $contract->date->format('d.m.Y') }}</p>
-                            <p class="mb-1"><strong>Категория:</strong> {{ $contract->category }}</p>
-                            <p class="mb-1"><strong>Модель:</strong> {{ $contract->model }}</p>
-                            <p class="mb-1"><strong>Размеры:</strong> {{ $contract->width }} × {{ $contract->height }} мм</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Финансы -->
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <h6 class="text-muted"><i class="fas fa-money-bill-wave me-1"></i> Финансовые детали</h6>
-                        <div class="row">
-                            <div class="col-md-3 mb-2">
-                                <div class="bg-light p-2 rounded text-center">
-                                    <small class="text-muted d-block">Общая стоимость</small>
-                                    <span class="fw-bold fs-5 text-success">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</span>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <div class="bg-light p-2 rounded text-center">
-                                    <small class="text-muted d-block">Предоплата</small>
-                                    <span class="fw-bold fs-5 text-primary">{{ number_format($contract->order_deposit, 0, ',', ' ') }} ₸</span>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <div class="bg-light p-2 rounded text-center">
-                                    <small class="text-muted d-block">Остаток</small>
-                                    <span class="fw-bold fs-5 text-warning">{{ number_format($contract->order_remainder, 0, ',', ' ') }} ₸</span>
-                                </div>
-                            </div>
-                            <div class="col-md-3 mb-2">
-                                <div class="bg-light p-2 rounded text-center">
-                                    <small class="text-muted d-block">К оплате</small>
-                                    <span class="fw-bold fs-5 text-danger">{{ number_format($contract->order_due, 0, ',', ' ') }} ₸</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Адрес -->
                 @if($contract->address)
-                <div class="row mt-3">
-                    <div class="col-12">
-                        <h6 class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Адрес установки</h6>
-                        <div class="bg-light p-3 rounded">
-                            <i class="fas fa-home me-2 text-primary"></i> {{ $contract->address }}
+                            <div class="info-item">
+                                <span class="info-label">Адрес:</span>
+                                <span class="info-value">{{ $contract->address }}</span>
+                        </div>
+                            @endif
+                    </div>
+                        </div>
+            
+            <div class="info-card">
+                <div class="info-header">
+                    <i class="fas fa-building"></i>
+                    <span>Детали договора</span>
+                        </div>
+                <div class="info-content">
+                            <div class="info-item">
+                                <span class="info-label">Менеджер:</span>
+                                <span class="info-value">{{ $contract->user->name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Филиал:</span>
+                                <span class="info-value">{{ $contract->branch->name }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Дата:</span>
+                                <span class="info-value">{{ $contract->date->format('d.m.Y') }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Категория:</span>
+                        <span class="info-value">
+                            <span class="badge badge-custom bg-{{ $contract->category === 'Lux' ? 'danger' : ($contract->category === 'Premium' ? 'warning' : 'success') }}">{{ $contract->category }}</span>
+                        </span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Модель:</span>
+                                <span class="info-value">{{ $contract->model }}</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Размеры:</span>
+                                <span class="info-value">{{ $contract->width }} × {{ $contract->height }} мм</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endif
-
-                <!-- Действия -->
-                <div class="mb-3">
-                    @if(session('success'))
-                        <div class="alert alert-success mt-2">{{ session('success') }}</div>
-                    @endif
-                    @if(session('error'))
-                        <div class="alert alert-danger mt-2">{{ session('error') }}</div>
-                    @endif
-                </div>
-                <div class="d-flex gap-2 mb-3">
-                    <a href="{{ route('contracts.print', $contract) }}" target="_blank" class="btn btn-primary">
-                        <i class="fas fa-print me-1"></i> Печать
-                    </a>
-                    <a href="{{ route('contracts.export-word', $contract) }}" class="btn btn-outline-success">
-                        <i class="fas fa-file-word me-1"></i> Экспорт в Word
-                    </a>
                 </div>
             </div>
+
+                <!-- Финансовые детали -->
+    <div class="finance-section">
+        <div class="section-header">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Финансовые детали</span>
+                        </div>
+        
+                        <div class="finance-grid">
+            <div class="finance-card">
+                                <div class="finance-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                    </div>
+                                <div class="finance-content">
+                    <div class="finance-label">Общая стоимость</div>
+                    <div class="finance-value">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</div>
+                                    </div>
+                            </div>
+            
+            <div class="finance-card">
+                                <div class="finance-icon">
+                    <i class="fas fa-credit-card"></i>
+                                    </div>
+                                <div class="finance-content">
+                    <div class="finance-label">Предоплата</div>
+                    <div class="finance-value">{{ number_format($contract->order_deposit, 0, ',', ' ') }} ₸</div>
+                            </div>
+                            </div>
+            
+            <div class="finance-card">
+                                <div class="finance-icon">
+                    <i class="fas fa-clock"></i>
+                    </div>
+                                <div class="finance-content">
+                    <div class="finance-label">Остаток</div>
+                    <div class="finance-value">{{ number_format($contract->order_remainder, 0, ',', ' ') }} ₸</div>
+                </div>
+            </div>
+            
+            <div class="finance-card">
+                                <div class="finance-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="finance-content">
+                    <div class="finance-label">К оплате</div>
+                    <div class="finance-value">{{ number_format($contract->order_due, 0, ',', ' ') }} ₸</div>
+                                </div>
+                            </div>
         </div>
     </div>
 
     <!-- Фотографии -->
-    <div class="col-lg-4">
-        <div class="card shadow-sm border-0 h-100">
-            <div class="card-header bg-light py-3">
-                <h5 class="mb-0"><i class="fas fa-images me-2 text-primary"></i>Фотографии</h5>
-            </div>
-            <div class="card-body">
-                @if($contract->photo_path || $contract->attachment_path)
-                    <div class="gallery">
-                        @if($contract->photo_path)
-                            <div class="mb-4">
-                                <p class="fw-bold mb-2"><i class="fas fa-door-open me-1"></i> Фото двери</p>
-                                <a href="{{ Storage::url($contract->photo_path) }}" data-fancybox="gallery" data-caption="Фото двери">
-                                    <img src="{{ Storage::url($contract->photo_path) }}" 
-                                         class="img-fluid rounded shadow-sm" alt="Фото двери">
-                                </a>
-                            </div>
-                        @endif
-
-                        @if($contract->attachment_path)
-                            <div class="mb-4">
-                                <p class="fw-bold mb-2"><i class="fas fa-paperclip me-1"></i> Дополнительное фото</p>
-                                <a href="{{ Storage::url($contract->attachment_path) }}" data-fancybox="gallery" data-caption="Дополнительное фото">
-                                    <img src="{{ Storage::url($contract->attachment_path) }}" 
-                                         class="img-fluid rounded shadow-sm" alt="Дополнительное фото">
-                                </a>
-                            </div>
-                        @endif
+    <div class="photos-section">
+        <div class="section-header">
+            <i class="fas fa-images"></i>
+            <span>Фотографии</span>
+                </div>
+        
+                        @if($contract->photo_path || $contract->attachment_path)
+            <div class="photos-grid">
+                                @if($contract->photo_path)
+                <div class="photo-card">
+                    <div class="photo-header">
+                                            <i class="fas fa-door-open"></i>
+                        <span>Фото двери</span>
                     </div>
-                @else
-                    <div class="text-center py-5">
-                        <i class="fas fa-camera fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">Фотографии не загружены</p>
+                    <div class="photo-content">
+                        <a href="{{ Storage::url($contract->photo_path) }}" data-fancybox="gallery" data-caption="Фото двери">
+                            <img src="{{ Storage::url($contract->photo_path) }}" alt="Фото двери">
+                        </a>
                     </div>
-                @endif
+                </div>
+            @endif
+            
+                                @if($contract->attachment_path)
+                <div class="photo-card">
+                    <div class="photo-header">
+                                            <i class="fas fa-paperclip"></i>
+                        <span>Дополнительное фото</span>
+                    </div>
+                    <div class="photo-content">
+                        <a href="{{ Storage::url($contract->attachment_path) }}" data-fancybox="gallery" data-caption="Дополнительное фото">
+                            <img src="{{ Storage::url($contract->attachment_path) }}" alt="Дополнительное фото">
+                </a>
             </div>
         </div>
+                                @endif
+                            </div>
+                        @else
+                            <div class="empty-photos">
+                <i class="fas fa-camera"></i>
+                <p>Фотографии не загружены</p>
+                            </div>
+                        @endif
     </div>
 </div>
 
@@ -467,6 +1618,245 @@
         }
     }
 </style>
+
+<!-- Модальное окно удаления -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title">Подтверждение удаления</h3>
+            <p class="modal-subtitle">
+                Вы действительно хотите удалить договор <strong id="deleteItemName"></strong>?
+                Это действие нельзя отменить.
+            </p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="modal-btn modal-btn-cancel" onclick="hideDeleteModal()">
+                <i class="fas fa-times"></i>
+                Отмена
+            </button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="modal-btn modal-btn-delete">
+                    <i class="fas fa-trash"></i>
+                    Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDeleteModal(id, name, type) {
+    document.getElementById('deleteItemName').textContent = name;
+    
+    // Создаем базовый URL для удаления
+    let baseUrl = '';
+    @if(Auth::user()->role === 'admin')
+        baseUrl = '{{ url("/admin/contracts") }}';
+    @elseif(Auth::user()->role === 'manager')
+        baseUrl = '{{ url("/manager/contracts") }}';
+    @elseif(Auth::user()->role === 'rop')
+        baseUrl = '{{ url("/rop/contracts") }}';
+    @else
+        baseUrl = '{{ url("/contracts") }}';
+    @endif
+    
+    document.getElementById('deleteForm').action = type === 'contract' ? `${baseUrl}/${id}` : '';
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function hideDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+// Закрытие модального окна при клике вне его
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        hideDeleteModal();
+    }
+});
+</script>
+
+<style>
+/* Модальное окно */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 28px;
+    display: inline !important;
+}
+
+.modal-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%) !important;
+    color: #d97706 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2) !important;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827 !important;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.modal-subtitle {
+    color: #6b7280 !important;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.modal-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.modal-btn-cancel {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    border: 1px solid #e5e7eb !important;
+}
+
+.modal-btn-cancel:hover {
+    background: #e5e7eb !important;
+    color: #111827 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.modal-btn-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3) !important;
+    border: none !important;
+}
+
+.modal-btn-delete:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+    color: white !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 24px;
+        margin: 20px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .modal-btn {
+        width: 100%;
+    }
+}
+
+/* Статистические карточки */
+.stat-card {
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    font-size: 24px;
+    opacity: 0.8;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: 700;
+}
+</style>
+
 @endsection
 
 @push('styles')

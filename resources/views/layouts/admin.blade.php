@@ -13,16 +13,7 @@
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-door-open"></i>
-                    </div>
-                    <div class="logo-text">
-                        <div class="logo-title">MDS Doors</div>
-                        <div class="logo-subtitle">Enterprise</div>
-                    </div>
-                    <div class="logo-toggle">
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
+                    <img src="{{ url('images/logomds.png') }}" alt="MDS Doors" class="logo-image" width="200" height="80">
                 </div>
             </div>
 

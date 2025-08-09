@@ -85,52 +85,56 @@ class ContractController extends Controller
             return back()->withErrors(['validation' => $validationErrors])->withInput();
         }
 
-        $validated = $request->validate([
-            'contract_number' => 'required|string|unique:contracts,contract_number',
-            'manager' => 'required',
-            'client' => 'required',
-            'instagram' => 'required',
-            'iin' => 'required|size:12',
-            'phone' => 'required',
-            'phone2' => 'required',
-            'address' => 'nullable|string',
-            'payment' => 'nullable|string',
-            'date' => 'required|date',
-            'category' => 'required|in:Lux,Premium,Comfort',
-            'model' => 'required',
-            'width' => 'required|numeric|min:850',
-            'height' => 'required|numeric|min:850',
-            'design' => 'nullable|string',
-            'leaf' => 'required',
-            'framugawidth' => 'required',
-            'framugaheight' => 'required',
-            'forging' => 'nullable|string',
-            'opening' => 'nullable|string',
-            'frame' => 'nullable|string',
-            'outer_panel' => 'nullable|string',
-            'outer_cover' => 'required',
-            'outer_cover_color' => 'nullable|string',
-            'metal_cover_hidden' => 'nullable|string',
-            'metal_cover_color' => 'nullable|string',
-            'inner_trim' => 'required',
-            'inner_cover' => 'required',
-            'inner_trim_color' => 'nullable|string',
-            'glass_unit' => 'required',
-            'extra' => 'nullable|string',
-            'lock' => 'required',
-            'handle' => 'required',
-            'steel_thickness' => 'nullable|string',
-            'canvas_thickness' => 'nullable|string',
-            'measurement' => 'nullable|string',
-            'delivery' => 'nullable|string',
-            'installation' => 'nullable|string',
-            'order_total' => 'required|numeric|min:0',
-            'order_deposit' => 'required|numeric|min:0',
-            'order_remainder' => 'required|numeric|min:0',
-            'order_due' => 'required|numeric|min:0',
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'attachment' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
+        try {
+            $validated = $request->validate([
+                'contract_number' => 'required|string|unique:contracts,contract_number',
+                'manager' => 'required',
+                'client' => 'required',
+                'instagram' => 'required',
+                'iin' => 'required|size:12',
+                'phone' => 'required',
+                'phone2' => 'required',
+                'address' => 'nullable|string',
+                'payment' => 'nullable|string',
+                'date' => 'required|date',
+                'category' => 'required|in:Lux,Premium,Comfort',
+                'model' => 'required',
+                'width' => 'required|numeric|min:850',
+                'height' => 'required|numeric|min:850',
+                'design' => 'nullable|string',
+                'leaf' => 'required',
+                'framugawidth' => 'required',
+                'framugaheight' => 'required',
+                'forging' => 'nullable|string',
+                'opening' => 'nullable|string',
+                'frame' => 'nullable|string',
+                'outer_panel' => 'nullable|string',
+                'outer_cover' => 'required',
+                'outer_cover_color' => 'nullable|string',
+                'metal_cover_hidden' => 'nullable|string',
+                'metal_cover_color' => 'nullable|string',
+                'inner_trim' => 'required',
+                'inner_cover' => 'required',
+                'inner_trim_color' => 'nullable|string',
+                'glass_unit' => 'required',
+                'extra' => 'nullable|string',
+                'lock' => 'required',
+                'handle' => 'required',
+                'steel_thickness' => 'nullable|string',
+                'canvas_thickness' => 'nullable|string',
+                'measurement' => 'nullable|string',
+                'delivery' => 'nullable|string',
+                'installation' => 'nullable|string',
+                'order_total' => 'required|numeric|min:0',
+                'order_deposit' => 'required|numeric|min:0',
+                'order_remainder' => 'required|numeric|min:0',
+                'order_due' => 'required|numeric|min:0',
+                'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+                'attachment' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->validator)->withInput();
+        }
 
         $validated['user_id'] = Auth::id();
         $validated['branch_id'] = Auth::user()->branch_id;
@@ -241,32 +245,36 @@ class ContractController extends Controller
             abort(403);
         }
 
-        $validated = $request->validate([
-            'contract_number' => 'required|string|unique:contracts,contract_number,' . $contract->id,
-            'client' => 'required',
-            'instagram' => 'required',
-            'iin' => 'required|size:12',
-            'phone' => 'required',
-            'phone2' => 'required',
-            'date' => 'required|date',
-            'category' => 'required|in:Lux,Premium,Comfort',
-            'model' => 'required',
-            'width' => 'required|numeric|min:850',
-            'height' => 'required|numeric|min:850',
-            'leaf' => 'nullable',
-            'framugawidth' => 'required',
-            'framugaheight' => 'required',
-            'outer_cover' => 'required',
-            'inner_trim' => 'required',
-            'inner_cover' => 'required',
-            'glass_unit' => 'required',
-            'lock' => 'required',
-            'handle' => 'required',
-            'order_total' => 'required|numeric|min:0',
-            'order_deposit' => 'required|numeric|min:0',
-            'order_remainder' => 'required|numeric|min:0',
-            'order_due' => 'required|numeric|min:0',
-        ]);
+        try {
+            $validated = $request->validate([
+                'contract_number' => 'required|string|unique:contracts,contract_number,' . $contract->id,
+                'client' => 'required',
+                'instagram' => 'required',
+                'iin' => 'required|size:12',
+                'phone' => 'required',
+                'phone2' => 'required',
+                'date' => 'required|date',
+                'category' => 'required|in:Lux,Premium,Comfort',
+                'model' => 'required',
+                'width' => 'required|numeric|min:850',
+                'height' => 'required|numeric|min:850',
+                'leaf' => 'nullable',
+                'framugawidth' => 'required',
+                'framugaheight' => 'required',
+                'outer_cover' => 'required',
+                'inner_trim' => 'required',
+                'inner_cover' => 'required',
+                'glass_unit' => 'required',
+                'lock' => 'required',
+                'handle' => 'required',
+                'order_total' => 'required|numeric|min:0',
+                'order_deposit' => 'required|numeric|min:0',
+                'order_remainder' => 'required|numeric|min:0',
+                'order_due' => 'required|numeric|min:0',
+            ]);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->validator)->withInput();
+        }
 
         // Проверка Fusion модели
         $fusionError = ContractService::validateFusionModel($validated['model'], $validated['outer_cover']);
@@ -416,8 +424,10 @@ class ContractController extends Controller
         // Генерируем HTML контент
         $html = view('contracts.print', compact('contract'))->render();
         
-        // Удаляем кнопки печати из HTML
-        $html = preg_replace('/<div class="print-buttons[^>]*>.*?<\/div>/s', '', $html);
+        // Удаляем любые кнопки управления из HTML
+        $html = preg_replace('/<div class="print-controls[^>]*>.*?<\/div>/s', '', $html);
+        $html = preg_replace('/<div class="no-print[^>]*>.*?<\/div>/s', '', $html);
+        $html = preg_replace('/<button[^>]*>.*?<\/button>/s', '', $html);
         
         // Создаем имя файла
         $filename = 'Договор_' . $contract->contract_number . '_' . date('Y-m-d') . '.doc';

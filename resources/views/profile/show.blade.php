@@ -43,40 +43,39 @@
                                 <div class="personnel-list">
                                     @switch($user->role)
                                         @case('admin')
-                                            <span class="personnel-tag branch-tag">Администратор</span>
+                                            <span class="personnel-tag branch-tag"><i class="fas fa-shield-alt tag-icon"></i>Администратор</span>
                                             @break
                                         @case('manager')
-                                            <span class="personnel-tag manager-tag">Менеджер</span>
+                                            <span class="personnel-tag manager-tag"><i class="fas fa-user-tag tag-icon"></i>Менеджер</span>
                                             @break
                                         @case('rop')
-                                            <span class="personnel-tag contract-tag">РОП</span>
+                                            <span class="personnel-tag contract-tag"><i class="fas fa-crown tag-icon"></i>РОП</span>
                                             @break
                                         @default
-                                            <span class="personnel-tag client-tag">{{ ucfirst($user->role) }}</span>
+                                            <span class="personnel-tag client-tag"><i class="fas fa-user tag-icon"></i>{{ ucfirst($user->role) }}</span>
                                     @endswitch
-                                    <span class="personnel-tag date-tag">{{ $user->email }}</span>
+                                    <span class="personnel-tag date-tag"><i class="fas fa-envelope tag-icon"></i>{{ $user->email }}</span>
                                     @if($user->phone)
-                                        <span class="personnel-tag amount-tag">{{ $user->phone }}</span>
+                                        <span class="personnel-tag amount-tag"><i class="fas fa-phone tag-icon"></i>{{ $user->phone }}</span>
                                     @endif
                                     @if($user->role !== 'admin' && $user->branch)
-                                        <span class="personnel-tag code-tag">{{ $user->branch->name }}</span>
+                                        <span class="personnel-tag code-tag"><i class="fas fa-building tag-icon"></i>{{ $user->branch->name }}</span>
                                     @endif
-                                    <span class="personnel-tag date-tag">Регистрация: {{ $user->created_at->format('d.m.Y') }}</span>
+                                    <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i>Регистрация: {{ $user->created_at->format('d.m.Y') }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                @if(in_array($user->role, ['admin', 'manager']))
-                <!-- Встроенное редактирование профиля для админа -->
+                <!-- Встроенное редактирование профиля -->
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-user-edit"></i>
                         <span>Редактирование профиля</span>
                     </div>
 
-                    <form action="{{ route('admin.profile.update') }}" method="POST" class="edit-form">
+                    <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.profile.update' : (Auth::user()->role === 'manager' ? 'manager.profile.update' : 'rop.profile.update')) }}" method="POST" class="edit-form">
                         @csrf
                         @method('PUT')
 
@@ -160,85 +159,6 @@
                         </div>
                     </form>
                 </div>
-                @else
-                <!-- Статистика (для не-админов) -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Статистика</span>
-                    </div>
-                    
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-file-contract"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ $user->contracts->count() }}</div>
-                                <div class="stat-label">Всего договоров</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ $user->contracts->where('date', '>=', now()->startOfMonth())->count() }}</div>
-                                <div class="stat-label">За этот месяц</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-money-bill-wave"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ number_format($user->contracts->sum('order_total'), 0, ',', ' ') }} ₸</div>
-                                <div class="stat-label">Общая сумма</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-clock"></i>
-                            </div>
-                            <div class="stat-content">
-                                <div class="stat-number">{{ $user->created_at->diffForHumans() }}</div>
-                                <div class="stat-label">В системе</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Последние договоры (для не-админов) -->
-                @if($user->contracts->count() > 0)
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-history"></i>
-                        <span>Последние договоры</span>
-                    </div>
-                    
-                    <div class="personnel-section">
-                        @foreach($user->contracts->take(5) as $contract)
-                        <div class="personnel-item contract-item">
-                            <div class="personnel-icon">
-                                <i class="fas fa-file-contract"></i>
-                            </div>
-                            <div class="personnel-content">
-                                <div class="personnel-title">Договор №{{ $contract->contract_number }}</div>
-                                <div class="personnel-list">
-                                    <span class="personnel-tag date-tag">{{ $contract->date->format('d.m.Y') }}</span>
-                                    <span class="personnel-tag amount-tag">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</span>
-                                    <span class="personnel-tag client-tag">{{ $contract->client }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        @endforeach
-                    </div>
-                </div>
-                @endif
-                @endif
             </div>
         </div>
     </div>
@@ -346,7 +266,7 @@
 .stat-card { background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 16px; transition: all 0.2s ease; }
 .stat-icon { width: 48px; height: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
 .stat-content { flex: 1; }
-.stat-number { font-size: 24px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+.stat-number { font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 4px; }
 .stat-label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 
 .personnel-section { display: flex; flex-direction: column; gap: 16px; }
@@ -358,14 +278,16 @@
 .personnel-content { flex: 1; min-width: 0; }
 .personnel-title { font-weight: 600; font-size: 13px; color: #374151; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
 .personnel-list { display: flex; flex-wrap: wrap; gap: 6px; }
-.personnel-tag { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 500; display: inline-block; transition: all 0.2s ease; }
-.branch-tag { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
-.manager-tag { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
-.contract-tag { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
-.code-tag { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
-.client-tag { background: #f3e8ff; color: #7c3aed; border: 1px solid #c7d2fe; }
-.amount-tag { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
-.date-tag { background: #fef3c7; color: #d97706; border: 1px solid #fcd34d; }
+.personnel-tag { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 500; display: inline-block; transition: all 0.2s ease; border: 1px solid; }
+.branch-tag { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+.manager-tag { background: #ffffff; color: #111827; border-color: #0f172a; }
+.contract-tag { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+.code-tag { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+.client-tag { background: #f0f9ff; color: #0369a1; border-color: #bae6fd; }
+.amount-tag { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
+.date-tag { background: #f3f4f6; color: #6b7280; border-color: #d1d5db; }
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 /* Анимации */
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }

@@ -37,26 +37,6 @@
             
             <div class="stat-card">
                 <div class="stat-icon">
-                    <i class="fas fa-clock"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">{{ $stats['contracts_pending'] }}</div>
-                    <div class="stat-label">Ожидают</div>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
-                    <i class="fas fa-check-circle"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-number">{{ $stats['contracts_approved'] }}</div>
-                    <div class="stat-label">Одобрены</div>
-                </div>
-            </div>
-            
-            <div class="stat-card">
-                <div class="stat-icon">
                     <i class="fas fa-dollar-sign"></i>
                 </div>
                 <div class="stat-content">
@@ -67,41 +47,29 @@
         </div>
     </div>
 
-
-
     <!-- Последние договоры -->
     @if($recent_contracts->count() > 0)
     <div class="form-section">
         <div class="section-header">
-            <i class="fas fa-list"></i>
+            <i class="fas fa-clock"></i>
             <span>Последние договоры</span>
         </div>
         
         <div class="personnel-section">
             @foreach($recent_contracts as $contract)
                 <div class="personnel-item contract-item">
-                    <div class="personnel-icon">
-                        <i class="fas fa-file-contract"></i>
-                    </div>
+                <div class="personnel-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
                     <div class="personnel-content">
-                        <div class="personnel-title">Договор #{{ $contract->id }}</div>
+                        <div class="personnel-title">{{ $contract->contract_number }}</div>
                         <div class="personnel-list">
-                            <span class="personnel-tag client-tag">{{ $contract->client_name }}</span>
-                            <span class="personnel-tag amount-tag">{{ number_format($contract->order_total) }} ₸</span>
-                            <span class="personnel-tag status-tag status-{{ $contract->status }}">
-                                @if($contract->status === 'pending')
-                                    Ожидает
-                                @elseif($contract->status === 'approved')
-                                    Одобрен
-                                @elseif($contract->status === 'completed')
-                                    Завершен
-                                @elseif($contract->status === 'cancelled')
-                                    Отменен
-                                @else
-                                    {{ ucfirst($contract->status) }}
-                                @endif
-                            </span>
-                            <span class="personnel-tag date-tag">{{ $contract->created_at->format('d.m.Y') }}</span>
+                            <span class="personnel-tag client-tag"><i class="fas fa-user tag-icon"></i>{{ $contract->client }}</span>
+                            <span class="personnel-tag amount-tag"><i class="fas fa-money-bill-wave tag-icon"></i>{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</span>
+                            <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i>{{ optional($contract->date)->format('d.m.Y') }}</span>
+                            @if(isset($contract->user))
+                                <span class="personnel-tag manager-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $contract->user->name }}</span>
+                            @endif
                         </div>
                     </div>
                     <div class="personnel-actions">
@@ -318,6 +286,8 @@
     font-weight: 500;
     border: 1px solid;
 }
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 .client-tag {
     background: #f0f9ff;

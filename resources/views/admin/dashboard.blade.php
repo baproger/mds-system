@@ -82,7 +82,7 @@
                             </div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $stats['total_contracts'] ?? 0 }}</div>
-                                <div class="stat-label">Договоры филиала</div>
+                                <div class="stat-label">Мои договоры</div>
                             </div>
                         </div>
                         
@@ -115,61 +115,6 @@
                                 <div class="stat-label">Средний договор</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                @endif
-
-                @if(Auth::user()->role === 'admin')
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-building"></i>
-                        <span>Статистика по филиалам</span>
-                    </div>
-                    
-                    <div class="personnel-section">
-                        @foreach($branches as $branch)
-                            <div class="personnel-item branch-item">
-                                <div class="personnel-icon">
-                                    <i class="fas fa-building"></i>
-                                </div>
-                                <div class="personnel-content">
-                                    <div class="personnel-title">{{ $branch->name }}</div>
-                                    <div class="personnel-list">
-                                        <span class="personnel-tag branch-tag">{{ $branch->users_count }} пользователей</span>
-                                        <span class="personnel-tag manager-tag">{{ $branch->managers_count ?? 0 }} продавцов</span>
-                                        <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} договоров</span>
-                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                @elseif(Auth::user()->role === 'manager')
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-user"></i>
-                        <span>Мой филиал</span>
-                    </div>
-                    
-                    <div class="personnel-section">
-                        @foreach($branches as $branch)
-                            <div class="personnel-item branch-item">
-                                <div class="personnel-icon">
-                                    <i class="fas fa-building"></i>
-                                </div>
-                                <div class="personnel-content">
-                                    <div class="personnel-title">{{ $branch->name }}</div>
-                                    <div class="personnel-list">
-                                        <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} моих договоров</span>
-                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
-                                        @if(isset($stats['last_contract_date']) && $stats['last_contract_date'])
-                                            <span class="personnel-tag date-tag">Последний: {{ $stats['last_contract_date']->format('d.m.Y') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
                     </div>
                 </div>
                 @endif
@@ -223,7 +168,65 @@
                         </div>
                     </div>
                 </div>
+
+                @endif
+
+                @if(Auth::user()->role === 'admin')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-building"></i>
+                        <span>Статистика по филиалам</span>
+                    </div>
+                    
+                    <div class="personnel-section">
+                        @foreach($branches as $branch)
+                            <div class="personnel-item branch-item">
+                                <div class="personnel-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="personnel-content">
+                                    <div class="personnel-title">{{ $branch->name }}</div>
+                                    <div class="personnel-list">
+                                        <span class="personnel-tag branch-tag"><i class="fas fa-users"></i>{{ $branch->users_count }} пользователей</span>
+                                        <span class="personnel-tag manager-tag"><i class="fas fa-user-tie"></i>{{ $branch->managers_count ?? 0 }} продавцов</span>
+                                        <span class="personnel-tag contract-tag"><i class="fas fa-file-contract"></i>{{ $branch->contracts_count }} договоров</span>
+                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
                 @elseif(Auth::user()->role === 'manager')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i>
+                        <span>Мой филиал</span>
+                    </div>
+                    
+                    <div class="personnel-section">
+                        @foreach($branches as $branch)
+                            <div class="personnel-item branch-item">
+                                <div class="personnel-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="personnel-content">
+                                    <div class="personnel-title">{{ $branch->name }}</div>
+                                    <div class="personnel-list">
+                                        <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} моих договоров</span>
+                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
+                                        @if(isset($stats['last_contract_date']) && $stats['last_contract_date'])
+                                            <span class="personnel-tag date-tag">Последний: {{ $stats['last_contract_date']->format('d.m.Y') }}</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                @if(Auth::user()->role === 'manager')   
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-chart-pie"></i>
@@ -290,13 +293,42 @@
                                 <div class="personnel-content">
                                     <div class="personnel-title">{{ $contract->contract_number }}</div>
                                     <div class="personnel-list">
-                                        <span class="personnel-tag client-tag">{{ $contract->client }}</span>
-                                        <span class="personnel-tag amount-tag">{{ number_format($contract->order_total) }} ₸</span>
-                                        <span class="personnel-tag date-tag">{{ $contract->date->format('d.m.Y') }}</span>
+                                        <span class="personnel-tag client-tag"><i class="fas fa-user tag-icon"></i>{{ $contract->client }}</span>
+                                        <span class="personnel-tag amount-tag"><i class="fas fa-money-bill-wave tag-icon"></i>{{ number_format($contract->order_total) }} ₸</span>
+                                        <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i>{{ $contract->date->format('d.m.Y') }}</span>
                                         @if(Auth::user()->role === 'admin' && $contract->user)
-                                            <span class="personnel-tag manager-tag">{{ $contract->user->name }}</span>
+                                            <span class="personnel-tag manager-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $contract->user->name }}</span>
                                         @endif
                                     </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+
+                @if(Auth::user()->role === 'admin')
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Менеджеры по филиалам</span>
+                    </div>
+                    
+                    <div class="personnel-section">
+                        @foreach(App\Models\Branch::with(['users' => function($q){ $q->where('role','manager')->withCount('contracts'); }])->get() as $branch)
+                            <div class="personnel-item branch-item">
+                                <div class="personnel-icon"><i class="fas fa-building"></i></div>
+                                <div class="personnel-content">
+                                    <div class="personnel-title">{{ $branch->name }}</div>
+                                    @if($branch->users->count() > 0)
+                                        <div class="personnel-list" style="width:100%">
+                                            @foreach($branch->users as $manager)
+                                                <span class="personnel-tag manager-tag" title="Договоров: {{ $manager->contracts_count }}">{{ $manager->name }}</span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <div class="personnel-list"><span class="personnel-tag">Нет менеджеров</span></div>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -497,11 +529,12 @@
 
 .personnel-tag {
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     display: inline-block;
     transition: all 0.2s ease;
+    border: 1px solid;
 }
 
 .branch-tag {
@@ -529,22 +562,30 @@
 }
 
 .client-tag {
-    background: #f3e8ff;
-    color: #7c3aed;
-    border: 1px solid #c7d2fe;
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #bae6fd;
 }
 
 .amount-tag {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
+    background: #f0fdf4;
+    color: #166534;
+    border-color: #bbf7d0;
 }
 
 .date-tag {
-    background: #fef3c7;
-    color: #d97706;
-    border: 1px solid #fcd34d;
+    background: #f3f4f6;
+    color: #6b7280;
+    border-color: #d1d5db;
 }
+
+.manager-tag {
+    background: #ffffff;
+    color: #111827;
+    border-color: #0f172a;
+}
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 /* Анимации */
 @keyframes fadeIn {

@@ -132,7 +132,7 @@
                                     <div class="personnel-list">
                                         @if($branch->rop->count() > 0)
                                             @foreach($branch->rop as $rop)
-                                                <span class="personnel-tag rop-tag">{{ $rop->name }}</span>
+                                                <span class="personnel-tag rop-tag"><i class="fas fa-crown tag-icon"></i>{{ $rop->name }}</span>
                                             @endforeach
                                         @else
                                             <span class="empty-state">Не назначен</span>
@@ -151,7 +151,7 @@
                                     <div class="personnel-list">
                                         @if($branch->managers->count() > 0)
                                             @foreach($branch->managers as $manager)
-                                                <span class="personnel-tag manager-tag">{{ $manager->name }}</span>
+                                                <span class="personnel-tag manager-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $manager->name }}</span>
                                             @endforeach
                                         @else
                                             <span class="empty-state">Не назначены</span>
@@ -362,8 +362,8 @@
 }
 
 .stat-number {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: #111827;
     margin-bottom: 4px;
 }
@@ -446,29 +446,22 @@
 
 .personnel-tag {
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     display: inline-block;
     transition: all 0.2s ease;
+    border: 1px solid;
 }
 
-.rop-tag {
-    background: #eef2ff;
-    color: #7c3aed;
-    border: 1px solid #c7d2fe;
-}
+.rop-tag { background: #eef2ff; color: #7c3aed; border-color: #c7d2fe; }
 
 .rop-tag:hover {
     background: #e0e7ff;
     transform: scale(1.02);
 }
 
-.manager-tag {
-    background: #f1f5f9;
-    color: #475569;
-    border: 1px solid #cbd5e1;
-}
+.manager-tag { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
 
 .manager-tag:hover {
     background: #e2e8f0;
@@ -480,6 +473,8 @@
     font-weight: 700;
     color: #059669;
 }
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 .empty-state {
     color: #9ca3af;

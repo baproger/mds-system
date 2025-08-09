@@ -18,6 +18,11 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
+    # Handle Storage Files
+    RewriteCond %{REQUEST_URI} ^/storage/(.*)$
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^storage/(.*)$ storage/$1 [L]
+
     # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f

@@ -33,7 +33,7 @@ class ManagerController extends Controller
             'my_contracts' => Contract::where('branch_id', $user->branch_id)
                 ->where('user_id', $user->id)->count(),
             'contracts_pending' => Contract::where('branch_id', $user->branch_id)
-                ->where('status', 'pending')->count(),
+                ->where('status', 'draft')->count(),
             'contracts_approved' => Contract::where('branch_id', $user->branch_id)
                 ->where('status', 'approved')->count(),
             'contracts_completed' => Contract::where('branch_id', $user->branch_id)
@@ -69,6 +69,6 @@ class ManagerController extends Controller
         $users_by_role = collect(); // Пустая коллекция для менеджера
         $managers_by_role = collect(); // Пустая коллекция для менеджера
 
-        return view('admin.dashboard', compact('stats', 'recent_contracts', 'branches', 'users_by_role', 'managers_by_role', 'contracts_by_status'));
+        return view('admin.manager-dashboard', compact('stats', 'recent_contracts', 'branches', 'users_by_role', 'managers_by_role', 'contracts_by_status'));
     }
 } 

@@ -174,15 +174,16 @@
                                     <div class="personnel-content">
                                         <div class="personnel-title">{{ $manager->name }}</div>
                                         <div class="personnel-list">
+                                            <span class="personnel-tag email-tag"><i class="fas fa-envelope tag-icon"></i>{{ $manager->email }}</span>
                                             @if($manager->role === 'rop')
-                                                <span class="personnel-tag rop-tag">РОП</span>
+                                                <span class="personnel-tag rop-tag"><i class="fas fa-crown tag-icon"></i>РОП</span>
                                             @else
-                                                <span class="personnel-tag manager-tag">Менеджер</span>
+                                                <span class="personnel-tag manager-tag"><i class="fas fa-user-tag tag-icon"></i>Менеджер</span>
                                             @endif
-                                            <span class="personnel-tag branch-tag">{{ $manager->branch->name }}</span>
-                                            <span class="personnel-tag contract-tag">{{ $manager->contracts_count }} договоров</span>
-                                            <span class="personnel-tag amount-tag">{{ number_format($manager->contracts_sum_order_total ?? 0) }} ₸</span>
-                                            <span class="personnel-tag month-tag">{{ $manager->contracts_this_month }} за месяц</span>
+                                            <span class="personnel-tag branch-tag"><i class="fas fa-building tag-icon"></i>{{ $manager->branch->name }}</span>
+                                            <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i>{{ $manager->contracts_count }} договоров</span>
+                                            <span class="personnel-tag amount-tag"><i class="fas fa-money-bill-wave tag-icon"></i>{{ number_format($manager->contracts_sum_order_total ?? 0) }} ₸</span>
+                                            <span class="personnel-tag month-tag"><i class="fas fa-calendar-alt tag-icon"></i>{{ $manager->contracts_this_month }} за месяц</span>
                                         </div>
                                     </div>
                                     <div class="personnel-actions">
@@ -449,11 +450,12 @@
 
 .personnel-tag {
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     display: inline-block;
     transition: all 0.2s ease;
+    border: 1px solid;
 }
 
 .rop-tag {
@@ -469,28 +471,36 @@
 }
 
 .branch-tag {
-    background: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #bae6fd;
 }
 
 .contract-tag {
     background: #f0fdf4;
     color: #166534;
-    border: 1px solid #bbf7d0;
+    border-color: #bbf7d0;
 }
 
 .amount-tag {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
+    background: #f0fdf4;
+    color: #166534;
+    border-color: #bbf7d0;
 }
 
 .month-tag {
-    background: #fef3c7;
-    color: #d97706;
-    border: 1px solid #fcd34d;
+    background: #f3f4f6;
+    color: #6b7280;
+    border-color: #d1d5db;
 }
+
+.email-tag {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border-color: #bfdbfe;
+}
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 .personnel-actions {
     display: flex;

@@ -17,9 +17,9 @@
             </nav>
         </div>
         <div>
-            <a href="{{ route('contracts.print', $contract) }}" class="btn btn-admin btn-info" target="_blank">
-                <i class="fas fa-print"></i> Печать
-            </a>
+                         <button type="button" class="btn btn-admin btn-danger" onclick="showDeleteModal('{{ $contract->id }}', '{{ $contract->contract_number }}', 'contract')" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border: none; color: white; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.background='linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 16px rgba(239, 68, 68, 0.4)'" onmouseout="this.style.background='linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(239, 68, 68, 0.3)'">
+                 <i class="fas fa-trash"></i> Удалить
+             </button>
             <a href="{{ route('contracts.export-word', $contract) }}" class="btn btn-admin btn-success">
                 <i class="fas fa-download"></i> Экспорт Word
             </a>
@@ -103,6 +103,12 @@
                                     <td class="fw-bold">Instagram:</td>
                                     <td>{{ $contract->instagram }}</td>
                                 </tr>
+                                @if($contract->address)
+                                <tr>
+                                    <td class="fw-bold">Адрес:</td>
+                                    <td>{{ $contract->address }}</td>
+                                </tr>
+                                @endif
                             </table>
                         </div>
                         <div class="col-md-6">
@@ -247,27 +253,221 @@
                 </div>
                 <div class="card-body">
                     <div class="d-grid gap-2">
-                        <a href="{{ route('contracts.print', $contract) }}" class="btn btn-admin btn-info" target="_blank">
-                            <i class="fas fa-print"></i> Печать договора
-                        </a>
                         <a href="{{ route('contracts.export-word', $contract) }}" class="btn btn-admin btn-success">
                             <i class="fas fa-download"></i> Экспорт в Word
                         </a>
                         <a href="{{ route('admin.contracts.edit', $contract) }}" class="btn btn-admin btn-primary">
                             <i class="fas fa-edit"></i> Редактировать
                         </a>
-                        <form action="{{ route('admin.contracts.delete', $contract) }}" method="POST" class="d-inline" 
-                              onsubmit="return confirm('Вы уверены, что хотите удалить этот договор?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-admin btn-danger w-100">
-                                <i class="fas fa-trash"></i> Удалить
-                            </button>
-                        </form>
+                                                 <button type="button" class="btn btn-admin btn-danger w-100" onclick="showDeleteModal('{{ $contract->id }}', '{{ $contract->contract_number }}', 'contract')" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); border: none; color: white; font-weight: 600; transition: all 0.2s ease;" onmouseover="this.style.background='linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 6px 16px rgba(239, 68, 68, 0.4)'" onmouseout="this.style.background='linear-gradient(135deg, #ef4444 0%, #dc2626 100%)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(239, 68, 68, 0.3)'">
+                             <i class="fas fa-trash"></i> Удалить
+                         </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Модальное окно удаления -->
+<div id="deleteModal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title">Подтверждение удаления</h3>
+            <p class="modal-subtitle">
+                Вы действительно хотите удалить договор <strong id="deleteItemName"></strong>?
+                Это действие нельзя отменить.
+            </p>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="modal-btn modal-btn-cancel" onclick="hideDeleteModal()">
+                <i class="fas fa-times"></i>
+                Отмена
+            </button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="modal-btn modal-btn-delete">
+                    <i class="fas fa-trash"></i>
+                    Удалить
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showDeleteModal(id, name, type) {
+    document.getElementById('deleteItemName').textContent = name;
+    
+    // Создаем базовый URL для удаления
+    let baseUrl = '';
+    @if(Auth::user()->role === 'admin')
+        baseUrl = '{{ url("/admin/contracts") }}';
+    @elseif(Auth::user()->role === 'manager')
+        baseUrl = '{{ url("/manager/contracts") }}';
+    @elseif(Auth::user()->role === 'rop')
+        baseUrl = '{{ url("/rop/contracts") }}';
+    @else
+        baseUrl = '{{ url("/contracts") }}';
+    @endif
+    
+    document.getElementById('deleteForm').action = type === 'contract' ? `${baseUrl}/${id}` : '';
+    document.getElementById('deleteModal').style.display = 'flex';
+}
+
+function hideDeleteModal() {
+    document.getElementById('deleteModal').style.display = 'none';
+}
+
+// Закрытие модального окна при клике вне его
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        hideDeleteModal();
+    }
+});
+</script>
+
+<style>
+/* Модальное окно */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 450px;
+    width: 90%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    text-align: center;
+    margin-bottom: 28px;
+    display: inline !important;
+}
+
+.modal-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    color: #d97706;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 24px;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2);
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.modal-subtitle {
+    color: #6b7280;
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.modal-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.modal-btn-cancel {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+}
+
+.modal-btn-cancel:hover {
+    background: #e5e7eb;
+    color: #111827;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-btn-delete {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.modal-btn-delete:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 24px;
+        margin: 20px;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .modal-btn {
+        width: 100%;
+    }
+}
+</style>
+
 @endsection 

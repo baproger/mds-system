@@ -14,6 +14,8 @@
             padding: 20px;
         }
         
+
+        
         .form {
             max-width: 600px;
             margin: auto;
@@ -81,6 +83,8 @@
             border: 1px solid #666;
             padding: 6px;
         }
+        
+
         
         .section {
             margin-top: 10px;
@@ -160,56 +164,17 @@
                 page-break-inside: avoid;
                 break-inside: avoid;
             }
+            
+
+            
+
         }
         
-        /* Кнопки управления */
-        .print-controls {
-            text-align: center;
-            margin: 20px 0;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 5px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 0 10px;
-            background: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        
-        .btn:hover {
-            background: #0056b3;
-        }
-        
-        .btn-success {
-            background: #28a745;
-        }
-        
-        .btn-success:hover {
-            background: #1e7e34;
-        }
+
     </style>
 </head>
 <body>
-    <!-- Кнопки управления -->
-    <div class="print-controls no-print">
-        <button class="btn" onclick="window.print()">
-            <i class="fas fa-print"></i> Печать
-        </button>
-        <a href="{{ route('contracts.export-word', $contract) }}" class="btn btn-success">
-            <i class="fas fa-file-word"></i> Экспорт в Word
-        </a>
-        <a href="{{ route('contracts.index') }}" class="btn">
-            <i class="fas fa-arrow-left"></i> Назад
-        </a>
-    </div>
+
 
     <div class="contract">
         <!-- Шапка -->
@@ -217,7 +182,7 @@
             <tr>
                 <td style="border: 0px solid #66666600;">Менеджер {{ $contract->user->name }}</td>
                 <td style="text-align:right; border: 0px solid #66666600;">
-                    <img src="https://calc.mds-doors.kz/uploads/logo.png" style="max-height:60px" alt="">
+                    <img src="{{ asset('images/logomds.png') }}" style="max-height:60px" alt="MDS Doors">
                 </td>
             </tr>
         </table>
@@ -532,9 +497,7 @@
             </div>
         @endif
 
-        <div class="no-print" style="text-align:center;margin-top:20px">
-            <button onclick="window.print()">Печать договора</button>
-        </div>
+
     </div>
 </body>
 </html>

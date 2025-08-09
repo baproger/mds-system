@@ -22,10 +22,7 @@ Route::get("/", function () {
     return redirect()->route("contracts.index");
 });
 
-// Тестовый маршрут для проверки стилей
-Route::get("/test-auth", function () {
-    return view("auth.test");
-})->name("test.auth");
+//
 
 Route::middleware("guest")->group(function () {
     Route::get("/login", [AuthController::class, "showLogin"])->name("login");
@@ -74,20 +71,7 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
     
-
     
-    // Тестовый маршрут
-    Route::get('/test', function() {
-        return 'Manager test route works! User: ' . Auth::user()->name . ' Role: ' . Auth::user()->role;
-    })->name('test');
-    
-    // Тестовый маршрут для контроллера
-    Route::get('/test-controller', function() {
-        return 'Manager controller test works!';
-    })->name('test-controller');
-    
-    // Тестовый маршрут для ContractController
-    Route::get('/test-contract', [App\Http\Controllers\ContractController::class, 'create'])->name('test-contract');
 });
 
 // Роуты для РОП (префикс /rop)

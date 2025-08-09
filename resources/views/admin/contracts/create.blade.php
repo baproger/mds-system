@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 <label for="contract_number" class="form-label required">Номер договора</label>
                                 <input type="text" class="form-control @error('contract_number') is-invalid @enderror" 
-                                       id="contract_number" name="contract_number" value="{{ old('contract_number') }}" required>
+                                       id="contract_number" name="contract_number" value="{{ old('contract_number') }}" placeholder="Например: 25001" required>
                                 @if($userBranch)
                                     @php
                                         $ranges = [
@@ -115,7 +115,7 @@
                             <div class="form-group">
                                 <label for="client" class="form-label required">ФИО клиента</label>
                                 <input type="text" class="form-control @error('client') is-invalid @enderror" 
-                                       id="client" name="client" value="{{ old('client') }}" required>
+                                       id="client" name="client" value="{{ old('client') }}" placeholder="ФИО полностью" required>
                                 @error('client')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -124,7 +124,7 @@
                             <div class="form-group">
                                 <label for="instagram" class="form-label required">Instagram</label>
                                 <input type="text" class="form-control @error('instagram') is-invalid @enderror" 
-                                       id="instagram" name="instagram" value="{{ old('instagram') }}" required>
+                                       id="instagram" name="instagram" value="{{ old('instagram') }}" placeholder="@username" required>
                                 @error('instagram')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -133,7 +133,7 @@
                             <div class="form-group">
                                 <label for="iin" class="form-label required">ИИН</label>
                                 <input type="text" class="form-control @error('iin') is-invalid @enderror" 
-                                       id="iin" name="iin" value="{{ old('iin') }}" maxlength="12" required>
+                                       id="iin" name="iin" value="{{ old('iin') }}" maxlength="12" placeholder="12 цифр" required>
                                 @error('iin')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -142,7 +142,7 @@
                             <div class="form-group">
                                 <label for="phone" class="form-label required">Телефон</label>
                                 <input type="tel" class="form-control @error('phone') is-invalid @enderror" 
-                                       id="phone" name="phone" value="{{ old('phone') }}" required>
+                                       id="phone" name="phone" value="{{ old('phone') }}" placeholder="+7 777 123 45 67" required>
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -151,7 +151,7 @@
                             <div class="form-group">
                                 <label for="phone2" class="form-label required">Дополнительный телефон</label>
                                 <input type="tel" class="form-control @error('phone2') is-invalid @enderror" 
-                                       id="phone2" name="phone2" value="{{ old('phone2') }}" required>
+                                       id="phone2" name="phone2" value="{{ old('phone2') }}" placeholder="+7 700 000 00 00" required>
                                 @error('phone2')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -160,7 +160,7 @@
                             <div class="form-group">
                                 <label for="address" class="form-label">Адрес установки</label>
                                 <textarea class="form-control @error('address') is-invalid @enderror" 
-                                          id="address" name="address" rows="3">{{ old('address') }}</textarea>
+                                          id="address" name="address" rows="3" placeholder="Город, улица, дом, квартира">{{ old('address', '') }}</textarea>
                                 @error('address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -203,8 +203,8 @@
 
                             <div class="form-group">
                                 <label for="width" class="form-label required">Ширина (мм)</label>
-                                <input type="number" class="form-control @error('width') is-invalid @enderror" 
-                                       id="width" name="width" value="{{ old('width') }}" min="850" required>
+                                                                <input type="number" class="form-control @error('width') is-invalid @enderror"
+                                       id="width" name="width" value="{{ old('width', '') }}" min="850" placeholder="Например: 900" required>
                                 @error('width')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -212,8 +212,8 @@
 
                             <div class="form-group">
                                 <label for="height" class="form-label required">Высота (мм)</label>
-                                <input type="number" class="form-control @error('height') is-invalid @enderror" 
-                                       id="height" name="height" value="{{ old('height') }}" min="850" required>
+                                                                <input type="number" class="form-control @error('height') is-invalid @enderror"
+                                       id="height" name="height" value="{{ old('height', '') }}" min="850" placeholder="Например: 2050" required>
                                 @error('height')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -323,8 +323,8 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="outer_panel" class="form-label">Наружная панель</label>
-                                <input type="text" class="form-control @error('outer_panel') is-invalid @enderror" 
-                                       id="outer_panel" name="outer_panel" value="{{ old('outer_panel') }}" readonly>
+                                                                <input type="text" class="form-control @error('outer_panel') is-invalid @enderror"
+                                       id="outer_panel" name="outer_panel" value="{{ old('outer_panel', '') }}" readonly>
                                 @error('outer_panel')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -343,8 +343,8 @@
 
                             <div class="form-group">
                                 <label for="outer_cover_color" class="form-label">Цвет покрытия наружной панели</label>
-                                <input type="text" class="form-control @error('outer_cover_color') is-invalid @enderror" 
-                                       id="outer_cover_color" name="outer_cover_color" value="{{ old('outer_cover_color') }}" placeholder="Пример: RAL 9010">
+                                                                <input type="text" class="form-control @error('outer_cover_color') is-invalid @enderror"
+                                       id="outer_cover_color" name="outer_cover_color" value="{{ old('outer_cover_color', '') }}" placeholder="Пример: RAL 9010">
                                 @error('outer_cover_color')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -361,8 +361,8 @@
 
                             <div class="form-group">
                                 <label for="metal_cover_color" class="form-label">Цвет покрытия металла</label>
-                                <input type="text" class="form-control @error('metal_cover_color') is-invalid @enderror" 
-                                       id="metal_cover_color" name="metal_cover_color" value="{{ old('metal_cover_color') }}" placeholder="Пример: RAL 9010">
+                                                                <input type="text" class="form-control @error('metal_cover_color') is-invalid @enderror"
+                                       id="metal_cover_color" name="metal_cover_color" value="{{ old('metal_cover_color', '') }}" placeholder="Пример: RAL 9010">
                                 @error('metal_cover_color')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -392,8 +392,8 @@
 
                             <div class="form-group">
                                 <label for="inner_trim_color" class="form-label">Цвет покрытия внутренней обшивки</label>
-                                <input type="text" class="form-control @error('inner_trim_color') is-invalid @enderror" 
-                                       id="inner_trim_color" name="inner_trim_color" value="{{ old('inner_trim_color') }}" placeholder="Пример: RAL 9010">
+                                                                <input type="text" class="form-control @error('inner_trim_color') is-invalid @enderror"
+                                       id="inner_trim_color" name="inner_trim_color" value="{{ old('inner_trim_color', '') }}" placeholder="Пример: RAL 9010">
                                 @error('inner_trim_color')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -423,8 +423,8 @@
 
                             <div class="form-group">
                                 <label for="handle" class="form-label required">Ручка</label>
-                                <input type="text" class="form-control @error('handle') is-invalid @enderror" 
-                                       id="handle" name="handle" value="{{ old('handle') }}" required>
+                                                                <input type="text" class="form-control @error('handle') is-invalid @enderror"
+                                       id="handle" name="handle" value="{{ old('handle', '') }}" placeholder="Модель ручки" required>
                                 @error('handle')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -432,8 +432,8 @@
 
                             <div class="form-group">
                                 <label for="steel_thickness" class="form-label">Толщина стали (мм)</label>
-                                <input type="text" class="form-control @error('steel_thickness') is-invalid @enderror" 
-                                       id="steel_thickness" name="steel_thickness" value="{{ old('steel_thickness') }}" readonly>
+                                                                <input type="text" class="form-control @error('steel_thickness') is-invalid @enderror"
+                                       id="steel_thickness" name="steel_thickness" value="{{ old('steel_thickness', '') }}" readonly>
                                 @error('steel_thickness')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -441,8 +441,8 @@
 
                             <div class="form-group">
                                 <label for="canvas_thickness" class="form-label">Толщина полотна (мм)</label>
-                                <input type="text" class="form-control @error('canvas_thickness') is-invalid @enderror" 
-                                       id="canvas_thickness" name="canvas_thickness" value="{{ old('canvas_thickness') }}" readonly>
+                                                                <input type="text" class="form-control @error('canvas_thickness') is-invalid @enderror"
+                                       id="canvas_thickness" name="canvas_thickness" value="{{ old('canvas_thickness', '') }}" readonly>
                                 @error('canvas_thickness')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -450,8 +450,8 @@
 
                             <div class="form-group">
                                 <label for="extra" class="form-label">Дополнительно</label>
-                                <input type="text" class="form-control @error('extra') is-invalid @enderror" 
-                                       id="extra" name="extra" value="{{ old('extra') }}">
+                                                                <input type="text" class="form-control @error('extra') is-invalid @enderror"
+                                       id="extra" name="extra" value="{{ old('extra', '') }}">
                                 @error('extra')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -493,8 +493,8 @@
 
                             <div class="form-group">
                                 <label for="installation" class="form-label">Установка</label>
-                                <input type="text" class="form-control @error('installation') is-invalid @enderror" 
-                                       id="installation" name="installation" value="{{ old('installation') }}">
+                                                                <input type="text" class="form-control @error('installation') is-invalid @enderror"
+                                       id="installation" name="installation" value="{{ old('installation', '') }}" placeholder="Сумма в ₸">
                                 @error('installation')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -512,8 +512,8 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="order_total" class="form-label required">Общая сумма</label>
-                                <input type="number" class="form-control @error('order_total') is-invalid @enderror" 
-                                       id="order_total" name="order_total" value="{{ old('order_total') }}" min="0" required>
+                                                                <input type="number" class="form-control @error('order_total') is-invalid @enderror"
+                                       id="order_total" name="order_total" value="{{ old('order_total', '') }}" min="0" placeholder="Сумма в ₸" required>
                                 @error('order_total')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -521,8 +521,8 @@
 
                             <div class="form-group">
                                 <label for="order_deposit" class="form-label required">Предоплата</label>
-                                <input type="number" class="form-control @error('order_deposit') is-invalid @enderror" 
-                                       id="order_deposit" name="order_deposit" value="{{ old('order_deposit') }}" min="0" required>
+                                                                <input type="number" class="form-control @error('order_deposit') is-invalid @enderror"
+                                       id="order_deposit" name="order_deposit" value="{{ old('order_deposit', '') }}" min="0" placeholder="Сумма в ₸" required>
                                 @error('order_deposit')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -530,8 +530,8 @@
 
                             <div class="form-group">
                                 <label for="order_remainder" class="form-label required">Остаток</label>
-                                <input type="number" class="form-control @error('order_remainder') is-invalid @enderror" 
-                                       id="order_remainder" name="order_remainder" value="{{ old('order_remainder') }}" min="0" required>
+                                                                <input type="number" class="form-control @error('order_remainder') is-invalid @enderror"
+                                       id="order_remainder" name="order_remainder" value="{{ old('order_remainder', '') }}" min="0" placeholder="Сумма в ₸" required>
                                 @error('order_remainder')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -539,8 +539,8 @@
 
                             <div class="form-group">
                                 <label for="order_due" class="form-label required">К оплате</label>
-                                <input type="number" class="form-control @error('order_due') is-invalid @enderror" 
-                                       id="order_due" name="order_due" value="{{ old('order_due') }}" min="0" required>
+                                                                <input type="number" class="form-control @error('order_due') is-invalid @enderror"
+                                       id="order_due" name="order_due" value="{{ old('order_due', '') }}" min="0" placeholder="Сумма в ₸" required>
                                 @error('order_due')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -603,6 +603,8 @@
     padding: 24px;
     background: #f8fafc;
     min-height: 100vh;
+    max-width: 1200px; /* как на странице списка договоров */
+    margin: 0 auto;
 }
 
 .page-header {
@@ -657,6 +659,7 @@
 .section-header {
     display: flex;
     align-items: center;
+    justify-content: space-between; /* как на странице списка договоров */
     gap: 12px;
     margin-bottom: 24px;
     padding-bottom: 16px;
@@ -673,8 +676,8 @@
 
 .form-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* как на списке договоров */
+    gap: 24px;
 }
 
 .form-group {
@@ -800,19 +803,9 @@
     .edit-branch-container {
         padding: 16px;
     }
-    
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .form-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
+    .form-grid { grid-template-columns: 1fr; gap: 12px; }
+    .form-actions { flex-direction: column; }
+    .form-actions .btn { width: 100%; justify-content: center; }
 }
 </style>
 

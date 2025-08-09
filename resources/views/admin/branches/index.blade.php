@@ -92,10 +92,10 @@
                                     <div class="personnel-content">
                                         <div class="personnel-title">{{ $branch->name }}</div>
                                         <div class="personnel-list">
-                                            <span class="personnel-tag code-tag">{{ $branch->code }}</span>
-                                            <span class="personnel-tag users-tag">{{ $branch->users_count }} пользователей</span>
-                                            <span class="personnel-tag staff-tag">{{ $branch->sales_staff_count ?? 0 }} менеджеров</span>
-                                            <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} договоров</span>
+                                            <span class="personnel-tag code-tag"><i class="fas fa-hashtag tag-icon"></i>{{ $branch->code }}</span>
+                                            <span class="personnel-tag users-tag"><i class="fas fa-users tag-icon"></i>{{ $branch->users_count }} пользователей</span>
+                                            <span class="personnel-tag staff-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $branch->sales_staff_count ?? 0 }} менеджеров</span>
+                                            <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i>{{ $branch->contracts_count }} договоров</span>
                                             @php
                                                 $ranges = [
                                                     'SHY-PP' => '20000-29999',
@@ -109,7 +109,7 @@
                                                 ];
                                                 $range = $ranges[$branch->code] ?? 'неизвестен';
                                             @endphp
-                                            <span class="personnel-tag range-tag">{{ $range }}</span>
+                                            <span class="personnel-tag range-tag"><i class="fas fa-list-ol tag-icon"></i>{{ $range }}</span>
                                         </div>
                                     </div>
                                     <div class="personnel-actions">
@@ -355,42 +355,25 @@
 
 .personnel-tag {
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     display: inline-block;
     transition: all 0.2s ease;
+    border: 1px solid;
 }
 
-.code-tag {
-    background: #fef3c7;
-    color: #92400e;
-    border: 1px solid #fde68a;
-}
+.code-tag { background: #fef9c3; color: #92400e; border-color: #fde68a; }
 
-.users-tag {
-    background: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
-}
+.users-tag { background: #eff6ff; color: #2563eb; border-color: #bfdbfe; }
 
-.staff-tag {
-    background: #f1f5f9;
-    color: #475569;
-    border: 1px solid #cbd5e1;
-}
+.staff-tag { background: #f1f5f9; color: #475569; border-color: #cbd5e1; }
 
-.contract-tag {
-    background: #f0fdf4;
-    color: #166534;
-    border: 1px solid #bbf7d0;
-}
+.contract-tag { background: #f0fdf4; color: #166534; border-color: #bbf7d0; }
 
-.range-tag {
-    background: #f3e8ff;
-    color: #7c3aed;
-    border: 1px solid #c7d2fe;
-}
+.range-tag { background: #f3e8ff; color: #7c3aed; border-color: #c7d2fe; }
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 .personnel-actions {
     display: flex;

@@ -219,12 +219,12 @@
                                     <div class="personnel-content">
                                         <div class="personnel-title">{{ $contract->contract_number }}</div>
                                         <div class="personnel-list">
-                                            <span class="personnel-tag client-tag">{{ $contract->client }}</span>
-                                            <span class="personnel-tag phone-tag">{{ $contract->phone }}</span>
-                                            <span class="personnel-tag branch-tag">{{ $contract->branch->name }}</span>
-                                            <span class="personnel-tag manager-tag">{{ $contract->user->name }}</span>
-                                            <span class="personnel-tag date-tag">{{ $contract->date->format('d.m.Y') }}</span>
-                                            <span class="personnel-tag amount-tag">{{ number_format($contract->order_total) }} ₸</span>
+                                            <span class="personnel-tag client-tag"><i class="fas fa-user tag-icon"></i>{{ $contract->client }}</span>
+                                            <span class="personnel-tag phone-tag"><i class="fas fa-phone tag-icon"></i>{{ $contract->phone }}</span>
+                                            <span class="personnel-tag branch-tag"><i class="fas fa-building tag-icon"></i>{{ $contract->branch->name }}</span>
+                                            <span class="personnel-tag manager-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $contract->user->name }}</span>
+                                            <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i>{{ $contract->date->format('d.m.Y') }}</span>
+                                            <span class="personnel-tag amount-tag"><i class="fas fa-money-bill-wave tag-icon"></i>{{ number_format($contract->order_total) }} ₸</span>
                                         </div>
                                     </div>
                                     <div class="personnel-actions">
@@ -491,17 +491,18 @@
 
 .personnel-tag {
     padding: 4px 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
     display: inline-block;
     transition: all 0.2s ease;
+    border: 1px solid;
 }
 
 .client-tag {
-    background: #f3e8ff;
-    color: #7c3aed;
-    border: 1px solid #c7d2fe;
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #bae6fd;
 }
 
 .phone-tag {
@@ -511,28 +512,30 @@
 }
 
 .branch-tag {
-    background: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
+    background: #f0f9ff;
+    color: #0369a1;
+    border-color: #bae6fd;
 }
 
 .manager-tag {
-    background: #f1f5f9;
-    color: #475569;
-    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    color: #111827;
+    border-color: #0f172a;
 }
 
 .date-tag {
-    background: #fef3c7;
-    color: #d97706;
-    border: 1px solid #fcd34d;
+    background: #f3f4f6;
+    color: #6b7280;
+    border-color: #d1d5db;
 }
 
 .amount-tag {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
+    background: #f0fdf4;
+    color: #166534;
+    border-color: #bbf7d0;
 }
+
+.tag-icon { margin-right: 6px; opacity: 0.85; }
 
 .personnel-actions {
     display: flex;
