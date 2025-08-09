@@ -14,17 +14,14 @@
     @vite(['resources/css/app.css'])
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 </head>
 <body class="bg-light">
     <!-- Навигация -->
     <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route("contracts.index") }}">
-                <div class="brand-icon me-3">
-                    <i class="fas fa-door-open"></i>
-                </div>
-                <span>Система договоров</span>
+                <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40">
             </a>
             
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">

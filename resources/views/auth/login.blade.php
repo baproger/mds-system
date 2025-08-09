@@ -23,7 +23,7 @@
             <div class="auth-info-content">
                 <div class="auth-brand">
                     <div class="auth-brand-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="60" class="me-3">
                     </div>
                     <div class="auth-brand-text">
                         <h1 class="auth-brand-title">MDS Doors</h1>

@@ -23,7 +23,7 @@ class AdminController extends Controller
                 'total_branches' => Branch::count(),
                 'total_sales_staff' => User::salesStaff()->count(),
                 'total_managers' => User::where('role', 'manager')->count(),
-                'total_rop' => User::where('role', 'rop')->count(),
+                'total_rops' => User::where('role', 'rop')->count(),
                 'contracts_this_month' => Contract::whereMonth('created_at', now()->month)->count(),
                 'contracts_this_year' => Contract::whereYear('created_at', now()->year)->count(),
                 'revenue_this_month' => Contract::whereMonth('created_at', now()->month)->sum('order_total') ?? 0,
@@ -91,7 +91,7 @@ class AdminController extends Controller
                 'total_branches' => 1,
                 'total_sales_staff' => User::where('branch_id', $user->branch_id)->whereIn('role', ['manager', 'rop'])->count(),
                 'total_managers' => User::where('branch_id', $user->branch_id)->where('role', 'manager')->count(),
-                'total_rop' => User::where('branch_id', $user->branch_id)->where('role', 'rop')->count(),
+                'total_rops' => User::where('branch_id', $user->branch_id)->where('role', 'rop')->count(),
                 'contracts_this_month' => Contract::whereHas('user', function($q) use ($user) {
                     $q->where('branch_id', $user->branch_id);
                 })->whereMonth('created_at', now()->month)->count(),
