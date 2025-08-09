@@ -181,9 +181,20 @@
                                                 <span class="personnel-tag manager-tag"><i class="fas fa-user-tag tag-icon"></i>Менеджер</span>
                                             @endif
                                             <span class="personnel-tag branch-tag"><i class="fas fa-building tag-icon"></i>{{ $manager->branch->name }}</span>
-                                            <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i>{{ $manager->contracts_count }} договоров</span>
-                                            <span class="personnel-tag amount-tag"><i class="fas fa-money-bill-wave tag-icon"></i>{{ number_format($manager->contracts_sum_order_total ?? 0) }} ₸</span>
-                                            <span class="personnel-tag month-tag"><i class="fas fa-calendar-alt tag-icon"></i>{{ $manager->contracts_this_month }} за месяц</span>
+                                            <span class="personnel-tag contract-tag">
+                                                <i class="fas fa-file-contract tag-icon"></i>
+                                                <span style="margin-left:4px;">{{ $manager->contracts_count }}</span>
+                                                <span style="margin-left:6px; opacity:0.9;">договоров</span>
+                                            </span>
+                                            <span class="personnel-tag amount-tag">
+                                                <i class="fas fa-money-bill-wave tag-icon"></i>
+                                                <span style="margin-left:4px;">{{ number_format($manager->contracts_sum_order_total ?? 0) }} ₸</span>
+                                            </span>
+                                            <span class="personnel-tag month-tag">
+                                                <i class="fas fa-calendar-alt tag-icon"></i>
+                                                <span style="margin-left:4px;">{{ $manager->contracts_this_month }}</span>
+                                                <span style="margin-left:6px; opacity:0.9;">за месяц</span>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="personnel-actions">

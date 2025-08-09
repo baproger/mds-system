@@ -166,7 +166,7 @@
                             <span>Статистика пользователя</span>
                         </div>
                         
-                        <div class="stats-grid">
+                        <!--<div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-icon">
                                     <i class="fas fa-calendar-alt"></i>
@@ -487,8 +487,8 @@
 }
 
 .stat-number {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: #111827;
     margin-bottom: 4px;
 }

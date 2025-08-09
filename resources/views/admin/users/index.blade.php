@@ -173,26 +173,26 @@
                                     <div class="personnel-content">
                                         <div class="personnel-title">{{ $user->name }}</div>
                                         <div class="personnel-list">
-                                            <span class="personnel-tag email-tag">{{ $user->email }}</span>
+                                            <span class="personnel-tag email-tag"><i class="fas fa-envelope tag-icon"></i><span style="margin-left:4px;">{{ $user->email }}</span></span>
                                             @if($user->role === 'admin')
-                                                <span class="personnel-tag admin-tag">Администратор</span>
+                                                <span class="personnel-tag admin-tag"><i class="fas fa-shield-alt tag-icon"></i><span style="margin-left:4px;">Администратор</span></span>
                                             @elseif($user->role === 'accountant')
-                                                <span class="personnel-tag accountant-tag">Бухгалтер</span>
+                                                <span class="personnel-tag accountant-tag"><i class="fas fa-calculator tag-icon"></i><span style="margin-left:4px;">Бухгалтер</span></span>
                                             @elseif($user->role === 'director')
-                                                <span class="personnel-tag director-tag">Директор</span>
+                                                <span class="personnel-tag director-tag"><i class="fas fa-user-tie tag-icon"></i><span style="margin-left:4px;">Директор</span></span>
                                             @elseif($user->role === 'manager')
-                                                <span class="personnel-tag manager-tag">Менеджер</span>
+                                                <span class="personnel-tag manager-tag"><i class="fas fa-user-tag tag-icon"></i><span style="margin-left:4px;">Менеджер</span></span>
                                             @elseif($user->role === 'rop')
-                                                <span class="personnel-tag rop-tag">РОП</span>
+                                                <span class="personnel-tag rop-tag"><i class="fas fa-crown tag-icon"></i><span style="margin-left:4px;">РОП</span></span>
                                             @else
-                                                <span class="personnel-tag user-tag">{{ ucfirst($user->role) }}</span>
+                                                <span class="personnel-tag user-tag"><i class="fas fa-user tag-icon"></i><span style="margin-left:4px;">{{ ucfirst($user->role) }}</span></span>
                                             @endif
                                             @if($user->branch)
-                                                <span class="personnel-tag branch-tag">{{ $user->branch->name }}</span>
+                                                <span class="personnel-tag branch-tag"><i class="fas fa-building tag-icon"></i><span style="margin-left:4px;">{{ $user->branch->name }}</span></span>
                                             @else
-                                                <span class="personnel-tag empty-tag">Не назначен</span>
+                                                <span class="personnel-tag empty-tag"><i class="fas fa-minus-circle tag-icon"></i><span style="margin-left:4px;">Не назначен</span></span>
                                             @endif
-                                            <span class="personnel-tag date-tag">{{ $user->created_at->format('d.m.Y') }}</span>
+                                            <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i><span style="margin-left:4px;">{{ $user->created_at->format('d.m.Y') }}</span></span>
                                         </div>
                                     </div>
                                     <div class="personnel-actions">
@@ -204,7 +204,7 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                         @if($user->contracts_count > 0)
-                                            <span class="personnel-tag contract-tag">{{ $user->contracts_count }} договоров</span>
+                                            <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i><span style="margin-left:4px;">{{ $user->contracts_count }}</span><span style="margin-left:6px; opacity:0.9;">договоров</span></span>
                                         @endif
                                     </div>
                                 </div>

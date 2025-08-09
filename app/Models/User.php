@@ -18,6 +18,7 @@ class User extends Authenticatable
         'branch_id',
         'role',
         'phone',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -31,6 +32,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'role' => 'string',
+            'is_active' => 'boolean',
         ];
     }
 

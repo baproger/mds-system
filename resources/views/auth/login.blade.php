@@ -141,6 +141,9 @@
                         Нет аккаунта? 
                         <a href="{{ route('register') }}" class="auth-form-link">Зарегистрироваться</a>
                     </p>
+                    <p class="auth-form-footer-text" style="margin-top:8px; color:#6b7280;">
+                        Забыли пароль? Напишите администратору сайта — мы быстро поможем восстановить доступ.
+                    </p>
                 </div>
             </div>
         </div>
