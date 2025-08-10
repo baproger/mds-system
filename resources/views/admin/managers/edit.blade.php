@@ -112,7 +112,7 @@
                         </div>
                         
                         <div class="stats-grid">
-                            <div class="stat-card">
+                            <!--<div class="stat-card">
                                 <div class="stat-icon">
                                     <i class="fas fa-file-contract"></i>
                                 </div>
@@ -120,9 +120,9 @@
                                     <div class="stat-number">{{ $manager->contracts_count ?? 0 }}</div>
                                     <div class="stat-label">Договоров</div>
                                 </div>
-                            </div>
+                            </div>-->
                             
-                            <div class="stat-card">
+                            <!--<div class="stat-card">
                                 <div class="stat-icon">
                                     <i class="fas fa-money-bill-wave"></i>
                                 </div>
@@ -130,7 +130,7 @@
                                     <div class="stat-number">{{ number_format($manager->total_revenue ?? 0) }} ₸</div>
                                     <div class="stat-label">Доход</div>
                                 </div>
-                            </div>
+                            </div>-->
                             
                             <div class="stat-card">
                                 <div class="stat-icon">
@@ -379,8 +379,8 @@
 }
 
 .stat-number {
-    font-size: 24px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     color: #111827;
     margin-bottom: 4px;
 }
