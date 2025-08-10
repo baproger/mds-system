@@ -24,42 +24,36 @@
                         <i class="fas fa-user"></i>
                         <span>Основная информация</span>
                     </div>
-                    
+
                     <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-user"></i></div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $manager->name }}</div>
                                 <div class="stat-label">Имя менеджера</div>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-envelope"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-envelope"></i></div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $manager->email }}</div>
                                 <div class="stat-label">Email</div>
                             </div>
                         </div>
-                        
+                    </div>
+                    
+                    <div class="stats-grid">
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-phone"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-phone"></i></div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $manager->phone ?: 'Не указан' }}</div>
                                 <div class="stat-label">Телефон</div>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card">
-                            <div class="stat-icon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </div>
+                            <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $manager->created_at->format('d.m.Y') }}</div>
                                 <div class="stat-label">Дата регистрации</div>

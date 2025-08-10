@@ -11,11 +11,11 @@
     <div class="container-fluid">
         <!-- Sidebar -->
         <div class="sidebar">
-            <div class="sidebar-header">
+            <!--<div class="sidebar-header">
                 <div class="sidebar-logo">
                     <img src="{{ url('images/logomds.png') }}" alt="MDS Doors" class="logo-image" width="200" height="80">
                 </div>
-            </div>
+            </div>-->
 
             <nav class="sidebar-nav">
                 <div class="nav-section">
@@ -56,6 +56,13 @@
                         <i class="fas fa-chevron-right nav-arrow"></i>
                     </a>
                     @endif
+                    @if(Auth::user()->role === 'rop')
+                    <a href="{{ route('rop.managers.index') }}" class="nav-item {{ request()->routeIs('rop.managers.*') ? 'active' : '' }}">
+                        <i class="fas fa-user-tie"></i>
+                        <span>Менеджеры</span>
+                        <i class="fas fa-chevron-right nav-arrow"></i>
+                    </a>
+                    @endif
                     <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.index' : (Auth::user()->role === 'manager' ? 'manager.contracts.index' : 'rop.contracts.index')) }}" class="nav-item {{ (request()->routeIs('admin.contracts.*') || request()->routeIs('manager.contracts.*') || request()->routeIs('rop.contracts.*')) ? 'active' : '' }}">
                         <i class="fas fa-file-contract"></i>
                         <span>Договоры</span>
@@ -75,23 +82,15 @@
 
                 <div class="nav-section">
                     <div class="nav-section-title">Система</div>
-                    <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.profile.show' : (Auth::user()->role === 'manager' ? 'manager.profile.show' : 'rop.profile.show')) }}" class="nav-item {{ (request()->routeIs('admin.profile.show') || request()->routeIs('manager.profile.show') || request()->routeIs('rop.profile.show')) ? 'active' : '' }}">
-                        <i class="fas fa-user"></i>
-                        <span>Профиль</span>
-                        <i class="fas fa-chevron-right nav-arrow"></i>
-                    </a>
-                    <a href="#" class="nav-item">
+                    <a href="{{ route(Auth::user()->role . '.settings.index') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.settings.*') ? 'active' : '' }}">
                         <i class="fas fa-cog"></i>
                         <span>Настройки</span>
                         <i class="fas fa-chevron-right nav-arrow"></i>
                     </a>
-                    <form method="POST" action="{{ route(Auth::user()->role === 'admin' ? 'admin.logout' : (Auth::user()->role === 'manager' ? 'manager.logout' : 'rop.logout')) }}" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="nav-item" style="width: 100%; text-align: left; background: none; border: none;">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Выйти</span>
-                        </button>
-                    </form>
+                    <button type="button" class="nav-item nav-item-logout" onclick="showLogoutModal()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Выйти</span>
+                    </button>
                 </div>
             </nav>
 
@@ -159,6 +158,64 @@
                 }, 300);
             });
         }, 5000);
+    </script>
+
+    <!-- Модальное окно подтверждения выхода -->
+    <div id="logoutModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon"><i class="fas fa-sign-out-alt"></i></div>
+                <h3 class="modal-title">Подтверждение выхода</h3>
+                <p class="modal-subtitle">
+                    Вы действительно хотите выйти из системы?
+                </p>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="modal-btn modal-btn-cancel" onclick="hideLogoutModal()">
+                    <i class="fas fa-times"></i> Отмена
+                </button>
+                <form method="POST" action="{{ route(Auth::user()->role === 'admin' ? 'admin.logout' : (Auth::user()->role === 'manager' ? 'manager.logout' : 'rop.logout')) }}" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="modal-btn modal-btn-delete">
+                        <i class="fas fa-sign-out-alt"></i> Выйти
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Функции для модального окна выхода
+        function showLogoutModal() {
+            console.log('showLogoutModal called');
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.style.display = 'flex';
+                console.log('Modal displayed');
+            } else {
+                console.error('Modal not found');
+            }
+        }
+        
+        function hideLogoutModal() {
+            console.log('hideLogoutModal called');
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+        
+        // Закрытие модального окна при клике вне его
+        document.addEventListener('DOMContentLoaded', function() {
+            const modal = document.getElementById('logoutModal');
+            if (modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        hideLogoutModal();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html> 

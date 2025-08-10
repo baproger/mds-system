@@ -1,95 +1,109 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Новый договор')
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="mb-0"><i class="fas fa-plus"></i> Новый договор</h4>
-            </div>
-            <div class="card-body">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+                            <!-- Заголовок -->
+                <div class="page-header">
+                    <div class="header-content">
+                        <div class="header-icon">
+                            <i class="fas fa-plus"></i>
+                        </div>
+                        <div class="header-text">
+                            <h1 class="page-title">Новый договор</h1>
+                            <p class="page-subtitle">Создание нового договора на поставку дверей</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form method="POST" action="{{ route('contracts.store') }}" enctype="multipart/form-data" class="search-form">
+                    @csrf
                 <form method="POST" action="{{ route('contracts.store') }}" enctype="multipart/form-data">
                     @csrf
                     
                     <!-- Основная информация -->
                     <div class="form-section">
-                        <h5><i class="fas fa-info-circle"></i> Основная информация</h5>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="contract_number" class="form-label required">Номер договора</label>
-                                    <input type="text" class="form-control @error('contract_number') is-invalid @enderror" 
-                                           id="contract_number" name="contract_number" value="{{ old('contract_number') }}" required>
-                                    @if($userBranch)
-                                        @php
-                                            $ranges = [
-                                                'SHY-PP' => '20000-29999',
-                                                'SHY-RZ' => '30000-39999',
-                                                'AKT' => '40000-49999',
-                                                'ALA-TST' => '50000-57999',
-                                                'ALA-SC' => '58000-59999',
-                                                'TRZ' => '100000-119999',
-                                                'ATR' => '120000-139999',
-                                                'TAS' => '60000-69999',
-                                            ];
-                                            $range = $ranges[$userBranch->code] ?? 'неизвестен';
-                                        @endphp
-                                        <small class="form-text text-muted">Введите номер договора вручную. Диапазон для филиала "{{ $userBranch->name }}": {{ $range }}</small>
-                                    @else
-                                        <small class="form-text text-muted">Введите номер договора вручную</small>
-                                    @endif
-                                    @error('contract_number')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="date" class="form-label required">Дата договора</label>
-                                    <input type="date" class="form-control @error('date') is-invalid @enderror" 
-                                           id="date" name="date" value="{{ old('date', date('Y-m-d')) }}" required>
-                                    @error('date')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                        <div class="section-header">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Основная информация</span>
                             </div>
                         </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="manager" class="form-label required">Менеджер</label>
-                                    <select class="form-control @error('manager') is-invalid @enderror" 
-                                            id="manager" name="manager" required>
-                                        <option value="">— выберите —</option>
-                                        @foreach($managers as $manager)
-                                            <option value="{{ $manager }}" {{ old('manager') == $manager ? 'selected' : '' }}>
-                                                {{ $manager }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('manager')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            <div class="form-group">
+                                <label for="contract_number" class="form-label required">
+                                    <i class="fas fa-hashtag"></i> Номер договора
+                                </label>
+                                <input type="text" class="form-control @error('contract_number') is-invalid @enderror" 
+                                       id="contract_number" name="contract_number" value="{{ old('contract_number') }}" required>
+                                @if($userBranch)
+                                    @php
+                                        $ranges = [
+                                            'SHY-PP' => '20000-29999',
+                                            'SHY-RZ' => '30000-39999',
+                                            'AKT' => '40000-49999',
+                                            'ALA-TST' => '50000-57999',
+                                            'ALA-SC' => '58000-59999',
+                                            'TRZ' => '100000-119999',
+                                            'ATR' => '120000-139999',
+                                            'TAS' => '60000-69999',
+                                        ];
+                                        $range = $ranges[$userBranch->code] ?? 'неизвестен';
+                                    @endphp
+                                    <small class="form-text">Введите номер договора вручную. Диапазон для филиала "{{ $userBranch->name }}": {{ $range }}</small>
+                                @else
+                                    <small class="form-text">Введите номер договора вручную</small>
+                                @endif
+                                @error('contract_number')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="payment" class="form-label">Способ оплаты</label>
-                                    <select class="form-control @error('payment') is-invalid @enderror" 
-                                            id="payment" name="payment">
-                                        <option value="Наличный" {{ old('payment', 'Наличный') == 'Наличный' ? 'selected' : '' }}>Наличный</option>
-                                        <option value="Безналичный" {{ old('payment') == 'Безналичный' ? 'selected' : '' }}>Безналичный</option>
-                                        <option value="Рассрочка" {{ old('payment') == 'Рассрочка' ? 'selected' : '' }}>Рассрочка</option>
-                                    </select>
-                                    @error('payment')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                            
+                            <div class="form-group">
+                                <label for="date" class="form-label required">
+                                    <i class="fas fa-calendar"></i> Дата договора
+                                </label>
+                                <input type="date" class="form-control @error('date') is-invalid @enderror" 
+                                       id="date" name="date" value="{{ old('date', date('Y-m-d')) }}" required>
+                                @error('date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        </div>
+                            
+                            <div class="form-group">
+                                <label for="manager" class="form-label required">
+                                    <i class="fas fa-user-tie"></i> Менеджер
+                                </label>
+                                <select class="form-control @error('manager') is-invalid @enderror" 
+                                        id="manager" name="manager" required>
+                                    <option value="">— выберите —</option>
+                                    @foreach($managers as $manager)
+                                        <option value="{{ $manager }}" {{ old('manager') == $manager ? 'selected' : '' }}>
+                                            {{ $manager }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('manager')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="payment" class="form-label">
+                                    <i class="fas fa-credit-card"></i> Способ оплаты
+                                </label>
+                                <select class="form-control @error('payment') is-invalid @enderror" 
+                                        id="payment" name="payment">
+                                    <option value="Наличный" {{ old('payment', 'Наличный') == 'Наличный' ? 'selected' : '' }}>Наличный</option>
+                                    <option value="Безналичный" {{ old('payment') == 'Безналичный' ? 'selected' : '' }}>Безналичный</option>
+                                    <option value="Рассрочка" {{ old('payment') == 'Рассрочка' ? 'selected' : '' }}>Рассрочка</option>
+                                </select>
+                                @error('payment')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                     </div>
 
                     <!-- Информация о клиенте -->
@@ -527,19 +541,68 @@
                     </div>
 
                     <!-- Кнопки действий -->
-                    <div class="d-flex justify-content-between">
-                        <a href="{{ route('contracts.index') }}" class="btn btn-secondary">
+                    <div class="form-actions">
+                        <a href="{{ route('contracts.index') }}" class="btn btn-cancel">
                             <i class="fas fa-arrow-left"></i> Назад
                         </a>
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-save">
                             <i class="fas fa-save"></i> Создать договор
                         </button>
                     </div>
                 </form>
-            </div>
         </div>
     </div>
 </div>
+
+<style>
+/* ========== БАЗОВЫЙ АДМИН-СТИЛЬ ========== */
+body{background:var(--bg-primary)}
+.container-fluid{background:var(--bg-primary)}
+.page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
+.header-content{display:flex;align-items:center;gap:16px}
+.header-icon{width:48px;height:48px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+.page-title{font-size:28px;font-weight:700;color:#111827;margin:0}
+.page-subtitle{font-size:14px;color:#6b7280;margin:4px 0 0 0}
+
+.form-section{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid #f3f4f6;animation:fadeIn .3s ease-out}
+.section-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #f3f4f6;font-weight:600;font-size:16px;color:#374151}
+.section-header i{color:#667eea;font-size:18px}
+.section-actions{display:flex;gap:12px}
+
+.search-form .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.form-group{position:relative}
+.form-label{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;color:#374151;margin-bottom:8px}
+.form-label i{color:#6b7280;font-size:14px}
+.form-label.required:after{content:" *";color:#ef4444}
+.form-text{color:#6b7280;font-size:12px}
+
+.form-control{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;transition:.2s;background:#fafafa}
+.form-control:focus{outline:none;border-color:#667eea;background:#fff;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
+.form-control.is-invalid{border-color:#ef4444}
+.invalid-feedback{color:#ef4444;font-size:12px;margin-top:4px}
+
+.form-actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
+.btn-sm{padding:8px 12px;font-size:12px}
+.btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+.btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
+.btn-save{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;box-shadow:0 2px 4px rgba(102,126,234,.2)}
+.btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(102,126,234,.3)}
+.btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
+.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
+
+/* Анимации */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ========== АДАПТИВ ========== */
+@media (max-width:768px){
+  .search-form .form-grid,.form-grid{grid-template-columns:1fr}
+  .form-actions{flex-direction:column}
+  .btn{width:100%;justify-content:center}
+}
+</style>
+@endsection
 
 @push('scripts')
 <script>
@@ -613,14 +676,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         innerTrimSelect.innerHTML = '<option value="">— выберите —</option>';
-        config.inner_trim[category]?.forEach(v => {
+        (config.inner_trim[category] || []).forEach(v => {
             const opt = document.createElement('option');
             opt.value = v; opt.textContent = v;
             innerTrimSelect.appendChild(opt);
         });
 
         innerCoverSelect.innerHTML = '<option value="">— выберите —</option>';
-        config.inner_cover[category]?.forEach(v => {
+        (config.inner_cover[category] || []).forEach(v => {
             const opt = document.createElement('option');
             opt.value = v; opt.textContent = v;
             innerCoverSelect.appendChild(opt);
@@ -629,7 +692,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateGlass() {
         glassUnitSelect.innerHTML = '<option value="">— выберите —</option>';
-        config.glass[categorySelect.value]?.forEach(v => {
+        (config.glass[categorySelect.value] || []).forEach(v => {
             const opt = document.createElement('option');
             opt.value = v; opt.textContent = v;
             glassUnitSelect.appendChild(opt);
@@ -638,7 +701,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function updateLock() {
         lockSelect.innerHTML = '<option value="">— выберите —</option>';
-        config.lock[categorySelect.value]?.forEach(v => {
+        (config.lock[categorySelect.value] || []).forEach(v => {
             const opt = document.createElement('option');
             opt.value = v; opt.textContent = v;
             lockSelect.appendChild(opt);
@@ -651,14 +714,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const model = modelSelect.value;
         // Толщина стали
         const steelMap = { Lux: "1.8", Premium: "1.5", Comfort: "1.4" };
-        steelThicknessInput.value = steelMap[category] || "1.4";
+        if (steelThicknessInput) steelThicknessInput.value = steelMap[category] || "1.4";
         // Толщина полотна
         const fusion = fusionModels.includes(model);
         const canvasMap = fusion ? { Lux: 115, Premium: 100, Comfort: 90 } : { Lux: 100, Premium: 90, Comfort: 80 };
-        canvasThicknessInput.value = canvasMap[category] || 80;
+        if (canvasThicknessInput) canvasThicknessInput.value = canvasMap[category] || 80;
     }
 
     function updateExtra() {
+        if (!extraInput) return;
         extraInput.value = "";
         if (innerTrimSelect.value.includes('доплату')) extraInput.value += "внутренняя обшивка - шпон (доплата); ";
         if (innerCoverSelect.value.includes('доплату')) extraInput.value += innerCoverSelect.value + "; ";
@@ -689,6 +753,4 @@ document.addEventListener('DOMContentLoaded', function() {
     updateLock();
     updateThickness();
 });
-</script>
-@endpush
-@endsection
+</script>@endpush

@@ -7,6 +7,7 @@ use App\Models\Contract;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class RopController extends Controller
 {
@@ -175,5 +176,127 @@ class RopController extends Controller
         }]);
         
         return view('rop.managers.show', compact('manager'));
+    }
+
+    public function createManager()
+    {
+        $user = Auth::user();
+        $branch = $user->branch;
+        
+        if (!$branch) {
+            abort(403, 'РОП не привязан к филиалу.');
+        }
+
+        return view('rop.managers.create', compact('branch'));
+    }
+
+    public function storeManager(Request $request)
+    {
+        $user = Auth::user();
+        $branch = $user->branch;
+        
+        if (!$branch) {
+            abort(403, 'РОП не привязан к филиалу.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:manager',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+        $validated['branch_id'] = $branch->id;
+
+        User::create($validated);
+
+        return redirect()->route('rop.managers.index')->with('success', 'Менеджер создан успешно!');
+    }
+
+    public function editManager(User $manager)
+    {
+        $user = Auth::user();
+        
+        // Проверяем, что менеджер принадлежит филиалу РОП
+        if ($manager->branch_id !== $user->branch_id) {
+            abort(403, 'Доступ запрещен. Менеджер не принадлежит вашему филиалу.');
+        }
+
+        // Проверяем, что это действительно менеджер или РОП
+        if (!in_array($manager->role, ['manager', 'rop'])) {
+            abort(403, 'Доступ запрещен. Пользователь не является менеджером или РОП.');
+        }
+
+        $branch = $user->branch;
+        
+        return view('rop.managers.edit', compact('manager', 'branch'));
+    }
+
+    public function updateManager(Request $request, User $manager)
+    {
+        $user = Auth::user();
+        
+        // Проверяем, что менеджер принадлежит филиалу РОП
+        if ($manager->branch_id !== $user->branch_id) {
+            abort(403, 'Доступ запрещен. Менеджер не принадлежит вашему филиалу.');
+        }
+
+        // Проверяем, что это действительно менеджер или РОП
+        if (!in_array($manager->role, ['manager', 'rop'])) {
+            abort(403, 'Доступ запрещен. Пользователь не является менеджером или РОП.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $manager->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|in:manager,rop',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        // РОП может изменять только на роль менеджера, если текущий пользователь не РОП
+        if ($manager->role !== 'rop' && $validated['role'] === 'rop') {
+            abort(403, 'РОП может изменять только на роль менеджера.');
+        }
+
+        if (isset($validated['password']) && !empty($validated['password'])) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
+        }
+
+        // РОП не может изменить филиал менеджера
+        $validated['branch_id'] = $user->branch_id;
+
+        $manager->update($validated);
+
+        return redirect()->route('rop.managers.index')->with('success', 'Менеджер обновлен успешно!');
+    }
+
+    public function deleteManager(User $manager)
+    {
+        $user = Auth::user();
+        
+        // Проверяем, что менеджер принадлежит филиалу РОП
+        if ($manager->branch_id !== $user->branch_id) {
+            abort(403, 'Доступ запрещен. Менеджер не принадлежит вашему филиалу.');
+        }
+
+        // Проверяем, что это действительно менеджер или РОП
+        if (!in_array($manager->role, ['manager', 'rop'])) {
+            abort(403, 'Доступ запрещен. Пользователь не является менеджером или РОП.');
+        }
+
+        // РОП не может удалить самого себя
+        if ($manager->id === $user->id) {
+            return back()->with('error', 'Нельзя удалить самого себя!');
+        }
+
+        $managerName = $manager->name;
+        $manager->delete();
+
+        return redirect()->route('rop.managers.index')->with('success', "Менеджер '{$managerName}' удален успешно!");
     }
 }

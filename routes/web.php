@@ -36,10 +36,7 @@ Route::middleware(['auth', 'user-only'])->group(function () {
     // Общие маршруты договоров без прав на создание/редактирование
     Route::resource("contracts", ContractController::class)->only(["index", "show"]);
     
-    // Маршруты для профиля пользователя
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit/{id?}', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/{id?}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
 });
 
 // Общий logout маршрут для всех авторизованных пользователей
@@ -56,9 +53,6 @@ Route::middleware("auth")->group(function () {
 Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');
-    // Профиль
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     // Договоры: список/просмотр/редактирование своих
     Route::get('/contracts', [App\Http\Controllers\AdminController::class, 'contracts'])->name('contracts.index');
     Route::get('/contracts/create', [App\Http\Controllers\ContractController::class, 'create'])->name('contracts.create');
@@ -71,6 +65,12 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
     
+    // Настройки
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
+    Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    
     
 });
 
@@ -78,9 +78,6 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
 Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');
-    // Профиль
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
     // Договоры: список/просмотр/редактирование по филиалу
     Route::get('/contracts', [App\Http\Controllers\AdminController::class, 'contracts'])->name('contracts.index');
     Route::get('/contracts/create', [App\Http\Controllers\ContractController::class, 'create'])->name('contracts.create');
@@ -92,6 +89,24 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
+    
+    // Настройки
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
+    Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    
+    // Управление менеджерами своего филиала
+    Route::get('/managers', [App\Http\Controllers\RopController::class, 'managers'])->name('managers.index');
+    Route::get('/managers/create', [App\Http\Controllers\RopController::class, 'createManager'])->name('managers.create');
+    Route::post('/managers', [App\Http\Controllers\RopController::class, 'storeManager'])->name('managers.store');
+    Route::get('/managers/{manager}', [App\Http\Controllers\RopController::class, 'showManager'])->name('managers.show');
+    Route::get('/managers/{manager}/edit', [App\Http\Controllers\RopController::class, 'editManager'])->name('managers.edit');
+    Route::put('/managers/{manager}', [App\Http\Controllers\RopController::class, 'updateManager'])->name('managers.update');
+    Route::delete('/managers/{manager}', [App\Http\Controllers\RopController::class, 'deleteManager'])->name('managers.delete');
+    
+    // Управление пользователями своего филиала
+    Route::get('/users', [App\Http\Controllers\RopController::class, 'users'])->name('users.index');
 });
 
 // Админские маршруты (только для admin)
@@ -100,10 +115,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // Админский дашборд (только для admin)
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     
-    // Админские маршруты профиля
-    Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
-    Route::get('/profile/edit/{id?}', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/profile/{id?}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+
     
     // Админские страницы договоров
     Route::get('/contracts', [App\Http\Controllers\AdminController::class, 'contracts'])->name('contracts.index');
@@ -140,4 +152,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
+    
+    // Настройки
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
+    Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    Route::put('/settings/system', [App\Http\Controllers\SettingsController::class, 'systemSettings'])->name('settings.system');
 });
