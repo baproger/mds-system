@@ -31,3 +31,5 @@ public_html/storage
 public_html/hot
 .DS_Store
 Thumbs.db
+/backups
+/backups
