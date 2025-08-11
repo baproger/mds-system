@@ -600,8 +600,8 @@
 <style>
 /* Стили для создания договора в админской панели */
 .edit-branch-container {
-    padding: 24px;
-    background: #f8fafc;
+    /*padding: 24px;
+    background: #f8fafc; */
     min-height: 100vh;
     max-width: 1200px; /* как на странице списка договоров */
     margin: 0 auto;
