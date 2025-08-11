@@ -185,14 +185,14 @@
                                        value="{{ session('system_settings.company_phone') }}">
                             </div>
 
-                            <div class="form-group">
+                            <!--<div class="form-group">
                                 <label for="auto_logout_minutes" class="form-label">
                                     <i class="fas fa-hourglass-half"></i> Автовыход (мин)
                                 </label>
                                 <input id="auto_logout_minutes" name="auto_logout_minutes" type="number" min="5" max="480"
                                        class="form-control"
                                        value="{{ session('system_settings.auto_logout_minutes', 30) }}">
-                            </div>
+                            </div>-->
 
                             <div class="form-group">
                                 <label class="form-label">
