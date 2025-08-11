@@ -206,6 +206,65 @@
                 root.style.setProperty('--text-primary', '#f9fafb');
                 root.style.setProperty('--text-secondary', '#d1d5db');
                 root.style.setProperty('--border-color', '#374151');
+                
+                // Применяем темную тему ко всем элементам
+                document.body.style.backgroundColor = '#111827';
+                document.body.style.color = '#f9fafb';
+                
+                // Обновляем все карточки и секции
+                const cards = document.querySelectorAll('.form-section, .card, .stat-card, .settings-card, .personnel-item, .contract-item, .branch-item, .user-item, .manager-item');
+                cards.forEach(card => {
+                    card.style.backgroundColor = '#1f2937';
+                    card.style.borderColor = '#374151';
+                    card.style.color = '#f9fafb';
+                });
+                
+                // Обновляем заголовки
+                const headers = document.querySelectorAll('.section-header, .page-header, .form-header, .card-header');
+                headers.forEach(header => {
+                    header.style.borderColor = '#374151';
+                    header.style.color = '#f9fafb';
+                });
+                
+                // Обновляем тексты
+                const titles = document.querySelectorAll('.page-title, .section-title, .card-title, .form-title');
+                titles.forEach(title => {
+                    title.style.color = '#f9fafb';
+                });
+                
+                const subtitles = document.querySelectorAll('.page-subtitle, .section-subtitle, .form-subtitle, .text-muted');
+                subtitles.forEach(subtitle => {
+                    subtitle.style.color = '#d1d5db';
+                });
+                
+                // Обновляем статистические карточки
+                const statCards = document.querySelectorAll('.stat-card');
+                statCards.forEach(card => {
+                    card.style.background = 'linear-gradient(135deg, #1f2937 0%, #374151 100%)';
+                    card.style.borderColor = '#374151';
+                });
+                
+                const statNumbers = document.querySelectorAll('.stat-number');
+                statNumbers.forEach(number => {
+                    number.style.color = '#f9fafb';
+                });
+                
+                const statLabels = document.querySelectorAll('.stat-label');
+                statLabels.forEach(label => {
+                    label.style.color = '#d1d5db';
+                });
+                
+                // Обновляем иконки
+                const icons = document.querySelectorAll('.fas, .fa');
+                icons.forEach(icon => {
+                    icon.style.color = '#f9fafb';
+                });
+                
+                const statIcons = document.querySelectorAll('.stat-icon');
+                statIcons.forEach(icon => {
+                    icon.style.color = '#667eea';
+                });
+                
             } else {
                 root.style.setProperty('--bg-primary', '#ffffff');
                 root.style.setProperty('--bg-secondary', '#f8f9fa');
@@ -213,6 +272,64 @@
                 root.style.setProperty('--text-primary', '#111827');
                 root.style.setProperty('--text-secondary', '#6b7280');
                 root.style.setProperty('--border-color', '#e5e7eb');
+                
+                // Возвращаем светлую тему
+                document.body.style.backgroundColor = '#ffffff';
+                document.body.style.color = '#111827';
+                
+                // Обновляем все карточки и секции
+                const cards = document.querySelectorAll('.form-section, .card, .stat-card, .settings-card, .personnel-item, .contract-item, .branch-item, .user-item, .manager-item');
+                cards.forEach(card => {
+                    card.style.backgroundColor = '#ffffff';
+                    card.style.borderColor = '#e5e7eb';
+                    card.style.color = '#111827';
+                });
+                
+                // Обновляем заголовки
+                const headers = document.querySelectorAll('.section-header, .page-header, .form-header, .card-header');
+                headers.forEach(header => {
+                    header.style.borderColor = '#e5e7eb';
+                    header.style.color = '#111827';
+                });
+                
+                // Обновляем тексты
+                const titles = document.querySelectorAll('.page-title, .section-title, .card-title, .form-title');
+                titles.forEach(title => {
+                    title.style.color = '#111827';
+                });
+                
+                const subtitles = document.querySelectorAll('.page-subtitle, .section-subtitle, .form-subtitle, .text-muted');
+                subtitles.forEach(subtitle => {
+                    subtitle.style.color = '#6b7280';
+                });
+                
+                // Обновляем статистические карточки
+                const statCards = document.querySelectorAll('.stat-card');
+                statCards.forEach(card => {
+                    card.style.background = 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)';
+                    card.style.borderColor = '#e2e8f0';
+                });
+                
+                const statNumbers = document.querySelectorAll('.stat-number');
+                statNumbers.forEach(number => {
+                    number.style.color = '#111827';
+                });
+                
+                const statLabels = document.querySelectorAll('.stat-label');
+                statLabels.forEach(label => {
+                    label.style.color = '#6b7280';
+                });
+                
+                // Обновляем иконки
+                const icons = document.querySelectorAll('.fas, .fa');
+                icons.forEach(icon => {
+                    icon.style.color = '#111827';
+                });
+                
+                const statIcons = document.querySelectorAll('.stat-icon');
+                statIcons.forEach(icon => {
+                    icon.style.color = '#667eea';
+                });
             }
         }
 
