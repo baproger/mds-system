@@ -142,50 +142,6 @@
                     </form>
                 </div>
 
-                <!-- Интерфейс -->
-                <div class="form-section">
-                    <div class="section-header">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            <i class="fas fa-palette"></i>
-                            <span>Интерфейс</span>
-                        </div>
-                        <span class="form-text">Персонализация внешнего вида</span>
-                    </div>
-
-                    <form action="{{ route(Auth::user()->role . '.settings.preferences') }}" method="POST" class="search-form">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="theme" class="form-label">
-                                    <i class="fas fa-adjust"></i> Тема оформления
-                                </label>
-                                <select id="theme" name="theme" class="form-control">
-                                    <option value="light" {{ session('user_preferences.theme', 'light') === 'light' ? 'selected' : '' }}>Светлая</option>
-                                    <option value="dark"  {{ session('user_preferences.theme') === 'dark' ? 'selected' : '' }}>Тёмная</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="language" class="form-label">
-                                    <i class="fas fa-language"></i> Язык интерфейса
-                                </label>
-                                <select id="language" name="language" class="form-control">
-                                    <option value="ru" {{ session('user_preferences.language', 'ru') === 'ru' ? 'selected' : '' }}>Русский</option>
-                                    <option value="en" {{ session('user_preferences.language') === 'en' ? 'selected' : '' }}>English</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-actions">
-                            <button type="submit" class="btn btn-save">
-                                <i class="fas fa-save"></i> Сохранить настройки
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
                 @if(Auth::user()->role === 'admin')
                 <!-- Система (только админ) -->
                 <div class="form-section">

@@ -117,6 +117,14 @@
             </div>
         </div>
 
+        <!-- Theme Switcher -->
+        <div class="theme-switcher-top">
+            <button type="button" class="theme-toggle" onclick="toggleTheme()" title="Переключить тему">
+                <i class="fas fa-sun theme-icon-light"></i>
+                <i class="fas fa-moon theme-icon-dark"></i>
+            </button>
+        </div>
+
         <!-- Main content -->
         <div class="main-content">
             @if(session('success'))
@@ -158,6 +166,63 @@
                 }, 300);
             });
         }, 5000);
+
+        // Theme switcher
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Обновляем иконку
+            updateThemeIcon(newTheme);
+            
+            // Применяем стили темы
+            applyThemeStyles(newTheme);
+        }
+
+        function updateThemeIcon(theme) {
+            const lightIcon = document.querySelector('.theme-icon-light');
+            const darkIcon = document.querySelector('.theme-icon-dark');
+            
+            if (theme === 'dark') {
+                lightIcon.style.display = 'none';
+                darkIcon.style.display = 'block';
+            } else {
+                lightIcon.style.display = 'block';
+                darkIcon.style.display = 'none';
+            }
+        }
+
+        function applyThemeStyles(theme) {
+            const root = document.documentElement;
+            
+            if (theme === 'dark') {
+                root.style.setProperty('--bg-primary', '#111827');
+                root.style.setProperty('--bg-secondary', '#1f2937');
+                root.style.setProperty('--bg-tertiary', '#374151');
+                root.style.setProperty('--text-primary', '#f9fafb');
+                root.style.setProperty('--text-secondary', '#d1d5db');
+                root.style.setProperty('--border-color', '#374151');
+            } else {
+                root.style.setProperty('--bg-primary', '#ffffff');
+                root.style.setProperty('--bg-secondary', '#f8f9fa');
+                root.style.setProperty('--bg-tertiary', '#f1f3f4');
+                root.style.setProperty('--text-primary', '#111827');
+                root.style.setProperty('--text-secondary', '#6b7280');
+                root.style.setProperty('--border-color', '#e5e7eb');
+            }
+        }
+
+        // Инициализация темы при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            applyThemeStyles(savedTheme);
+        });
     </script>
 
     <!-- Модальное окно подтверждения выхода -->
