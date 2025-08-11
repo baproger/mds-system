@@ -204,10 +204,16 @@
                                         <a href="{{ route('admin.managers.edit', $manager) }}" class="btn btn-sm btn-save" title="Редактировать">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-danger" title="Удалить" 
-                                                onclick="showDeleteModal('{{ $manager->id }}', '{{ $manager->name }}', 'manager')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        @if($manager->id !== Auth::id())
+                                            <button type="button" class="btn btn-sm btn-danger" title="Удалить" 
+                                                    onclick="showDeleteModal('{{ $manager->id }}', '{{ $manager->name }}', 'manager')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-sm btn-secondary" title="Нельзя удалить себя" disabled>
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach

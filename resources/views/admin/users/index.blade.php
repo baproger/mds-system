@@ -199,10 +199,16 @@
                                         <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-sm btn-save" title="Редактировать">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-sm btn-danger" title="Удалить" 
-                                                onclick="showDeleteModal('{{ $user->id }}', '{{ $user->name }}', 'user')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        @if($user->id !== Auth::id())
+                                            <button type="button" class="btn btn-sm btn-danger" title="Удалить" 
+                                                    onclick="showDeleteModal('{{ $user->id }}', '{{ $user->name }}', 'user')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        @else
+                                            <button type="button" class="btn btn-sm btn-secondary" title="Нельзя удалить себя" disabled>
+                                                <i class="fas fa-ban"></i>
+                                            </button>
+                                        @endif
                                         @if($user->contracts_count > 0)
                                             <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i><span style="margin-left:4px;">{{ $user->contracts_count }}</span><span style="margin-left:6px; opacity:0.9;">договоров</span></span>
                                         @endif

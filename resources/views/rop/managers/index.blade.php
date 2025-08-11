@@ -185,6 +185,10 @@
                                     onclick="showDeleteModal('{{ $manager->id }}', '{{ $manager->name }}')">
                                     <i class="fas fa-trash"></i>
                                 </button>
+                            @else
+                                <button type="button" class="btn btn-sm btn-secondary" title="Нельзя удалить себя" disabled>
+                                    <i class="fas fa-ban"></i>
+                                </button>
                             @endif
                         </div>
                     </div>
