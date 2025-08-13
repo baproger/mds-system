@@ -390,6 +390,9 @@ class AdminController extends Controller
             $query = Contract::whereHas('user', function($q) use ($user) {
                 $q->where('branch_id', $user->branch_id);
             })->with(['user', 'branch']);
+        } elseif ($user->role === 'accountant') {
+            // Бухгалтер видит все договоры для одобрения
+            $query = Contract::with(['user', 'branch']);
         }
 
         // Поиск

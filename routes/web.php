@@ -17,6 +17,8 @@ Route::get("/", function () {
             return redirect()->route('manager.dashboard');
         } elseif (Auth::user()->role === 'rop') {
             return redirect()->route('rop.dashboard');
+        } elseif (Auth::user()->role === 'accountant') {
+            return redirect()->route('accountant.dashboard');
         }
         return redirect()->route("contracts.index");
     }
@@ -183,11 +185,28 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
 });
 
-// Workflow маршруты для бухгалтеров
+// Роуты для бухгалтеров (префикс /accountant)
 Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', [ManagerController::class, 'dashboard'])->name('dashboard');
+    
+    // Договоры: список/просмотр всех договоров
+    Route::get('/contracts', [App\Http\Controllers\AdminController::class, 'contracts'])->name('contracts.index');
+    Route::get('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'show'])->name('contracts.show');
+    
+    // Workflow маршруты для бухгалтеров
     Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
     Route::post('/contracts/{contract}/reject', [ContractWorkflowController::class, 'reject'])->name('contracts.reject');
     Route::post('/contracts/{contract}/hold', [ContractWorkflowController::class, 'hold'])->name('contracts.hold');
     Route::post('/contracts/{contract}/return', [ContractWorkflowController::class, 'returnForRevision'])->name('contracts.return');
     Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+    
+    // Калькулятор дверей
+    Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
+    
+    // Настройки
+    Route::get('/settings', [App\Http\Controllers\SettingsController::class, 'index'])->name('settings.index');
+    Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
+    Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
+    Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
 });

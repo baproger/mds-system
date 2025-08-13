@@ -25,6 +25,8 @@ class ContractController extends Controller
         } elseif ($user->role === 'rop') {
             // РОП видит все договоры своего филиала
             $query->where('branch_id', $user->branch_id);
+        } elseif ($user->role === 'accountant') {
+            // Бухгалтер видит все договоры для одобрения
         } elseif ($user->role === 'admin') {
             // Админ видит все договоры
         } else {
@@ -183,6 +185,8 @@ class ContractController extends Controller
             if ($contract->branch_id !== $user->branch_id) {
                 abort(403, 'Доступ запрещен. Договор не принадлежит вашему филиалу.');
             }
+        } elseif ($user->role === 'accountant') {
+            // Бухгалтер может видеть все договоры для одобрения
         } elseif ($user->role !== 'admin') {
             abort(403);
         }
