@@ -293,7 +293,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111827;
+    color: #686f7d;
     margin: 0;
 }
 
@@ -377,7 +377,7 @@
 .stat-number {
     font-size: 16px;
     font-weight: 600;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 4px;
 }
 

@@ -596,7 +596,7 @@
 }
 
 .form-label i { 
-    color: #6b7280; 
+    color: #5a8fe6; 
     font-size: 14px; 
 }
 
