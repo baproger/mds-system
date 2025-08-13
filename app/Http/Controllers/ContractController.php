@@ -6,6 +6,7 @@ use App\Models\Contract;
 use App\Models\Branch;
 use App\Services\ContractService;
 use App\Services\ContractCalculationService;
+use App\Services\ContractStateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -322,7 +323,25 @@ class ContractController extends Controller
             $validated['attachment_path'] = $request->file('attachment')->store('contracts/attachments', 'public');
         }
 
+        // Логируем изменения перед обновлением
+        $changes = [];
+        foreach ($validated as $field => $newValue) {
+            if ($contract->getAttribute($field) != $newValue) {
+                $changes[$field] = [
+                    'old' => $contract->getAttribute($field),
+                    'new' => $newValue
+                ];
+            }
+        }
+
+        // Обновляем договор
         $contract->update($validated);
+
+        // Логируем изменения если они есть
+        if (!empty($changes)) {
+            $stateService = new ContractStateService();
+            $stateService->logChanges($contract, $changes, $user);
+        }
 
         // Перенаправляем в зависимости от маршрута
         if (request()->routeIs('admin.*')) {

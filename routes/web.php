@@ -5,6 +5,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminManagerController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\ContractWorkflowController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -159,4 +160,34 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
     Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
     Route::put('/settings/system', [App\Http\Controllers\SettingsController::class, 'systemSettings'])->name('settings.system');
+    
+    // Workflow маршруты для админов
+    Route::post('/contracts/{contract}/submit-to-rop', [ContractWorkflowController::class, 'submitToRop'])->name('contracts.submit-to-rop');
+    Route::post('/contracts/{contract}/submit-to-accountant', [ContractWorkflowController::class, 'submitToAccountant'])->name('contracts.submit-to-accountant');
+    Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
+    Route::post('/contracts/{contract}/reject', [ContractWorkflowController::class, 'reject'])->name('contracts.reject');
+    Route::post('/contracts/{contract}/hold', [ContractWorkflowController::class, 'hold'])->name('contracts.hold');
+    Route::post('/contracts/{contract}/return', [ContractWorkflowController::class, 'returnForRevision'])->name('contracts.return');
+    Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+});
+
+// Workflow маршруты для менеджеров
+Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->group(function () {
+    Route::post('/contracts/{contract}/submit-to-rop', [ContractWorkflowController::class, 'submitToRop'])->name('contracts.submit-to-rop');
+    Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+});
+
+// Workflow маршруты для РОП
+Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function () {
+    Route::post('/contracts/{contract}/submit-to-accountant', [ContractWorkflowController::class, 'submitToAccountant'])->name('contracts.submit-to-accountant');
+    Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+});
+
+// Workflow маршруты для бухгалтеров
+Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(function () {
+    Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
+    Route::post('/contracts/{contract}/reject', [ContractWorkflowController::class, 'reject'])->name('contracts.reject');
+    Route::post('/contracts/{contract}/hold', [ContractWorkflowController::class, 'hold'])->name('contracts.hold');
+    Route::post('/contracts/{contract}/return', [ContractWorkflowController::class, 'returnForRevision'])->name('contracts.return');
+    Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
 });

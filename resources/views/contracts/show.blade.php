@@ -834,6 +834,25 @@ body .container-fluid {
     font-weight: 600;
 }
 
+/* Секция статуса договора */
+.contract-status-section {
+    margin-top: 15px;
+}
+
+/* Секция workflow */
+.workflow-section {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e9ecef;
+}
+
+.workflow-content {
+    padding: 20px 0;
+}
+
 /* Секция действий */
 .actions-section {
     background: white;
@@ -1066,6 +1085,9 @@ body .container-fluid {
             <div class="header-text">
                 <h1 class="page-title">Договор №{{ $contract->contract_number }}</h1>
                 <p class="page-subtitle">Детальная информация о договоре</p>
+                <div class="contract-status-section">
+                    <x-contract-status :contract="$contract" />
+                </div>
             </div>
         </div>
         <div class="header-actions">
@@ -1131,6 +1153,17 @@ body .container-fluid {
                     <div class="stat-label">МЕНЕДЖЕР</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Workflow Actions -->
+    <div class="workflow-section">
+        <div class="section-header">
+            <i class="fas fa-cogs"></i>
+            <span>Действия с договором</span>
+        </div>
+        <div class="workflow-content">
+            <x-workflow-actions :contract="$contract" />
         </div>
     </div>
 
