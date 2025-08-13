@@ -160,14 +160,14 @@
 }
 
 .btn-gradient-blue {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     border: none;
     color: white;
     font-weight: 600;
 }
 
 .btn-gradient-blue:hover {
-    filter: brightness(1.1);
+    .btn i { color: #fff !important; }    filter: brightness(1.1);
     color: white;
 }
 </style>

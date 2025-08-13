@@ -21,7 +21,7 @@
         
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -67,7 +67,7 @@
         }
         
         .btn {
-            padding: 1rem 2rem;
+    .btn i { color: #fff !important; }            padding: 1rem 2rem;
             border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
@@ -78,25 +78,25 @@
         }
         
         .btn-primary {
-            background: white;
-            color: #667eea;
+    .btn i { color: #fff !important; }            background: white;
+            color: #1ba4e9;
             border: 2px solid transparent;
         }
         
         .btn-primary:hover {
-            transform: translateY(-2px);
+    .btn i { color: #fff !important; }            transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             color: #5a67d8;
         }
         
         .btn-secondary {
-            background: transparent;
+    .btn i { color: #fff !important; }            background: transparent;
             color: white;
             border: 2px solid rgba(255, 255, 255, 0.3);
         }
         
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
+    .btn i { color: #fff !important; }            background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-2px);
         }

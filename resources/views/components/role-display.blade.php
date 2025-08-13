@@ -143,7 +143,7 @@
 }
 
 .sales-icon {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
 }
 
 .admin-icon {

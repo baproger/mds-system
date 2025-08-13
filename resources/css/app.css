@@ -1,8 +1,8 @@
 /* ===== CSS ПЕРЕМЕННЫЕ ДЛЯ БЫСТРОГО ИЗМЕНЕНИЯ ДИЗАЙНА ===== */
 :root {
     /* Основные цвета */
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
+    --primary-color: #1ba4e9;
+    --secondary-color: #ac76e3;
     --accent-color: #f093fb;
     --success-color: #10b981;
     --warning-color: #f59e0b;
@@ -978,7 +978,7 @@ body {
     width: 50px;
     height: 50px;
     border-radius: var(--radius-md);
-    background: var(--accent-primary);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1637,7 +1637,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 50%, #f093fb 100%);
     opacity: 0.9;
 }
 
@@ -1739,15 +1739,9 @@ body {
 }
 
 .auth-brand-icon {
-    width: 60px;
-    height: 60px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .auth-brand-icon i {
@@ -1926,13 +1920,13 @@ body {
 }
 
 .auth-form-input:focus {
-    border-color: #667eea;
+    border-color: #1ba4e9;
     box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
     transform: translateY(-1px);
 }
 
 .auth-form-input:focus + .auth-input-icon {
-    color: #667eea;
+    color: #1ba4e9;
 }
 
 .auth-form-input::placeholder {
@@ -1992,8 +1986,8 @@ body {
 }
 
 .auth-checkbox input[type="checkbox"]:checked + .auth-checkbox-mark {
-    background: #667eea;
-    border-color: #667eea;
+    background: #1ba4e9;
+    border-color: #1ba4e9;
 }
 
 .auth-checkbox input[type="checkbox"]:checked + .auth-checkbox-mark::after {
@@ -2017,7 +2011,7 @@ body {
 .auth-form-button {
     width: 100%;
     padding: 16px 24px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     border: none;
     border-radius: 12px;
@@ -2071,14 +2065,14 @@ body {
 }
 
 .auth-form-link {
-    color: #667eea;
+    color: #1ba4e9;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
 }
 
 .auth-form-link:hover {
-    color: #764ba2;
+    color: #ac76e3;
 }
 
 /* Адаптивность */
@@ -2952,6 +2946,115 @@ body {
     }
 }
 
+/* Иконки в кнопках с градиентом */
+.btn-save i,
+.btn-danger i,
+.btn-gradient-red i,
+.btn-gradient-blue i,
+.btn-gradient-green i,
+.btn-gradient-indigo i,
+.modal-btn-delete i {
+    color: #fff !important;
+}
 
+/* Общие стили для иконок заголовков */
+.header-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 20px;
+}
 
+/* Общие стили для кнопок */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: .2s;
+}
 
+.btn-save {
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(27,164,233,.2);
+}
+
+.btn-save:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(27,164,233,.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(239,68,68,.2);
+}
+
+.btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(239,68,68,.3);
+}
+
+/* Общие стили для заголовков страниц */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #374151;
+    margin: 0;
+}
+
+.page-subtitle {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 4px 0 0 0;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Общие стили для секций */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f3f4f6;
+    font-weight: 600;
+    font-size: 16px;
+    color: #374151;
+}
+
+.section-header i {
+    color: #1ba4e9;
+    font-size: 18px;
+}

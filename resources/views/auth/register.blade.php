@@ -21,21 +21,15 @@
         <!-- Левая секция - Информация -->
         <div class="auth-info-section">
             <div class="auth-info-content">
-                <div class="auth-brand">
+            <div class="auth-brand">
                     <div class="auth-brand-icon">
                         <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="60" class="me-3">
                     </div>
-                    <div class="auth-brand-text">
-                        <h1 class="auth-brand-title">MDS Doors</h1>
-                        <p class="auth-brand-subtitle">Система управления договорами</p>
-                    </div>
                 </div>
-                
                 <div class="auth-hero">
-                    <h2 class="auth-hero-title">Держите ваш бизнес организованным</h2>
-                    <p class="auth-hero-subtitle">Профессиональная система управления договорами для современного бизнеса</p>
+                    <h2 class="auth-hero-title">Добро пожаловать</h2>
+                    <p class="auth-hero-subtitle">Регистрируйте в систему для управления договорами и контроля бизнес-процессов</p>
                 </div>
-                
                 <div class="auth-features">
                     <div class="auth-feature">
                         <div class="auth-feature-icon">
@@ -46,7 +40,6 @@
                             <p>Ваши данные защищены современными технологиями</p>
                         </div>
                     </div>
-                    
                     <div class="auth-feature">
                         <div class="auth-feature-icon">
                             <i class="fas fa-chart-line"></i>
@@ -56,7 +49,6 @@
                             <p>Подробная аналитика и отчеты по договорам</p>
                         </div>
                     </div>
-                    
                     <div class="auth-feature">
                         <div class="auth-feature-icon">
                             <i class="fas fa-users"></i>
@@ -69,13 +61,12 @@
                 </div>
             </div>
         </div>
-
         <!-- Правая секция - Форма -->
         <div class="auth-form-section">
             <div class="auth-form-wrapper">
                 <div class="auth-form-header">
                     <h2 class="auth-form-title">Создать аккаунт</h2>
-                    <p class="auth-form-subtitle">Присоединяйтесь к тысячам компаний, которые уже используют нашу систему</p>
+                    <p class="auth-form-subtitle">Присоединяйтесь к сообществу, где успех — не случайность.</p>
                 </div>
 
                 <form method="POST" action="{{ route('register') }}" class="auth-form">

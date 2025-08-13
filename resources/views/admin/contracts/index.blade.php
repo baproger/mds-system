@@ -219,8 +219,6 @@
                                     <div class="personnel-content">
                                         <div class="personnel-title">{{ $contract->contract_number }}</div>
                                         <div class="personnel-list">
-                                            <span class="personnel-tag client-tag"><i class="fas fa-user tag-icon"></i>{{ $contract->client }}</span>
-                                            <span class="personnel-tag phone-tag"><i class="fas fa-phone tag-icon"></i>{{ $contract->phone }}</span>
                                             <span class="personnel-tag branch-tag"><i class="fas fa-building tag-icon"></i>{{ $contract->branch->name }}</span>
                                             <span class="personnel-tag manager-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $contract->user->name }}</span>
                                             <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i>{{ $contract->date->format('d.m.Y') }}</span>
@@ -283,7 +281,7 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -328,7 +326,7 @@
 }
 
 .section-header i {
-    color: #667eea;
+    color:rgb(255, 255, 255);
     font-size: 18px;
 }
 
@@ -363,7 +361,7 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -428,7 +426,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1ba4e9;
     background: white;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -545,7 +543,7 @@
 }
 
 .btn {
-    display: inline-flex;
+    .btn i { color: #fff !important; }    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
@@ -559,29 +557,29 @@
 }
 
 .btn-sm {
-    padding: 8px 12px;
+    .btn i { color: #fff !important; }    padding: 8px 12px;
     font-size: 12px;
 }
 
 .btn-cancel {
-    background: #f3f4f6;
+    .btn i { color: #fff !important; }    background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
 .btn-cancel:hover {
-    background: #e5e7eb;
+    .btn i { color: #fff !important; }    background: #e5e7eb;
     transform: translateY(-1px);
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .btn-save:hover {
-    transform: translateY(-1px);
+    .btn i { color: #fff !important; }    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
@@ -813,13 +811,13 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 /* Кнопка удаления */
 .btn-danger {
-    background: #ef4444;
+    .btn i { color: #fff !important; }    background: #ef4444;
     color: white;
     border: 1px solid #ef4444;
 }
 
 .btn-danger:hover {
-    background: #dc2626;
+    .btn i { color: #fff !important; }    background: #dc2626;
     color: white;
     border-color: #dc2626;
 }

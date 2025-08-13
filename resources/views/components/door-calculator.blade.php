@@ -152,7 +152,7 @@
 .form-select:focus,
 .form-input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1ba4e9;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -188,11 +188,11 @@
 .form-checkbox {
     width: 1.25rem;
     height: 1.25rem;
-    accent-color: #667eea;
+    accent-color: #1ba4e9;
 }
 
 .calculate-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     border: none;
     padding: 1rem 2rem;

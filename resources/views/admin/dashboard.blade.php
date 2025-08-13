@@ -49,7 +49,7 @@
                         
                         <div class="stat-card">
                             <div class="stat-icon">
-                                <i class="fas fa-user-tie"></i>
+                                <i class="fas fa-user-tie tag-icon"></i>
                             </div>
                             <div class="stat-content">
                                 <div class="stat-number">{{ $stats['total_sales_staff'] }}</div>
@@ -187,9 +187,9 @@
                                 <div class="personnel-content">
                                     <div class="personnel-title">{{ $branch->name }}</div>
                                     <div class="personnel-list">
-                                        <span class="personnel-tag branch-tag"><i class="fas fa-users"></i>{{ $branch->users_count }} пользователей</span>
-                                        <span class="personnel-tag manager-tag"><i class="fas fa-user-tie"></i>{{ $branch->managers_count ?? 0 }} продавцов</span>
-                                        <span class="personnel-tag contract-tag"><i class="fas fa-file-contract"></i>{{ $branch->contracts_count }} договоров</span>
+                                        <span class="personnel-tag branch-tag"><i class="fas fa-users tag-icon"></i>{{ $branch->users_count }} пользователей</span>
+                                        <span class="personnel-tag manager-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $branch->managers_count ?? 0 }} продавцов</span>
+                                        <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i>{{ $branch->contracts_count }} договоров</span>
                                         <span class="personnel-tag code-tag">{{ $branch->code }}</span>
                                     </div>
                                 </div>
@@ -213,10 +213,10 @@
                                 <div class="personnel-content">
                                     <div class="personnel-title">{{ $branch->name }}</div>
                                     <div class="personnel-list">
-                                        <span class="personnel-tag contract-tag">{{ $branch->contracts_count }} моих договоров</span>
-                                        <span class="personnel-tag code-tag">{{ $branch->code }}</span>
+                                        <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i>{{ $branch->contracts_count }} моих договоров</span>
+                                        <span class="personnel-tag code-tag"><i class="fas fa-hashtag tag-icon"></i>{{ $branch->code }}</span>
                                         @if(isset($stats['last_contract_date']) && $stats['last_contract_date'])
-                                            <span class="personnel-tag date-tag">Последний: {{ $stats['last_contract_date']->format('d.m.Y') }}</span>
+                                            <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i>Последний: {{ $stats['last_contract_date']->format('d.m.Y') }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -308,32 +308,34 @@
                 @endif
 
                 @if(Auth::user()->role === 'admin')
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-user-tie"></i>
-                        <span>Менеджеры по филиалам</span>
-                    </div>
-                    
-                    <div class="personnel-section">
-                        @foreach(App\Models\Branch::with(['users' => function($q){ $q->where('role','manager')->withCount('contracts'); }])->get() as $branch)
-                            <div class="personnel-item branch-item">
-                                <div class="personnel-icon"><i class="fas fa-building"></i></div>
-                                <div class="personnel-content">
-                                    <div class="personnel-title">{{ $branch->name }}</div>
-                                    @if($branch->users->count() > 0)
-                                        <div class="personnel-list" style="width:100%">
-                                            @foreach($branch->users as $manager)
-                                                <span class="personnel-tag manager-tag" title="Договоров: {{ $manager->contracts_count }}">{{ $manager->name }}</span>
-                                            @endforeach
-                                        </div>
-                                    @else
-                                        <div class="personnel-list"><span class="personnel-tag">Нет менеджеров</span></div>
-                                    @endif
-                                </div>
+                    @foreach(App\Models\Branch::with(['users' => function($q){ $q->where('role','manager')->withCount('contracts'); }])->get() as $branch)
+                        @if($branch->users->count() > 0)
+                        <div class="form-section">
+                            <div class="section-header">
+                                <i class="fas fa-user-tie"></i>
+                                <span>Менеджеры филиала "{{ $branch->name }}"</span>
                             </div>
-                        @endforeach
-                    </div>
-                </div>
+                            
+                            <div class="personnel-section">
+                                @foreach($branch->users as $manager)
+                                    <div class="personnel-item manager-item">
+                                        <div class="personnel-icon">
+                                            <i class="fas fa-user-tie"></i>
+                                        </div>
+                                        <div class="personnel-content">
+                                            <div class="personnel-title">{{ $manager->name }}</div>
+                                            <div class="personnel-list">
+                                                <span class="personnel-tag contract-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $manager->contracts_count }} договоров</span>
+                                                <span class="personnel-tag branch-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $branch->name }}</span>
+                                                <span class="personnel-tag code-tag"><i class="fas fa-user-tie tag-icon"></i>{{ $branch->code }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        @endif
+                    @endforeach
                 @endif
             </div>
         </div>
@@ -362,7 +364,7 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -374,7 +376,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin: 0;
 }
 
@@ -406,7 +408,7 @@
 }
 
 .section-header i {
-    color: #667eea;
+    color:rgb(255, 255, 255);
     font-size: 18px;
 }
 
@@ -436,7 +438,7 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -452,7 +454,7 @@
 .stat-number {
     font-size: 16px;
     font-weight: 600;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 4px;
 }
 
@@ -478,6 +480,7 @@
     border-radius: 8px;
     border: 1px solid #f0f0f0;
     transition: all 0.2s ease;
+    gap: 6px;
 }
 
 .personnel-item:hover {
@@ -505,6 +508,11 @@
 .contract-item .personnel-icon {
     background: #f0fdf4;
     color: #166534;
+}
+
+.manager-item .personnel-icon {
+    background: #fef3c7;
+    color: #92400e;
 }
 
 .personnel-content {
@@ -581,7 +589,7 @@
 
 .manager-tag {
     background: #ffffff;
-    color: #111827;
+    color: #6b7280;
     border-color: #0f172a;
 }
 

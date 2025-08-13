@@ -23,7 +23,7 @@
                     <div class="calculator-card">
                         <!-- ЛОГОТИП 
                         <div class="logo-container">
-                            <img src="https://calc.mds-doors.kz/uploads/logo.png" alt="MDS Doors" class="logo">
+                            <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" class="logo">
                         </div>-->
 
                         <form id="calculatorForm" class="calculator-form">
@@ -147,7 +147,7 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -159,7 +159,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin: 0;
 }
 
@@ -211,7 +211,7 @@
 }
 
 .form-label i {
-    color: #667eea;
+    color: #1ba4e9;
     font-size: 16px;
 }
 
@@ -227,7 +227,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1ba4e9;
     background: white;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -250,14 +250,14 @@
 }
 
 .checkbox-container:hover {
-    border-color: #667eea;
+    border-color: #1ba4e9;
     background: white;
 }
 
 .form-checkbox {
     width: 18px;
     height: 18px;
-    accent-color: #667eea;
+    accent-color: #1ba4e9;
     cursor: pointer;
 }
 
@@ -275,7 +275,7 @@
 }
 
 .btn-calculate {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     border: none;
     padding: 16px 24px;
@@ -292,7 +292,7 @@
 }
 
 .btn-calculate:hover {
-    transform: translateY(-1px);
+    .btn i { color: #fff !important; }    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
@@ -319,7 +319,7 @@
 .result-header-left { display: flex; align-items: center; gap: 8px; }
 
 .btn-copy {
-    background: rgba(255,255,255,0.15);
+    .btn i { color: #fff !important; }    background: rgba(255,255,255,0.15);
     color: #fff;
     border: 1px solid rgba(255,255,255,0.3);
     padding: 8px 12px;
@@ -334,7 +334,7 @@
 }
 
 .btn-copy:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
-
+    .btn i { color: #fff !important; }
 .result-content {
     padding: 24px;
     color: #155724;

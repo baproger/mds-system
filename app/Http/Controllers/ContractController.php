@@ -48,7 +48,7 @@ class ContractController extends Controller
         $calculationService = new ContractCalculationService();
         
         $branches = Branch::all();
-        $managers = ['Самал','Арман','Даулет','Зухра','Жанерке','Арай','Ербол','Тоқмұсбек','Сымбат'];
+        $managers = ['Самал', 'Арман', 'Даулет', 'Зухра', 'Фатима', 'Арай', 'Ербол', 'Тоқмұсбек', 'Сымбат', 'Алия', 'Лайла', 'Абылай'];
         $price = $calculationService->getPrice();
         $fusionModels = $calculationService->getFusionModels();
         $userBranch = Auth::user()->branch;

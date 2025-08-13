@@ -129,7 +129,6 @@
                             <div class="contract-title">{{ $contract->contract_number }}</div>
                             <div class="contract-details">
                                 <span class="contract-tag client-tag">{{ $contract->client }}</span>
-                                <span class="contract-tag phone-tag">{{ $contract->phone }}</span>
                                 <span class="contract-tag date-tag">{{ $contract->date->format('d.m.Y') }}</span>
                                 <span class="contract-tag amount-tag">{{ number_format($contract->order_total) }} ₸</span>
                                 @if($contract->branch)
@@ -194,7 +193,7 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -206,7 +205,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin: 0;
 }
 
@@ -251,7 +250,7 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -267,7 +266,7 @@
 .stat-number {
     font-size: 24px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 4px;
 }
 
@@ -304,7 +303,7 @@
 }
 
 .search-header i {
-    color: #667eea;
+    color: #1ba4e9;
     font-size: 18px;
 }
 
@@ -346,7 +345,7 @@
 
 .search-input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1ba4e9;
     background: white;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -378,7 +377,7 @@
 }
 
 .section-header i {
-    color: #667eea;
+    color: #fff;
     font-size: 18px;
 }
 
@@ -435,7 +434,7 @@
 .contract-title {
     font-weight: 600;
     font-size: 16px;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 8px;
 }
 
@@ -492,7 +491,7 @@
 }
 
 .btn {
-    display: inline-flex;
+    .btn i { color: #fff !important; }    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
@@ -506,40 +505,40 @@
 }
 
 .btn-sm {
-    padding: 8px 12px;
+    .btn i { color: #fff !important; }    padding: 8px 12px;
     font-size: 12px;
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .btn-primary:hover {
-    transform: translateY(-1px);
+    .btn i { color: #fff !important; }    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
 .btn-secondary {
-    background: #f3f4f6;
+    .btn i { color: #fff !important; }    background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
 .btn-secondary:hover {
-    background: #e5e7eb;
+    .btn i { color: #fff !important; }    background: #e5e7eb;
     transform: translateY(-1px);
 }
 
 .btn-info {
-    background: #eff6ff;
+    .btn i { color: #fff !important; }    background: #eff6ff;
     color: #2563eb;
     border: 1px solid #bfdbfe;
 }
 
 .btn-info:hover {
-    background: #dbeafe;
+    .btn i { color: #fff !important; }    background: #dbeafe;
     transform: translateY(-1px);
 }
 

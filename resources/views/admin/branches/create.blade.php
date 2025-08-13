@@ -161,7 +161,7 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -173,7 +173,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin: 0;
 }
 
@@ -209,7 +209,7 @@
 }
 
 .section-header i {
-    color: #667eea;
+    color: #1ba4e9;
     font-size: 18px;
 }
 
@@ -256,7 +256,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1ba4e9;
     background: white;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -294,7 +294,7 @@
 .info-icon {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -359,7 +359,7 @@
 }
 
 .btn {
-    display: inline-flex;
+    .btn i { color: #fff !important; }    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
@@ -373,35 +373,35 @@
 }
 
 .btn-cancel {
-    background: #f3f4f6;
+    .btn i { color: #fff !important; }    background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
 .btn-cancel:hover {
-    background: #e5e7eb;
+    .btn i { color: #fff !important; }    background: #e5e7eb;
     transform: translateY(-1px);
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .btn-save:hover {
-    transform: translateY(-1px);
+    .btn i { color: #fff !important; }    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
 .btn-secondary {
-    background: #f3f4f6;
+    .btn i { color: #fff !important; }    background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
 .btn-secondary:hover {
-    background: #e5e7eb;
+    .btn i { color: #fff !important; }    background: #e5e7eb;
     transform: translateY(-1px);
 }
 

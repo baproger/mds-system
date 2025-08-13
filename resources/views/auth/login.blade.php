@@ -23,16 +23,12 @@
             <div class="auth-info-content">
                 <div class="auth-brand">
                     <div class="auth-brand-icon">
-                        <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="60" class="me-3">
-                    </div>
-                    <div class="auth-brand-text">
-                        <h1 class="auth-brand-title">MDS Doors</h1>
-                        <p class="auth-brand-subtitle">Система управления договорами</p>
+                        <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" style="height: 60px; width: auto;">
                     </div>
                 </div>
                 
                 <div class="auth-hero">
-                    <h2 class="auth-hero-title">Добро пожаловать обратно</h2>
+                    <h2 class="auth-hero-title">Добро пожаловать</h2>
                     <p class="auth-hero-subtitle">Войдите в систему для управления договорами и контроля бизнес-процессов</p>
                 </div>
                 

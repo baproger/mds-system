@@ -18,7 +18,7 @@
 </head>
 <body class="bg-light">
     <!-- Навигация -->
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route("contracts.index") }}">
                 <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40">
@@ -312,23 +312,23 @@
     }
 
     .btn {
-        border-radius: 8px;
+    .btn i { color: #fff !important; }        border-radius: 8px;
         font-weight: 600;
         transition: all 0.3s ease;
     }
 
     .btn:hover {
-        transform: translateY(-2px);
+    .btn i { color: #fff !important; }        transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn i { color: #fff !important; }        background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
         border: none;
     }
 
     .btn-primary:hover {
-        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    .btn i { color: #fff !important; }        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
     }
 
     .card {
@@ -350,7 +350,7 @@
     }
 
     .form-control:focus {
-        border-color: #667eea;
+        border-color: #1ba4e9;
         box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     }
 

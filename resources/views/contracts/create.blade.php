@@ -560,13 +560,13 @@ body{background:var(--bg-primary)}
 .container-fluid{background:var(--bg-primary)}
 .page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid #e5e7eb}
 .header-content{display:flex;align-items:center;gap:16px}
-.header-icon{width:48px;height:48px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
-.page-title{font-size:28px;font-weight:700;color:#111827;margin:0}
+.header-icon{width:48px;height:48px;background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+.page-title{font-size:28px;font-weight:700;color:#6b7280;margin:0}
 .page-subtitle{font-size:14px;color:#6b7280;margin:4px 0 0 0}
 
 .form-section{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid #f3f4f6;animation:fadeIn .3s ease-out}
 .section-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #f3f4f6;font-weight:600;font-size:16px;color:#374151}
-.section-header i{color:#667eea;font-size:18px}
+.section-header i{color:#fff;font-size:18px}
 .section-actions{display:flex;gap:12px}
 
 .search-form .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
@@ -578,20 +578,22 @@ body{background:var(--bg-primary)}
 .form-text{color:#6b7280;font-size:12px}
 
 .form-control{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;transition:.2s;background:#fafafa}
-.form-control:focus{outline:none;border-color:#667eea;background:#fff;box-shadow:0 0 0 3px rgba(102,126,234,.1)}
+.form-control:focus{outline:none;border-color:#1ba4e9;background:#fff;box-shadow:0 0 0 3px rgba(27,164,233,.1)}
 .form-control.is-invalid{border-color:#ef4444}
 .invalid-feedback{color:#ef4444;font-size:12px;margin-top:4px}
 
 .form-actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:16px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
-.btn-sm{padding:8px 12px;font-size:12px}
-.btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
-.btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
-.btn-save{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;box-shadow:0 2px 4px rgba(102,126,234,.2)}
-.btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(102,126,234,.3)}
-.btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
-.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
-
+    .btn i { color: #fff !important; }.btn-sm{padding:8px 12px;font-size:12px}
+    .btn i { color: #fff !important; }.btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+    .btn i { color: #fff !important; }.btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
+    .btn i { color: #fff !important; }.btn-save{color:#fff;}
+.btn-save i{color:#fff !important;}
+.btn-save{background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);color:#fff;box-shadow:0 2px 4px rgba(27,164,233,.2)}
+    .btn i { color: #fff !important; }.btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
+    .btn i { color: #fff !important; }.btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
+    .btn i { color: #fff !important; }.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
+    .btn i { color: #fff !important; }
 /* Анимации */
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 
@@ -600,7 +602,7 @@ body{background:var(--bg-primary)}
   .search-form .form-grid,.form-grid{grid-template-columns:1fr}
   .form-actions{flex-direction:column}
   .btn{width:100%;justify-content:center}
-}
+    .btn i { color: #fff !important; }}
 </style>
 @endsection
 

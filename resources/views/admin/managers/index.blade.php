@@ -259,7 +259,7 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -271,7 +271,7 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin: 0;
 }
 
@@ -304,7 +304,7 @@
 }
 
 .section-header i {
-    color: #667eea;
+    color: #fff;
     font-size: 18px;
 }
 
@@ -339,7 +339,7 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -355,7 +355,7 @@
 .stat-number {
     font-size: 16px;
     font-weight: 600;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 4px;
 }
 
@@ -404,7 +404,7 @@
 
 .form-control:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #1ba4e9;
     background: white;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
@@ -455,7 +455,7 @@
 .personnel-title {
     font-weight: 600;
     font-size: 16px;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 8px;
 }
 
@@ -527,7 +527,7 @@
 }
 
 .btn {
-    display: inline-flex;
+    .btn i { color: #fff !important; }    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
@@ -541,29 +541,29 @@
 }
 
 .btn-sm {
-    padding: 8px 12px;
+    .btn i { color: #fff !important; }    padding: 8px 12px;
     font-size: 12px;
 }
 
 .btn-cancel {
-    background: #f3f4f6;
+    .btn i { color: #fff !important; }    background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
 .btn-cancel:hover {
-    background: #e5e7eb;
+    .btn i { color: #fff !important; }    background: #e5e7eb;
     transform: translateY(-1px);
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .btn-save:hover {
-    transform: translateY(-1px);
+    .btn i { color: #fff !important; }    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
@@ -640,13 +640,13 @@
 
 /* Стили для кнопки удаления */
 .btn-danger {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
     box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }
 
 .btn-danger:hover {
-    transform: translateY(-1px);
+    .btn i { color: #fff !important; }    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
 }
 
@@ -698,7 +698,7 @@
 .modal-title {
     font-size: 24px;
     font-weight: 700;
-    color: #111827;
+    color: #6b7280;
     margin-bottom: 8px;
 }
 

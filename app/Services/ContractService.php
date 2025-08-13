@@ -53,7 +53,7 @@ class ContractService
 
     public static $fusionModels = ["Фьюжн / Хайтек", "Фьюжн сложный", "Фьюжн HPL"];
 
-    public static $managers = ['Самал', 'Арман', 'Даулет', 'Зухра', 'Жанерке', 'Арай', 'Ербол', 'Тоқмұсбек', 'Сымбат'];
+    public static $managers = ['Самал', 'Арман', 'Даулет', 'Зухра', 'Фатима', 'Арай', 'Ербол', 'Тоқмұсбек', 'Сымбат', 'Алия', 'Лайла', 'Абылай'];
 
     public static function getCanvasThickness($category, $model)
     {
