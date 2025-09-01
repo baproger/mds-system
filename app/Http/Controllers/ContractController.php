@@ -93,6 +93,7 @@ class ContractController extends Controller
                 'contract_number' => 'required|string|unique:contracts,contract_number',
                 'manager' => 'required',
                 'client' => 'required',
+                'branch_id' => 'nullable|exists:branches,id',
                 'instagram' => 'required',
                 'iin' => 'required|size:12',
                 'phone' => 'required',
@@ -140,7 +141,16 @@ class ContractController extends Controller
         }
 
         $validated['user_id'] = Auth::id();
-        $validated['branch_id'] = Auth::user()->branch_id;
+        
+        // Определяем branch_id в зависимости от роли пользователя
+        $user = Auth::user();
+        if ($user->role === 'admin') {
+            // Для админа используем branch_id из формы или первый доступный филиал
+            $validated['branch_id'] = $request->input('branch_id', Branch::first()->id ?? 1);
+        } else {
+            // Для других ролей используем branch_id пользователя
+            $validated['branch_id'] = $user->branch_id ?? 1;
+        }
 
         // Используем методы из нового сервиса
         $validated['outer_panel'] = $calculationService->getOuterPanel($validated['category'], $validated['model']);

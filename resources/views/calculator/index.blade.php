@@ -26,7 +26,7 @@
                             <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" class="logo">
                         </div>-->
 
-                        <form id="calculatorForm" class="calculator-form">
+                        <form id="calculatorForm" class="calculator-form" autocomplete="off">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="category" class="form-label">
@@ -130,6 +130,16 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 24px;
+    scroll-behavior: auto;
+}
+
+/* Предотвращаем автоматическую прокрутку */
+html {
+    scroll-behavior: auto !important;
+}
+
+body {
+    scroll-behavior: auto !important;
 }
 
 .page-header {
@@ -302,6 +312,8 @@
     border: 1px solid #c3e6cb;
     border-radius: 12px;
     overflow: hidden;
+    scroll-behavior: auto;
+    scroll-margin-top: 0;
 }
 
 .result-header {
@@ -394,46 +406,46 @@
 <script>
 const data = {
   "Lux": {
-    "Англия": 458553,
-    "Империал": 476190,
-    "Бастион / Хайтек": 493827,
-    "Фьюжн / Хайтек": 432099,
-    "Фьюжн сложный": 529100,
-    "Лион": 405643,
-    "Агора": 335097,
-    "Ажур": 343916,
-    "Горизонт": 335097,
-    "Остиум (Армада люкс)": 405643,
-    "Армада": 388007,
-    "Акрополь": 291006,
-    "Эксклюзив": 670194
+    "Англия": 490566,
+    "Империал": 490566,
+    "Бастион / Хайтек": 528302,
+    "Фьюжн / Хайтек": 462264,
+    "Фьюжн сложный": 566038,
+    "Лион": 433962,
+    "Агора": 358491,
+    "Ажур": 367925,
+    "Горизонт": 358491,
+    "Остиум (Армада люкс)": 433962,
+    "Армада": 415094,
+    "Акрополь": 311321,
+    "Эксклюзив": 716981
   },
   "Premium": {
-    "Англия": 405643,
-    "Империал": 423280,
-    "Бастион / Хайтек": 440917,
-    "Фьюжн / Хайтек": 379189,
-    "Фьюжн сложный": 476190,
-    "Лион": 352733,
-    "Агора": 282187,
-    "Ажур": 291006,
-    "Горизонт": 282187,
-    "Остиум (Армада люкс)": 352733,
-    "Армада": 335097,
-    "Акрополь": 238096
+    "Англия": 433962,
+    "Империал": 433962,
+    "Бастион / Хайтек": 471698,
+    "Фьюжн / Хайтек": 405660,
+    "Фьюжн сложный": 509434,
+    "Лион": 377358,
+    "Агора": 301887,
+    "Ажур": 311321,
+    "Горизонт": 301887,
+    "Остиум (Армада люкс)": 377358,
+    "Армада": 358491,
+    "Акрополь": 254717
   },
   "Comfort": {
-    "Англия": 335097,
-    "Империал": 352733,
-    "Бастион / Хайтек": 370370,
-    "Фьюжн / Хайтек": 335097,
-    "Лион": 282187,
-    "Агора": 211640,
-    "Ажур": 220459,
-    "Горизонт": 211640,
-    "Остиум (Армада люкс)": 282187,
-    "Армада": 264550,
-    "Акрополь": 176367
+    "Англия": 358491,
+    "Империал": 358491,
+    "Бастион / Хайтек": 396226,
+    "Фьюжн / Хайтек": 358491,
+    "Лион": 301887,
+    "Агора": 226415,
+    "Ажур": 235849,
+    "Горизонт": 226415,
+    "Остиум (Армада люкс)": 301887,
+    "Армада": 283019,
+    "Акрополь": 188679
   }
 };
 
@@ -460,7 +472,7 @@ function loadModels() {
       modelSelect.innerHTML += `<option value="${model}">${model}</option>`;
     });
   }
-  calculate(); // при смене категории
+  // Убираем автоматический вызов calculate() при смене категории
 }
 
 function calculate() {
@@ -527,6 +539,8 @@ function calculate() {
       </div>
     `;
     output.style.display = "block";
+    // Предотвращаем автоматическую прокрутку к результатам
+    output.scrollIntoView = function() { return false; };
   } else {
     output.style.display = "none";
   }
@@ -588,5 +602,21 @@ function showCopyToast() {
   document.body.appendChild(toast);
   setTimeout(() => { toast.remove(); }, 1500);
 }
+
+// Предотвращаем автоматическую прокрутку при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+  // Устанавливаем позицию прокрутки в начало страницы
+  window.scrollTo(0, 0);
+  
+  // Предотвращаем автоматическую прокрутку к элементам с id
+  const preventAutoScroll = function(e) {
+    if (e.target.id && e.target.scrollIntoView) {
+      e.preventDefault();
+      e.target.scrollIntoView = function() { return false; };
+    }
+  };
+  
+  document.addEventListener('focus', preventAutoScroll, true);
+});
 </script>
 @endsection

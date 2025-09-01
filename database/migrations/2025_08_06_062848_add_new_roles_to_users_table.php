@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Добавляем комментарий к колонке role для документации
-            $table->string('role')->comment('admin, accountant, director, manager, rop')->change();
+            $table->string('role')->comment('admin, accountant, manager, rop')->change();
             if (!Schema::hasColumn('users', 'is_active')) {
                 $table->boolean('is_active')->default(true)->after('phone');
             }

@@ -96,9 +96,7 @@
                                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>
                                             Администратор системы
                                         </option>
-                                        <option value="director" {{ old('role') == 'director' ? 'selected' : '' }}>
-                                            Директор
-                                        </option>
+                                        
                                         <option value="accountant" {{ old('role') == 'accountant' ? 'selected' : '' }}>
                                             Бухгалтер
                                         </option>
@@ -159,7 +157,7 @@
                                     <div class="personnel-title">Административные роли</div>
                                     <div class="personnel-list">
                                         <span class="personnel-tag admin-tag">Администратор - полный доступ</span>
-                                        <span class="personnel-tag director-tag">Директор - управление системой</span>
+                                        
                                         <span class="personnel-tag accountant-tag">Бухгалтер - финансовая отчетность</span>
                                     </div>
                                 </div>
@@ -421,13 +419,13 @@
     transform: scale(1.02);
 }
 
-.director-tag {
+/* director-tag removed */
     background: #fce7f3;
     color: #be185d;
     border: 1px solid #f9a8d4;
 }
 
-.director-tag:hover {
+/* director-tag hover removed */
     background: #fbcfe8;
     transform: scale(1.02);
 }

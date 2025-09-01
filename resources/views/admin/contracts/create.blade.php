@@ -112,6 +112,27 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                @if(Auth::user()->role === 'admin')
+                <div class="form-group">
+                    <label for="branch_id" class="form-label required">
+                        <i class="fas fa-building"></i>
+                        Филиал
+                    </label>
+                    <select class="form-control @error('branch_id') is-invalid @enderror"
+                            id="branch_id" name="branch_id" required>
+                        <option value="">— выберите филиал —</option>
+                        @foreach($branches as $branch)
+                            <option value="{{ $branch->id }}" {{ old('branch_id', $userBranch->id ?? '') == $branch->id ? 'selected' : '' }}>
+                                {{ $branch->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('branch_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                @endif
             </div>
 
             <!-- Информация о клиенте -->

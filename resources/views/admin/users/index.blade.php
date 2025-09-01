@@ -98,7 +98,7 @@
                                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Администратор</option>
                                     <option value="manager" {{ request('role') == 'manager' ? 'selected' : '' }}>Менеджер</option>
                                     <option value="rop" {{ request('role') == 'rop' ? 'selected' : '' }}>РОП</option>
-                                    <option value="director" {{ request('role') == 'director' ? 'selected' : '' }}>Директор</option>
+                                    
                                     <option value="accountant" {{ request('role') == 'accountant' ? 'selected' : '' }}>Бухгалтер</option>
                                 </select>
                             </div>
@@ -160,7 +160,7 @@
                                             <i class="fas fa-shield-alt"></i>
                                         @elseif($user->role === 'accountant')
                                             <i class="fas fa-calculator"></i>
-                                        @elseif($user->role === 'director')
+                                        
                                             <i class="fas fa-user-tie"></i>
                                         @elseif($user->role === 'manager')
                                             <i class="fas fa-user"></i>
@@ -178,8 +178,7 @@
                                                 <span class="personnel-tag admin-tag"><i class="fas fa-shield-alt tag-icon"></i><span style="margin-left:4px;">Администратор</span></span>
                                             @elseif($user->role === 'accountant')
                                                 <span class="personnel-tag accountant-tag"><i class="fas fa-calculator tag-icon"></i><span style="margin-left:4px;">Бухгалтер</span></span>
-                                            @elseif($user->role === 'director')
-                                                <span class="personnel-tag director-tag"><i class="fas fa-user-tie tag-icon"></i><span style="margin-left:4px;">Директор</span></span>
+                                            
                                             @elseif($user->role === 'manager')
                                                 <span class="personnel-tag manager-tag"><i class="fas fa-user-tag tag-icon"></i><span style="margin-left:4px;">Менеджер</span></span>
                                             @elseif($user->role === 'rop')
@@ -490,7 +489,7 @@
     border: 1px solid #a7f3d0;
 }
 
-.director-tag {
+/* director-tag removed */
     background: #fce7f3;
     color: #be185d;
     border: 1px solid #f9a8d4;

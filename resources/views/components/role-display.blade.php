@@ -60,18 +60,7 @@
                 </div>
             </div>
             
-            <div class="role-card" data-role="director">
-                <div class="role-icon">
-                    <i class="fas fa-user-tie"></i>
-                </div>
-                <div class="role-content">
-                    <div class="role-name">Director</div>
-                    <div class="role-description">System management</div>
-                </div>
-                <div class="role-badge director-badge">
-                    <span>Executive</span>
-                </div>
-            </div>
+            
             
             <div class="role-card" data-role="accountant">
                 <div class="role-icon">
@@ -279,9 +268,7 @@
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
-.director-badge {
-    background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
-}
+ 
 
 .accountant-badge {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -300,9 +287,7 @@
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
-.role-card[data-role="director"] .role-icon {
-    background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
-}
+ 
 
 .role-card[data-role="accountant"] .role-icon {
     background: linear-gradient(135deg, #10b981 0%, #059669 100%);

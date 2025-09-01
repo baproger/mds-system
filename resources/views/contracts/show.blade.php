@@ -1129,7 +1129,7 @@ body .container-fluid {
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-number">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</div>
+                                            <div class="stat-number">{{ number_format((float)$contract->order_total, 0, ',', ' ') }} ₸</div>
                     <div class="stat-label">ОБЩАЯ СУММА</div>
                 </div>
             </div>
@@ -1244,7 +1244,7 @@ body .container-fluid {
                             </div>
                             <div class="info-item">
                                 <span class="info-label">Размеры:</span>
-                                <span class="info-value">{{ $contract->width }} × {{ $contract->height }} мм</span>
+                                <span class="info-value">{{ (float)$contract->width }} × {{ (float)$contract->height }} мм</span>
                             </div>
                         </div>
                     </div>
@@ -1265,7 +1265,7 @@ body .container-fluid {
                     </div>
                                 <div class="finance-content">
                     <div class="finance-label">Общая стоимость</div>
-                    <div class="finance-value">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</div>
+                                            <div class="finance-value">{{ number_format((float)$contract->order_total, 0, ',', ' ') }} ₸</div>
                                     </div>
                             </div>
             
@@ -1275,7 +1275,7 @@ body .container-fluid {
                                     </div>
                                 <div class="finance-content">
                     <div class="finance-label">Предоплата</div>
-                    <div class="finance-value">{{ number_format($contract->order_deposit, 0, ',', ' ') }} ₸</div>
+                                            <div class="finance-value">{{ number_format((float)$contract->order_deposit, 0, ',', ' ') }} ₸</div>
                             </div>
                             </div>
             
@@ -1285,7 +1285,7 @@ body .container-fluid {
                     </div>
                                 <div class="finance-content">
                     <div class="finance-label">Остаток</div>
-                    <div class="finance-value">{{ number_format($contract->order_remainder, 0, ',', ' ') }} ₸</div>
+                                            <div class="finance-value">{{ number_format((float)$contract->order_remainder, 0, ',', ' ') }} ₸</div>
                 </div>
             </div>
             
@@ -1295,7 +1295,7 @@ body .container-fluid {
                                 </div>
                                 <div class="finance-content">
                     <div class="finance-label">К оплате</div>
-                    <div class="finance-value">{{ number_format($contract->order_due, 0, ',', ' ') }} ₸</div>
+                                            <div class="finance-value">{{ number_format((float)$contract->order_due, 0, ',', ' ') }} ₸</div>
                                 </div>
                             </div>
         </div>

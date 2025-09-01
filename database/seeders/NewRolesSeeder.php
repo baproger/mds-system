@@ -28,14 +28,7 @@ class NewRolesSeeder extends Seeder
 
 
 
-        // Директор
-        User::create([
-            'name' => 'Директор Компании',
-            'email' => 'director@mdsdoors.kz',
-            'password' => Hash::make('password'),
-            'role' => 'director',
-            'branch_id' => $branch ? $branch->id : null,
-        ]);
+        // Роль директора удалена
 
         $this->command->info('Новые роли пользователей созданы!');
     }

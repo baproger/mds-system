@@ -294,6 +294,231 @@ class ContractStateService
     }
 
     /**
+     * Начать производство
+     */
+    public function startProduction(Contract $contract, User $actor, ?string $comment = null): bool
+    {
+        if (!$contract->canPerformAction('start_production', $actor)) {
+            throw new \Exception('Недостаточно прав для начала производства');
+        }
+
+        return DB::transaction(function () use ($contract, $actor, $comment) {
+            // Обновляем статус
+            $contract->status = Contract::STATUS_IN_PRODUCTION;
+            $contract->version++;
+            $contract->current_reviewer_id = null;
+            $contract->save();
+
+            // Создаем запись о начале производства
+            Approval::create([
+                'contract_id' => $contract->id,
+                'from_role' => $actor->role,
+                'to_role' => 'production',
+                'action' => 'start_production',
+                'comment' => $comment ?? 'Производство начато',
+                'created_by' => $actor->id,
+            ]);
+
+            // Логируем изменение статуса
+            ContractChange::create([
+                'contract_id' => $contract->id,
+                'user_id' => $actor->id,
+                'role' => $actor->role,
+                'field' => 'status',
+                'old_value' => Contract::STATUS_APPROVED,
+                'new_value' => Contract::STATUS_IN_PRODUCTION,
+                'version_from' => $contract->version - 1,
+                'version_to' => $contract->version,
+                'changed_at' => now(),
+            ]);
+
+            Log::info("Contract {$contract->contract_number} production started by {$actor->name}");
+
+            return true;
+        });
+    }
+
+    /**
+     * Отправить на контроль качества
+     */
+    public function qualityCheck(Contract $contract, User $actor, ?string $comment = null): bool
+    {
+        if (!$contract->canPerformAction('quality_check', $actor)) {
+            throw new \Exception('Недостаточно прав для отправки на контроль качества');
+        }
+
+        return DB::transaction(function () use ($contract, $actor, $comment) {
+            // Обновляем статус
+            $contract->status = Contract::STATUS_QUALITY_CHECK;
+            $contract->version++;
+            $contract->current_reviewer_id = null;
+            $contract->save();
+
+            // Создаем запись о контроле качества
+            Approval::create([
+                'contract_id' => $contract->id,
+                'from_role' => $actor->role,
+                'to_role' => 'quality',
+                'action' => 'quality_check',
+                'comment' => $comment ?? 'Отправлен на контроль качества',
+                'created_by' => $actor->id,
+            ]);
+
+            // Логируем изменение статуса
+            ContractChange::create([
+                'contract_id' => $contract->id,
+                'user_id' => $actor->id,
+                'role' => $actor->role,
+                'field' => 'status',
+                'old_value' => Contract::STATUS_IN_PRODUCTION,
+                'new_value' => Contract::STATUS_QUALITY_CHECK,
+                'version_from' => $contract->version - 1,
+                'version_to' => $contract->version,
+                'changed_at' => now(),
+            ]);
+
+            Log::info("Contract {$contract->contract_number} sent to quality check by {$actor->name}");
+
+            return true;
+        });
+    }
+
+    /**
+     * Отметить как готовый к отгрузке
+     */
+    public function markReady(Contract $contract, User $actor, ?string $comment = null): bool
+    {
+        if (!$contract->canPerformAction('mark_ready', $actor)) {
+            throw new \Exception('Недостаточно прав для отметки готовности');
+        }
+
+        return DB::transaction(function () use ($contract, $actor, $comment) {
+            // Обновляем статус
+            $contract->status = Contract::STATUS_READY;
+            $contract->version++;
+            $contract->current_reviewer_id = null;
+            $contract->save();
+
+            // Создаем запись о готовности
+            Approval::create([
+                'contract_id' => $contract->id,
+                'from_role' => $actor->role,
+                'to_role' => 'ready',
+                'action' => 'mark_ready',
+                'comment' => $comment ?? 'Готов к отгрузке',
+                'created_by' => $actor->id,
+            ]);
+
+            // Логируем изменение статуса
+            ContractChange::create([
+                'contract_id' => $contract->id,
+                'user_id' => $actor->id,
+                'role' => $actor->role,
+                'field' => 'status',
+                'old_value' => Contract::STATUS_QUALITY_CHECK,
+                'new_value' => Contract::STATUS_READY,
+                'version_from' => $contract->version - 1,
+                'version_to' => $contract->version,
+                'changed_at' => now(),
+            ]);
+
+            Log::info("Contract {$contract->contract_number} marked as ready by {$actor->name}");
+
+            return true;
+        });
+    }
+
+    /**
+     * Отметить как отгруженный
+     */
+    public function ship(Contract $contract, User $actor, ?string $comment = null): bool
+    {
+        if (!$contract->canPerformAction('ship', $actor)) {
+            throw new \Exception('Недостаточно прав для отметки отгрузки');
+        }
+
+        return DB::transaction(function () use ($contract, $actor, $comment) {
+            // Обновляем статус
+            $contract->status = Contract::STATUS_SHIPPED;
+            $contract->version++;
+            $contract->current_reviewer_id = null;
+            $contract->save();
+
+            // Создаем запись об отгрузке
+            Approval::create([
+                'contract_id' => $contract->id,
+                'from_role' => $actor->role,
+                'to_role' => 'shipped',
+                'action' => 'ship',
+                'comment' => $comment ?? 'Отгружен',
+                'created_by' => $actor->id,
+            ]);
+
+            // Логируем изменение статуса
+            ContractChange::create([
+                'contract_id' => $contract->id,
+                'user_id' => $actor->id,
+                'role' => $actor->role,
+                'field' => 'status',
+                'old_value' => Contract::STATUS_READY,
+                'new_value' => Contract::STATUS_SHIPPED,
+                'version_from' => $contract->version - 1,
+                'version_to' => $contract->version,
+                'changed_at' => now(),
+            ]);
+
+            Log::info("Contract {$contract->contract_number} shipped by {$actor->name}");
+
+            return true;
+        });
+    }
+
+    /**
+     * Завершить договор
+     */
+    public function complete(Contract $contract, User $actor, ?string $comment = null): bool
+    {
+        if (!$contract->canPerformAction('complete', $actor)) {
+            throw new \Exception('Недостаточно прав для завершения договора');
+        }
+
+        return DB::transaction(function () use ($contract, $actor, $comment) {
+            // Обновляем статус
+            $contract->status = Contract::STATUS_COMPLETED;
+            $contract->version++;
+            $contract->current_reviewer_id = null;
+            $contract->save();
+
+            // Создаем запись о завершении
+            Approval::create([
+                'contract_id' => $contract->id,
+                'from_role' => $actor->role,
+                'to_role' => 'completed',
+                'action' => 'complete',
+                'comment' => $comment ?? 'Договор завершен',
+                'created_by' => $actor->id,
+            ]);
+
+            // Логируем изменение статуса
+            ContractChange::create([
+                'contract_id' => $contract->id,
+                'user_id' => $actor->id,
+                'role' => $actor->role,
+                'field' => 'status',
+                'old_value' => Contract::STATUS_SHIPPED,
+                'new_value' => Contract::STATUS_COMPLETED,
+                'version_from' => $contract->version - 1,
+                'version_to' => $contract->version,
+                'changed_at' => now(),
+            ]);
+
+            Log::info("Contract {$contract->contract_number} completed by {$actor->name}");
+
+            return true;
+        });
+    }
+
+    /**
      * Логировать изменения полей договора
      */
     public function logChanges(Contract $contract, array $changes, User $actor): void

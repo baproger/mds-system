@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'manager' => \App\Http\Middleware\ManagerMiddleware::class,
             'manager-only' => \App\Http\Middleware\ManagerOnlyMiddleware::class,
             'rop' => \App\Http\Middleware\RopMiddleware::class,
+            // 'director' middleware removed
             'user-only' => \App\Http\Middleware\UserOnlyMiddleware::class,
         ]);
     })

@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminManagerController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ContractWorkflowController;
+use App\Http\Controllers\CrmController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,6 +66,13 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
     Route::delete('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'destroy'])->name('contracts.delete');
     
+    // CRM функциональность
+    Route::get('/crm', [CrmController::class, 'demo'])->name('crm.demo');
+    Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
+    Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
+    
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
     
@@ -73,6 +81,9 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
     Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
     Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    
+    // Профиль
+    Route::get('/profile', [App\Http\Controllers\SettingsController::class, 'index'])->name('profile.show');
     
     
 });
@@ -90,6 +101,13 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
     Route::delete('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'destroy'])->name('contracts.delete');
     
+    // CRM функциональность
+    Route::get('/crm', [CrmController::class, 'demo'])->name('crm.demo');
+    Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
+    Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
+    
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
     
@@ -98,6 +116,9 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
     Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
     Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    
+    // Профиль
+    Route::get('/profile', [App\Http\Controllers\SettingsController::class, 'index'])->name('profile.show');
     
     // Управление менеджерами своего филиала
     Route::get('/managers', [App\Http\Controllers\RopController::class, 'managers'])->name('managers.index');
@@ -128,6 +149,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/contracts/{contract}/edit', [App\Http\Controllers\ContractController::class, 'edit'])->name('contracts.edit');
     Route::put('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'update'])->name('contracts.update');
     Route::delete('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'destroy'])->name('contracts.delete');
+    
+    // CRM функциональность
+    Route::get('/crm', [CrmController::class, 'demo'])->name('crm.demo');
+    Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
+    Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
     
     // Управление менеджерами и РОП (только для admin)
     Route::get('/managers', [AdminManagerController::class, 'index'])->name('managers.index');
@@ -163,6 +191,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
     Route::put('/settings/system', [App\Http\Controllers\SettingsController::class, 'systemSettings'])->name('settings.system');
     
+    // Профиль
+    Route::get('/profile', [App\Http\Controllers\SettingsController::class, 'index'])->name('profile.show');
+    
     // Workflow маршруты для админов
     Route::post('/contracts/{contract}/submit-to-rop', [ContractWorkflowController::class, 'submitToRop'])->name('contracts.submit-to-rop');
     Route::post('/contracts/{contract}/submit-to-accountant', [ContractWorkflowController::class, 'submitToAccountant'])->name('contracts.submit-to-accountant');
@@ -171,6 +202,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/contracts/{contract}/hold', [ContractWorkflowController::class, 'hold'])->name('contracts.hold');
     Route::post('/contracts/{contract}/return', [ContractWorkflowController::class, 'returnForRevision'])->name('contracts.return');
     Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+    
+    // Новые workflow маршруты для расширенной воронки
+    Route::post('/contracts/{contract}/start-production', [ContractWorkflowController::class, 'startProduction'])->name('contracts.start-production');
+    Route::post('/contracts/{contract}/quality-check', [ContractWorkflowController::class, 'qualityCheck'])->name('contracts.quality-check');
+    Route::post('/contracts/{contract}/mark-ready', [ContractWorkflowController::class, 'markReady'])->name('contracts.mark-ready');
+    Route::post('/contracts/{contract}/ship', [ContractWorkflowController::class, 'ship'])->name('contracts.ship');
+    Route::post('/contracts/{contract}/complete', [ContractWorkflowController::class, 'complete'])->name('contracts.complete');
 });
 
 // Workflow маршруты для менеджеров
@@ -183,7 +221,16 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
 Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function () {
     Route::post('/contracts/{contract}/submit-to-accountant', [ContractWorkflowController::class, 'submitToAccountant'])->name('contracts.submit-to-accountant');
     Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+    
+    // Новые workflow маршруты для расширенной воронки
+    Route::post('/contracts/{contract}/start-production', [ContractWorkflowController::class, 'startProduction'])->name('contracts.start-production');
+    Route::post('/contracts/{contract}/quality-check', [ContractWorkflowController::class, 'qualityCheck'])->name('contracts.quality-check');
+    Route::post('/contracts/{contract}/mark-ready', [ContractWorkflowController::class, 'markReady'])->name('contracts.mark-ready');
+    Route::post('/contracts/{contract}/ship', [ContractWorkflowController::class, 'ship'])->name('contracts.ship');
+    Route::post('/contracts/{contract}/complete', [ContractWorkflowController::class, 'complete'])->name('contracts.complete');
 });
+
+// Роуты директора удалены
 
 // Роуты для бухгалтеров (префикс /accountant)
 Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(function () {
@@ -193,6 +240,11 @@ Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(fu
     // Договоры: список/просмотр всех договоров
     Route::get('/contracts', [App\Http\Controllers\AdminController::class, 'contracts'])->name('contracts.index');
     Route::get('/contracts/{contract}', [App\Http\Controllers\ContractController::class, 'show'])->name('contracts.show');
+    
+    // CRM функциональность (только просмотр)
+    Route::get('/crm', [CrmController::class, 'demo'])->name('crm.demo');
+    Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
+    Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
     
     // Workflow маршруты для бухгалтеров
     Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
@@ -209,4 +261,7 @@ Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(fu
     Route::put('/settings/profile', [App\Http\Controllers\SettingsController::class, 'updateProfile'])->name('settings.profile');
     Route::put('/settings/password', [App\Http\Controllers\SettingsController::class, 'updatePassword'])->name('settings.password');
     Route::put('/settings/preferences', [App\Http\Controllers\SettingsController::class, 'updatePreferences'])->name('settings.preferences');
+    
+    // Профиль
+    Route::get('/profile', [App\Http\Controllers\SettingsController::class, 'index'])->name('profile.show');
 });

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Обновляем комментарий к колонке role без IT специалиста
-            $table->string('role')->comment('admin, accountant, director, manager, rop')->change();
+            $table->string('role')->comment('admin, accountant, manager, rop')->change();
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->comment('admin, accountant, it_specialist, director, manager, rop')->change();
+            $table->string('role')->comment('admin, accountant, it_specialist, manager, rop')->change();
         });
     }
 };

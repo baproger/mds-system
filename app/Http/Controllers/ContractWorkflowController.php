@@ -117,6 +117,96 @@ class ContractWorkflowController extends Controller
     }
 
     /**
+     * Начать производство
+     */
+    public function startProduction(Request $request, Contract $contract)
+    {
+        $request->validate([
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $this->stateService->startProduction($contract, Auth::user(), $request->comment);
+            
+            return redirect()->back()->with('success', 'Производство начато');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Отправить на контроль качества
+     */
+    public function qualityCheck(Request $request, Contract $contract)
+    {
+        $request->validate([
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $this->stateService->qualityCheck($contract, Auth::user(), $request->comment);
+            
+            return redirect()->back()->with('success', 'Договор отправлен на контроль качества');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Отметить как готовый к отгрузке
+     */
+    public function markReady(Request $request, Contract $contract)
+    {
+        $request->validate([
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $this->stateService->markReady($contract, Auth::user(), $request->comment);
+            
+            return redirect()->back()->with('success', 'Договор готов к отгрузке');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Отметить как отгруженный
+     */
+    public function ship(Request $request, Contract $contract)
+    {
+        $request->validate([
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $this->stateService->ship($contract, Auth::user(), $request->comment);
+            
+            return redirect()->back()->with('success', 'Договор отмечен как отгруженный');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Завершить договор
+     */
+    public function complete(Request $request, Contract $contract)
+    {
+        $request->validate([
+            'comment' => 'nullable|string|max:500',
+        ]);
+
+        try {
+            $this->stateService->complete($contract, Auth::user(), $request->comment);
+            
+            return redirect()->back()->with('success', 'Договор завершен');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
      * Показать историю изменений договора
      */
     public function history(Contract $contract)

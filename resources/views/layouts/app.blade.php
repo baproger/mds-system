@@ -45,12 +45,41 @@
                     </li>
                     @endif
                     @auth
-                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop')
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop' || Auth::user()->role === 'accountant')
                         <li class="nav-item">
-                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" 
-                               href="{{ route('admin.dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs(Auth::user()->role . '.dashboard') ? 'active' : '' }}" 
+                               href="{{ route(Auth::user()->role . '.dashboard') }}">
                                 <i class="fas fa-chart-bar me-2"></i> Статистика
                             </a>
+                        </li>
+                        @endif
+                        
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop' || Auth::user()->role === 'accountant')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-tachometer-alt me-2"></i> CRM
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item {{ request()->routeIs(Auth::user()->role . '.crm.demo') ? 'active' : '' }}" 
+                                       href="{{ route(Auth::user()->role . '.crm.demo') }}">
+                                        <i class="fas fa-rocket me-2"></i> Обзор CRM
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item {{ request()->routeIs(Auth::user()->role . '.crm.kanban') ? 'active' : '' }}" 
+                                       href="{{ route(Auth::user()->role . '.crm.kanban') }}">
+                                        <i class="fas fa-trello me-2"></i> Канбан-доска
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item {{ request()->routeIs(Auth::user()->role . '.crm.dashboard') ? 'active' : '' }}" 
+                                       href="{{ route(Auth::user()->role . '.crm.dashboard') }}">
+                                        <i class="fas fa-tachometer-alt me-2"></i> Дашборд
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         @endif
                     @endauth
@@ -67,23 +96,16 @@
                                 <span>{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
-                                @if(Auth::user()->role === 'admin')
+                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop' || Auth::user()->role === 'accountant')
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
-                                        <i class="fas fa-shield-alt me-2"></i> Панель управления
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                @elseif(Auth::user()->role === 'manager' || Auth::user()->role === 'rop')
-                                <li>
-                                    <a class="dropdown-item" href="{{ route(Auth::user()->role === 'manager' ? 'manager.dashboard' : 'rop.dashboard') }}">
+                                    <a class="dropdown-item" href="{{ route(Auth::user()->role . '.dashboard') }}">
                                         <i class="fas fa-shield-alt me-2"></i> Панель управления
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 @endif
                                 <li>
-                                    <a class="dropdown-item" href="{{ route(Auth::user()->role === 'admin' ? 'admin.profile.show' : (Auth::user()->role === 'manager' ? 'manager.profile.show' : 'rop.profile.show')) }}">
+                                    <a class="dropdown-item" href="{{ route(Auth::user()->role . '.profile.show') }}">
                                         <i class="fas fa-user me-2"></i> Профиль
                                     </a>
                                 </li>

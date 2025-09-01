@@ -74,9 +74,7 @@
                                         <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
                                             Администратор системы
                                         </option>
-                                        <option value="director" {{ old('role', $user->role) == 'director' ? 'selected' : '' }}>
-                                            Директор
-                                        </option>
+                                        
                                         <option value="accountant" {{ old('role', $user->role) == 'accountant' ? 'selected' : '' }}>
                                             Бухгалтер
                                         </option>
@@ -223,8 +221,7 @@
                                             <span class="personnel-tag manager-tag">Менеджер</span>
                                         @elseif($user->role == 'admin')
                                             <span class="personnel-tag admin-tag">Администратор системы</span>
-                                        @elseif($user->role == 'director')
-                                            <span class="personnel-tag director-tag">Директор</span>
+                                        
                                         @elseif($user->role == 'accountant')
                                             <span class="personnel-tag accountant-tag">Бухгалтер</span>
                                         @else
@@ -606,13 +603,13 @@
     transform: scale(1.02);
 }
 
-.director-tag {
+/* director-tag removed */
     background: #fce7f3;
     color: #be185d;
     border: 1px solid #f9a8d4;
 }
 
-.director-tag:hover {
+/* director-tag hover removed */
     background: #fbcfe8;
     transform: scale(1.02);
 }

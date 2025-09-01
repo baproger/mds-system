@@ -210,7 +210,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,manager,rop,director,accountant',
+            'role' => 'required|in:admin,manager,rop,accountant',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
 
@@ -233,7 +233,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|in:admin,manager,rop,director,accountant',
+            'role' => 'required|in:admin,manager,rop,accountant',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
 
