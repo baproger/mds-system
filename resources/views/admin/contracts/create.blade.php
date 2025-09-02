@@ -463,9 +463,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="order_remainder" class="form-label required"><i class="fas fa-wallet"></i> Остаток</label>
+                    <label for="order_remainder" class="form-label"><i class="fas fa-wallet"></i> Остаток</label>
                     <input type="number" class="form-control @error('order_remainder') is-invalid @enderror"
-                           id="order_remainder" name="order_remainder" value="{{ old('order_remainder', '') }}" min="0" placeholder="Сумма в ₸" required>
+                           id="order_remainder" name="order_remainder" value="{{ old('order_remainder', '') }}" min="0" placeholder="Сумма в ₸">
                     @error('order_remainder') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 

@@ -481,9 +481,9 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="order_remainder" class="form-label required">Остаток предоплаты</label>
+                                <label for="order_remainder" class="form-label">Остаток предоплаты</label>
                                 <input type="number" class="form-control @error('order_remainder') is-invalid @enderror" 
-                                       id="order_remainder" name="order_remainder" value="{{ old('order_remainder', $contract->order_remainder) }}" min="0" step="1" required>
+                                       id="order_remainder" name="order_remainder" value="{{ old('order_remainder', $contract->order_remainder) }}" min="0" step="1">
                                 @error('order_remainder')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

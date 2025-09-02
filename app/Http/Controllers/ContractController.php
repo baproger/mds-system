@@ -131,7 +131,7 @@ class ContractController extends Controller
                 'installation' => 'nullable|string',
                 'order_total' => 'required|numeric|min:0',
                 'order_deposit' => 'required|numeric|min:0',
-                'order_remainder' => 'required|numeric|min:0',
+                'order_remainder' => 'nullable|numeric|min:0',
                 'order_due' => 'required|numeric|min:0',
                 'photo' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
                 'attachment' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
@@ -284,7 +284,7 @@ class ContractController extends Controller
                 'handle' => 'required',
                 'order_total' => 'required|numeric|min:0',
                 'order_deposit' => 'required|numeric|min:0',
-                'order_remainder' => 'required|numeric|min:0',
+                'order_remainder' => 'nullable|numeric|min:0',
                 'order_due' => 'required|numeric|min:0',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
