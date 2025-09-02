@@ -416,6 +416,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const contractId = evt.item.dataset.contractId;
                 const newStatus = evt.to.dataset.status;
                 
+                console.log('Drag & Drop Debug:', {
+                    contractId,
+                    newStatus,
+                    toElement: evt.to,
+                    toDataset: evt.to.dataset,
+                    fromStatus: evt.from.dataset.status,
+                    toStatus: evt.to.dataset.status
+                });
+                
                 // Валидация статуса перед отправкой
                 if (!newStatus || newStatus.trim() === '') {
                     console.error('Ошибка: новый статус пустой или неопределен', { newStatus, to: evt.to });

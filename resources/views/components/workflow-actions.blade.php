@@ -28,7 +28,7 @@
 
     <!-- История изменений -->
     @if($contract->changes()->count() > 0 || $contract->approvals()->count() > 0)
-        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.history' : (Auth::user()->role === 'rop' ? 'rop.contracts.history' : 'manager.contracts.history')), $contract) }}" class="btn btn-secondary btn-sm workflow-btn">
+        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.history' : (Auth::user()->role === 'rop' ? 'rop.contracts.history' : 'manager.contracts.history'), $contract) }}" class="btn btn-secondary btn-sm workflow-btn">
             <i class="fas fa-history"></i>
             История
         </a>
