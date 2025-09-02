@@ -325,15 +325,38 @@ class Contract extends Model
     }
 
     /**
-     * Получить прогресс в воронке (0-100%)
+     * Получить прогресс воронки в процентах
      */
     public function getFunnelProgressAttribute()
     {
-        $currentIndex = array_search($this->status, self::FUNNEL_ORDER);
-        if ($currentIndex === false) {
+        $status = $this->status;
+        $funnelOrder = self::FUNNEL_ORDER;
+        
+        // Находим позицию текущего статуса в воронке
+        $currentPosition = array_search($status, $funnelOrder);
+        
+        if ($currentPosition === false) {
+            return 0; // Статус не найден в воронке
+        }
+        
+        // Исключаем отклоненные и возвращенные статусы из расчета прогресса
+        $excludedStatuses = [self::STATUS_REJECTED, self::STATUS_ON_HOLD, self::STATUS_RETURNED];
+        $validStatuses = array_filter($funnelOrder, function($status) use ($excludedStatuses) {
+            return !in_array($status, $excludedStatuses);
+        });
+        
+        $validStatuses = array_values($validStatuses); // Переиндексируем массив
+        $currentValidPosition = array_search($status, $validStatuses);
+        
+        if ($currentValidPosition === false) {
             return 0;
         }
-        return round(($currentIndex / (count(self::FUNNEL_ORDER) - 1)) * 100);
+        
+        // Рассчитываем процент прогресса
+        $totalSteps = count($validStatuses);
+        $progress = (($currentValidPosition + 1) / $totalSteps) * 100;
+        
+        return round($progress);
     }
 
     /**
@@ -382,8 +405,13 @@ class Contract extends Model
 
         // Показываем ВСЕ договоры, включая завершенные и отклоненные
         // Это позволит видеть полную картину воронки продаж
-        return $query->orderBy('updated_at', 'desc')
-                    ->get()
-                    ->groupBy('status');
+        $contracts = $query->orderBy('updated_at', 'desc')->get();
+        
+        // Добавляем вычисляемые атрибуты для каждого договора
+        $contracts->each(function ($contract) {
+            $contract->append('funnel_progress');
+        });
+        
+        return $contracts->groupBy('status');
     }
 }

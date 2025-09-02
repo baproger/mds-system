@@ -69,9 +69,9 @@
                                         
                                         <div class="contract-progress">
                                             <div class="progress">
-                                                <div class="progress-bar" style="width: {{ $contract->funnel_progress }}%"></div>
+                                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
                                             </div>
-                                            <small class="progress-text">{{ $contract->funnel_progress }}% выполнено</small>
+                                            <small class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</small>
                                         </div>
                                     </div>
                                     @endforeach
@@ -586,9 +586,9 @@ function createContractCard(contract) {
             </div>
             <div class="contract-progress">
                 <div class="progress">
-                    <div class="progress-bar" style="width: ${contract.funnel_progress}%"></div>
+                    <div class="progress-bar" style="width: ${contract.funnel_progress ?? 0}%"></div>
                 </div>
-                <span class="progress-text">${contract.funnel_progress}% выполнено</span>
+                <span class="progress-text">${contract.funnel_progress ?? 0}% выполнено</span>
             </div>
         </div>
         
