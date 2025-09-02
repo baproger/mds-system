@@ -6,6 +6,52 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="h3 mb-0">
+                    <i class="fas fa-tasks text-primary me-2"></i>
+                    Канбан доска
+                </h1>
+                
+                @if(Auth::user()->role === 'accountant')
+                    <div class="alert alert-info mb-0 py-2 px-3" role="alert">
+                        <i class="fas fa-eye me-2"></i>
+                        <strong>Режим просмотра:</strong> Бухгалтер может только просматривать договоры
+                    </div>
+                @endif
+                
+                <div class="d-flex gap-2">
+                    <div class="filter-group">
+                        <label class="filter-label">Филиал:</label>
+                        <select id="branchFilter" class="form-select">
+                            <option value="">Все филиалы</option>
+                            @foreach($branches as $branch)
+                                <option value="{{ $branch->id }}" {{ $branchId == $branch->id ? 'selected' : '' }}>
+                                    {{ $branch->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Менеджер:</label>
+                        <select id="managerFilter" class="form-select">
+                            <option value="">Все менеджеры</option>
+                            @foreach($managers as $manager)
+                                <option value="{{ $manager->id }}" {{ $userId == $manager->id ? 'selected' : '' }}>
+                                    {{ $manager->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <button class="btn-filter" onclick="refreshKanban()">
+                            <i class="fas fa-sync-alt"></i> Обновить
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="edit-branch-container">
                 <div class="page-header">
                     <div class="header-content">
@@ -510,19 +556,29 @@
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация drag & drop для каждой колонки
-    const columns = document.querySelectorAll('.column-content');
-    
+    // Инициализация Sortable для каждой колонки
+    const columns = document.querySelectorAll('.kanban-column');
     columns.forEach(column => {
-        new Sortable(column, {
+        const userRole = '{{ Auth::user()->role }}';
+        
+        // Бухгалтер не может перемещать договоры
+        if (userRole === 'accountant') {
+            return;
+        }
+        
+        new Sortable(column.querySelector('.column-content'), {
             group: 'contracts',
             animation: 150,
-            ghostClass: 'dragging',
+            ghostClass: 'sortable-ghost',
+            chosenClass: 'sortable-chosen',
+            dragClass: 'sortable-drag',
             onEnd: function(evt) {
                 const contractId = evt.item.dataset.contractId;
-                const newStatus = evt.to.closest('.kanban-column').dataset.status;
+                const newStatus = evt.to.dataset.status;
                 
-                updateContractStatus(contractId, newStatus);
+                if (evt.from !== evt.to) {
+                    updateContractStatus(contractId, newStatus);
+                }
             }
         });
     });
@@ -545,6 +601,13 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateContractStatus(contractId, newStatus) {
+    // Проверяем роль пользователя - бухгалтер не может изменять статусы
+    const userRole = '{{ Auth::user()->role }}';
+    if (userRole === 'accountant') {
+        showNotification('Бухгалтер не может изменять статусы договоров', 'warning');
+        return;
+    }
+    
     const url = `{{ route(Auth::user()->role . '.crm.update-status', ['contract' => ':contractId']) }}`.replace(':contractId', contractId);
     
     fetch(url, {
@@ -725,6 +788,8 @@ function showNotification(message, type) {
         notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
     } else if (type === 'error') {
         notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+    } else if (type === 'warning') {
+        notification.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
     } else {
         notification.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
     }

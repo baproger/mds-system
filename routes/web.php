@@ -245,6 +245,7 @@ Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(fu
     Route::get('/crm', [CrmController::class, 'demo'])->name('crm.demo');
     Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
     Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
     
     // Workflow маршруты для бухгалтеров
     Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
