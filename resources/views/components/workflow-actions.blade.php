@@ -155,7 +155,7 @@
                 <h5 class="modal-title">Одобрить договор</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.approve' : 'accountant.contracts.approve', $contract) }}" method="POST">
+            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.approve' : (Auth::user()->role === 'rop' ? 'rop.contracts.approve' : 'manager.contracts.approve'), $contract) }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -181,7 +181,7 @@
                 <h5 class="modal-title">Отклонить договор</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.reject' : 'accountant.contracts.reject', $contract) }}" method="POST">
+            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.reject' : (Auth::user()->role === 'rop' ? 'rop.contracts.reject' : 'manager.contracts.reject'), $contract) }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -207,7 +207,7 @@
                 <h5 class="modal-title">Приостановить договор</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.hold' : 'accountant.contracts.hold', $contract) }}" method="POST">
+            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.hold' : (Auth::user()->role === 'rop' ? 'rop.contracts.hold' : 'manager.contracts.hold'), $contract) }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
@@ -233,7 +233,7 @@
                 <h5 class="modal-title">Вернуть на доработку</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.return' : 'accountant.contracts.return', $contract) }}" method="POST">
+            <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.return' : (Auth::user()->role === 'rop' ? 'rop.contracts.return' : 'manager.contracts.return'), $contract) }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">

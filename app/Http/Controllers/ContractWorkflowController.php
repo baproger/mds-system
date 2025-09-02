@@ -6,6 +6,7 @@ use App\Models\Contract;
 use App\Services\ContractStateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User; // Added missing import for User model
 
 class ContractWorkflowController extends Controller
 {
@@ -197,9 +198,26 @@ class ContractWorkflowController extends Controller
      */
     public function history(Contract $contract)
     {
-        // Проверяем права доступа
-        if (!Auth::user()->can('view', $contract)) {
-            abort(403);
+        $user = Auth::user();
+        
+        // Админ всегда имеет доступ ко всем договорам
+        if ($user->role === 'admin') {
+            // Продолжаем выполнение без дополнительных проверок
+        } else {
+            // Проверяем права доступа для других ролей
+            if ($user->role === 'manager') {
+                // Менеджер может видеть историю своих договоров и договоров в рамках workflow
+                if ($contract->user_id !== $user->id && !$this->canManagerAccessWorkflow($contract, $user)) {
+                    abort(403, 'Доступ запрещен. Договор не принадлежит вам или не входит в ваш workflow.');
+                }
+            } elseif ($user->role === 'rop') {
+                // РОП может видеть историю всех договоров своего филиала
+                if ($contract->branch_id !== $user->branch_id) {
+                    abort(403, 'Доступ запрещен. Договор не принадлежит вашему филиалу.');
+                }
+            } else {
+                abort(403, 'Доступ запрещен. Неизвестная роль.');
+            }
         }
 
         $changes = $contract->changes()
@@ -214,5 +232,33 @@ class ContractWorkflowController extends Controller
             ->get();
 
         return view('contracts.history', compact('contract', 'changes', 'approvals'));
+    }
+
+    /**
+     * Проверяет, может ли менеджер получить доступ к договору в рамках workflow
+     */
+    private function canManagerAccessWorkflow(Contract $contract, User $user): bool
+    {
+        // Менеджер может видеть договоры, которые он создал или которые находятся в workflow
+        if ($contract->user_id === $user->id) {
+            return true;
+        }
+        
+        // Менеджер может видеть договоры своего филиала в определенных статусах workflow
+        if ($contract->branch_id === $user->branch_id) {
+            $workflowStatuses = [
+                \App\Models\Contract::STATUS_PENDING_ROP,
+                \App\Models\Contract::STATUS_APPROVED,
+                \App\Models\Contract::STATUS_IN_PRODUCTION,
+                \App\Models\Contract::STATUS_QUALITY_CHECK,
+                \App\Models\Contract::STATUS_READY,
+                \App\Models\Contract::STATUS_SHIPPED,
+                \App\Models\Contract::STATUS_COMPLETED
+            ];
+            
+            return in_array($contract->status, $workflowStatuses);
+        }
+        
+        return false;
     }
 }
