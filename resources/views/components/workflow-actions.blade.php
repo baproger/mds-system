@@ -89,6 +89,61 @@
             </div>
         </form>
     @endif
+
+    <!-- Запуск производства -->
+    @if($canStartProduction)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.start-production' : 'rop.contracts.start-production', $contract) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary btn-sm workflow-btn" title="Запустить производство">
+                <i class="fas fa-cogs"></i>
+                Запустить производство
+            </button>
+        </form>
+    @endif
+
+    <!-- Проверка качества -->
+    @if($canQualityCheck)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.quality-check' : 'rop.contracts.quality-check', $contract) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-info btn-sm workflow-btn" title="Проверить качество">
+                <i class="fas fa-search"></i>
+                Проверить качество
+            </button>
+        </form>
+    @endif
+
+    <!-- Готов к отгрузке -->
+    @if($canMarkReady)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.mark-ready' : 'rop.contracts.mark-ready', $contract) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-success btn-sm workflow-btn" title="Отметить готовность">
+                <i class="fas fa-box"></i>
+                Готов к отгрузке
+            </button>
+        </form>
+    @endif
+
+    <!-- Отгрузка -->
+    @if($canShip)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.ship' : 'rop.contracts.ship', $contract) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-warning btn-sm workflow-btn" title="Отгрузить">
+                <i class="fas fa-truck"></i>
+                Отгрузить
+            </button>
+        </form>
+    @endif
+
+    <!-- Завершение -->
+    @if($canComplete)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.complete' : 'rop.contracts.complete', $contract) }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-success btn-sm workflow-btn" title="Завершить">
+                <i class="fas fa-flag-checkered"></i>
+                Завершить
+            </button>
+        </form>
+    @endif
 </div>
 
 <!-- Модальные окна для действий -->

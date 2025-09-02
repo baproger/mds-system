@@ -179,19 +179,15 @@ class Contract extends Model
                        $this->status === self::STATUS_DRAFT &&
                        $this->user_id === $user->id;
 
-            case 'submit_to_accountant':
+            case 'approve':
                 return $user->role === 'rop' && 
                        $this->status === self::STATUS_PENDING_ROP;
-
-            case 'approve':
-                return $user->role === 'accountant' && 
-                       $this->status === self::STATUS_PENDING_ACCOUNTANT;
 
             case 'reject':
             case 'hold':
             case 'return':
-                return $user->role === 'accountant' && 
-                       $this->status === self::STATUS_PENDING_ACCOUNTANT;
+                return $user->role === 'rop' && 
+                       $this->status === self::STATUS_PENDING_ROP;
 
             case 'start_production':
                 return in_array($user->role, ['admin', 'rop']) && 

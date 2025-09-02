@@ -59,13 +59,13 @@ class ContractStateService
     /**
      * Одобрить договор
      */
-    public function approve(Contract $contract, User $actor, ?string $comment = null): bool
+    public function approve(Contract $contract, User $actor): bool
     {
         if (!$contract->canPerformAction('approve', $actor)) {
             throw new \Exception('Недостаточно прав для одобрения договора');
         }
 
-        return DB::transaction(function () use ($contract, $actor, $comment) {
+        return DB::transaction(function () use ($contract, $actor) {
             // Обновляем статус
             $contract->status = Contract::STATUS_APPROVED;
             $contract->version++;
@@ -78,7 +78,7 @@ class ContractStateService
                 'from_role' => $actor->role,
                 'to_role' => 'approved',
                 'action' => 'approve',
-                'comment' => $comment ?? 'Договор одобрен',
+                'comment' => 'Договор одобрен',
                 'created_by' => $actor->id,
             ]);
 
@@ -88,7 +88,7 @@ class ContractStateService
                 'user_id' => $actor->id,
                 'role' => $actor->role,
                 'field' => 'status',
-                'old_value' => Contract::STATUS_PENDING_ACCOUNTANT,
+                'old_value' => Contract::STATUS_PENDING_ROP,
                 'new_value' => Contract::STATUS_APPROVED,
                 'version_from' => $contract->version - 1,
                 'version_to' => $contract->version,

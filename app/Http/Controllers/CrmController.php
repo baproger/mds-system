@@ -122,10 +122,12 @@ class CrmController extends Controller
         // Проверяем права на изменение статуса
         $action = $this->getActionForStatus($newStatus);
         
-        // Если действие не найдено или пользователь не имеет прав, проверяем права админа
+        // Если действие не найдено или пользователь не имеет прав, проверяем права админа или РОП
         if (!$contract->canPerformAction($action, $user)) {
             if ($user->role === 'admin' && $contract->canPerformAction('admin_change_status', $user)) {
                 $action = 'admin_change_status';
+            } elseif ($user->role === 'rop' && $this->canRopChangeStatus($contract, $user, $newStatus)) {
+                $action = 'rop_change_status';
             } else {
                 \Log::warning('Попытка изменения статуса без прав', [
                     'contract_id' => $contract->id,
@@ -381,5 +383,29 @@ class CrmController extends Controller
         // Здесь можно добавить логирование в отдельную таблицу
         // или использовать существующую систему логов
         \Log::info("Contract {$contract->contract_number} status changed from {$oldStatus} to {$newStatus} by user {$user->name}");
+    }
+
+    /**
+     * Проверяет, может ли РОП изменить статус договора
+     */
+    private function canRopChangeStatus(Contract $contract, User $rop, string $newStatus): bool
+    {
+        // РОП может изменять статусы только для договоров своего филиала
+        if ($contract->branch_id !== $rop->branch_id) {
+            return false;
+        }
+
+        // РОП может изменять статусы в рамках workflow
+        $allowedTransitions = [
+            Contract::STATUS_PENDING_ROP => [Contract::STATUS_APPROVED, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
+            Contract::STATUS_APPROVED => [Contract::STATUS_IN_PRODUCTION, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD],
+            Contract::STATUS_IN_PRODUCTION => [Contract::STATUS_QUALITY_CHECK, Contract::STATUS_ON_HOLD],
+            Contract::STATUS_QUALITY_CHECK => [Contract::STATUS_READY, Contract::STATUS_ON_HOLD],
+            Contract::STATUS_READY => [Contract::STATUS_SHIPPED, Contract::STATUS_ON_HOLD],
+            Contract::STATUS_SHIPPED => [Contract::STATUS_COMPLETED, Contract::STATUS_ON_HOLD],
+        ];
+
+        $currentStatus = $contract->status;
+        return isset($allowedTransitions[$currentStatus]) && in_array($newStatus, $allowedTransitions[$currentStatus]);
     }
 }
