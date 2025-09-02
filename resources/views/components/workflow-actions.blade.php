@@ -36,7 +36,7 @@
 
     <!-- Одобрение договора -->
     @if($canApprove)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.approve' : 'rop.contracts.approve', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.approve' : (Auth::user()->role === 'rop' ? 'rop.contracts.approve' : 'manager.contracts.approve'), $contract) }}" method="POST">
             @csrf
             <div class="input-group input-group-sm">
                 <input type="text" name="comment" class="form-control" placeholder="Комментарий к одобрению" required>
@@ -50,7 +50,7 @@
 
     <!-- Отклонение договора -->
     @if($canReject)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.reject' : 'rop.contracts.reject', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.reject' : (Auth::user()->role === 'rop' ? 'rop.contracts.reject' : 'manager.contracts.reject'), $contract) }}" method="POST">
             @csrf
             <div class="input-group input-group-sm">
                 <input type="text" name="comment" class="form-control" placeholder="Причина отклонения" required>
@@ -64,7 +64,7 @@
 
     <!-- Приостановка договора -->
     @if($canHold)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.hold' : 'rop.contracts.hold', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.hold' : (Auth::user()->role === 'rop' ? 'rop.contracts.hold' : 'manager.contracts.hold'), $contract) }}" method="POST">
             @csrf
             <div class="input-group input-group-sm">
                 <input type="text" name="comment" class="form-control" placeholder="Причина приостановки" required>
@@ -78,7 +78,7 @@
 
     <!-- Возврат на доработку -->
     @if($canReturn)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.return' : 'rop.contracts.return', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.return' : (Auth::user()->role === 'rop' ? 'rop.contracts.return' : 'manager.contracts.return'), $contract) }}" method="POST">
             @csrf
             <div class="input-group input-group-sm">
                 <input type="text" name="comment" class="form-control" placeholder="Что нужно исправить" required>
@@ -92,7 +92,7 @@
 
     <!-- Запуск производства -->
     @if($canStartProduction)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.start-production' : 'rop.contracts.start-production', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.start-production' : (Auth::user()->role === 'rop' ? 'rop.contracts.start-production' : 'manager.contracts.start-production'), $contract) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-primary btn-sm workflow-btn" title="Запустить производство">
                 <i class="fas fa-cogs"></i>
@@ -103,7 +103,7 @@
 
     <!-- Проверка качества -->
     @if($canQualityCheck)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.quality-check' : 'rop.contracts.quality-check', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.quality-check' : (Auth::user()->role === 'rop' ? 'rop.contracts.quality-check' : 'manager.contracts.quality-check'), $contract) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-info btn-sm workflow-btn" title="Проверить качество">
                 <i class="fas fa-search"></i>
@@ -114,7 +114,7 @@
 
     <!-- Готов к отгрузке -->
     @if($canMarkReady)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.mark-ready' : 'rop.contracts.mark-ready', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.mark-ready' : (Auth::user()->role === 'rop' ? 'rop.contracts.mark-ready' : 'manager.contracts.mark-ready'), $contract) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-success btn-sm workflow-btn" title="Отметить готовность">
                 <i class="fas fa-box"></i>
@@ -125,7 +125,7 @@
 
     <!-- Отгрузка -->
     @if($canShip)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.ship' : 'rop.contracts.ship', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.ship' : (Auth::user()->role === 'rop' ? 'rop.contracts.ship' : 'manager.contracts.ship'), $contract) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-warning btn-sm workflow-btn" title="Отгрузить">
                 <i class="fas fa-truck"></i>
@@ -136,7 +136,7 @@
 
     <!-- Завершение -->
     @if($canComplete)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.complete' : 'rop.contracts.complete', $contract) }}" method="POST">
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.complete' : (Auth::user()->role === 'rop' ? 'rop.contracts.complete' : 'manager.contracts.complete'), $contract) }}" method="POST">
             @csrf
             <button type="submit" class="btn btn-success btn-sm workflow-btn" title="Завершить">
                 <i class="fas fa-flag-checkered"></i>

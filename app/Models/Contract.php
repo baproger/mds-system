@@ -180,33 +180,33 @@ class Contract extends Model
                        $this->user_id === $user->id;
 
             case 'approve':
-                return $user->role === 'rop' && 
+                return in_array($user->role, ['rop', 'admin']) && 
                        $this->status === self::STATUS_PENDING_ROP;
 
             case 'reject':
             case 'hold':
             case 'return':
-                return $user->role === 'rop' && 
+                return in_array($user->role, ['rop', 'admin']) && 
                        $this->status === self::STATUS_PENDING_ROP;
 
             case 'start_production':
-                return in_array($user->role, ['admin', 'rop']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager']) && 
                        $this->status === self::STATUS_APPROVED;
 
             case 'quality_check':
-                return in_array($user->role, ['admin', 'rop']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager']) && 
                        $this->status === self::STATUS_IN_PRODUCTION;
 
             case 'mark_ready':
-                return in_array($user->role, ['admin', 'rop']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager']) && 
                        $this->status === self::STATUS_QUALITY_CHECK;
 
             case 'ship':
-                return in_array($user->role, ['admin', 'rop']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager']) && 
                        $this->status === self::STATUS_READY;
 
             case 'complete':
-                return in_array($user->role, ['admin', 'rop']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager']) && 
                        $this->status === self::STATUS_SHIPPED;
 
             case 'admin_change_status':

@@ -122,12 +122,12 @@ class CrmController extends Controller
         // Проверяем права на изменение статуса
         $action = $this->getActionForStatus($newStatus);
         
-        // Если действие не найдено или пользователь не имеет прав, проверяем права админа или РОП
+        // Если действие не найдено или пользователь не имеет прав, проверяем права админа, РОП или менеджера
         if (!$contract->canPerformAction($action, $user)) {
             if ($user->role === 'admin' && $contract->canPerformAction('admin_change_status', $user)) {
                 $action = 'admin_change_status';
-            } elseif ($user->role === 'rop' && $this->canRopChangeStatus($contract, $user, $newStatus)) {
-                $action = 'rop_change_status';
+            } elseif (in_array($user->role, ['rop', 'manager']) && $this->canUserChangeStatus($contract, $user, $newStatus)) {
+                $action = 'user_change_status';
             } else {
                 \Log::warning('Попытка изменения статуса без прав', [
                     'contract_id' => $contract->id,
