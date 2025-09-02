@@ -20,8 +20,9 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        if (Auth::user()->role !== 'admin') {
-            abort(403, 'Доступ запрещен. Требуются права администратора.');
+        // Разрешаем доступ admin, rop и manager ролям
+        if (!in_array(Auth::user()->role, ['admin', 'rop', 'manager'])) {
+            abort(403, 'Доступ запрещен. Требуются права администратора, РОП или менеджера.');
         }
 
         return $next($request);

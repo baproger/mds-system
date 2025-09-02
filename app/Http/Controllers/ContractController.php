@@ -10,6 +10,7 @@ use App\Services\ContractStateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User; // Added missing import for User model
 
 class ContractController extends Controller
 {
@@ -205,12 +206,12 @@ class ContractController extends Controller
         
         // Проверяем права доступа
         if ($user->role === 'manager') {
-            // Обычный менеджер может редактировать только свои договоры
-            if ($contract->user_id !== $user->id) {
-                abort(403, 'Доступ запрещен. Договор не принадлежит вам.');
+            // Менеджер может редактировать свои договоры и договоры в рамках workflow
+            if ($contract->user_id !== $user->id && !$this->canManagerAccessWorkflow($contract, $user)) {
+                abort(403, 'Доступ запрещен. Договор не принадлежит вам или не входит в ваш workflow.');
             }
         } elseif ($user->role === 'rop') {
-            // РОП может редактировать договоры своего филиала
+            // РОП может редактировать все договоры своего филиала
             if ($contract->branch_id !== $user->branch_id) {
                 abort(403, 'Доступ запрещен. Договор не принадлежит вашему филиалу.');
             }
@@ -465,5 +466,33 @@ class ContractController extends Controller
             ->header('Content-Type', 'application/vnd.ms-word')
             ->header('Content-Disposition', 'attachment; filename="' . $filename . '"')
             ->header('Cache-Control', 'max-age=0');
+    }
+
+    /**
+     * Проверяет, может ли менеджер получить доступ к договору в рамках workflow
+     */
+    private function canManagerAccessWorkflow(Contract $contract, User $user): bool
+    {
+        // Менеджер может видеть договоры, которые он создал или которые находятся в workflow
+        if ($contract->user_id === $user->id) {
+            return true;
+        }
+        
+        // Менеджер может видеть договоры своего филиала в определенных статусах workflow
+        if ($contract->branch_id === $user->branch_id) {
+            $workflowStatuses = [
+                Contract::STATUS_PENDING_ROP,
+                Contract::STATUS_APPROVED,
+                Contract::STATUS_IN_PRODUCTION,
+                Contract::STATUS_QUALITY_CHECK,
+                Contract::STATUS_READY,
+                Contract::STATUS_SHIPPED,
+                Contract::STATUS_COMPLETED
+            ];
+            
+            return in_array($contract->status, $workflowStatuses);
+        }
+        
+        return false;
     }
 }
