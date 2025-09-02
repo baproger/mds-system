@@ -57,51 +57,6 @@ class ContractStateService
     }
 
     /**
-     * Отправить договор на рассмотрение бухгалтера
-     */
-    public function submitToAccountant(Contract $contract, User $actor): bool
-    {
-        if (!$contract->canPerformAction('submit_to_accountant', $actor)) {
-            throw new \Exception('Недостаточно прав для отправки на рассмотрение бухгалтера');
-        }
-
-        return DB::transaction(function () use ($contract, $actor) {
-            // Обновляем статус
-            $contract->status = Contract::STATUS_PENDING_ACCOUNTANT;
-            $contract->version++;
-            $contract->current_reviewer_id = $this->findAccountant();
-            $contract->save();
-
-            // Создаем запись об одобрении
-            Approval::create([
-                'contract_id' => $contract->id,
-                'from_role' => $actor->role,
-                'to_role' => 'accountant',
-                'action' => 'submit',
-                'comment' => 'Отправлен на рассмотрение бухгалтера',
-                'created_by' => $actor->id,
-            ]);
-
-            // Логируем изменение статуса
-            ContractChange::create([
-                'contract_id' => $contract->id,
-                'user_id' => $actor->id,
-                'role' => $actor->role,
-                'field' => 'status',
-                'old_value' => Contract::STATUS_PENDING_ROP,
-                'new_value' => Contract::STATUS_PENDING_ACCOUNTANT,
-                'version_from' => $contract->version - 1,
-                'version_to' => $contract->version,
-                'changed_at' => now(),
-            ]);
-
-            Log::info("Contract {$contract->contract_number} submitted to Accountant by {$actor->name}");
-
-            return true;
-        });
-    }
-
-    /**
      * Одобрить договор
      */
     public function approve(Contract $contract, User $actor, ?string $comment = null): bool
@@ -544,10 +499,10 @@ class ContractStateService
             }
         }
 
-        // Если есть изменения в финансовых полях, отправляем на повторное рассмотрение бухгалтера
+        // Если есть изменения в финансовых полях, отправляем на повторное рассмотрение РОП
         if ($hasFinancialChanges && $contract->status === Contract::STATUS_APPROVED) {
-            $contract->status = Contract::STATUS_PENDING_ACCOUNTANT;
-            $contract->current_reviewer_id = $this->findAccountant();
+            $contract->status = Contract::STATUS_PENDING_ROP;
+            $contract->current_reviewer_id = $this->findRopForBranch($contract->branch_id);
             
             // Создаем запись об изменении статуса
             ContractChange::create([
@@ -556,7 +511,7 @@ class ContractStateService
                 'role' => $actor->role,
                 'field' => 'status',
                 'old_value' => Contract::STATUS_APPROVED,
-                'new_value' => Contract::STATUS_PENDING_ACCOUNTANT,
+                'new_value' => Contract::STATUS_PENDING_ROP,
                 'version_from' => $contract->version,
                 'version_to' => $contract->version + 1,
                 'changed_at' => now(),
@@ -577,14 +532,5 @@ class ContractStateService
                    ->first();
 
         return $rop ? $rop->id : null;
-    }
-
-    /**
-     * Найти бухгалтера
-     */
-    private function findAccountant(): ?int
-    {
-        $accountant = User::where('role', 'accountant')->first();
-        return $accountant ? $accountant->id : null;
     }
 }

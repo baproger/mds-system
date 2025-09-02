@@ -62,7 +62,7 @@ return new class extends Migration
                 "order_due" numeric not null,
                 "photo_path" varchar,
                 "attachment_path" varchar,
-                "status" varchar check ("status" in ("draft", "pending_rop", "pending_accountant", "approved", "rejected", "on_hold", "in_production", "quality_check", "ready", "shipped", "completed")) not null default "draft",
+                "status" varchar check ("status" in ("draft", "pending_rop", "approved", "rejected", "on_hold", "in_production", "quality_check", "ready", "shipped", "completed")) not null default "draft",
                 "version" integer not null default 1,
                 "current_reviewer_id" integer,
                 "data" text,
@@ -152,7 +152,7 @@ return new class extends Migration
                 "order_due" numeric not null,
                 "photo_path" varchar,
                 "attachment_path" varchar,
-                "status" varchar check ("status" in ("draft", "pending_rop", "pending_accountant", "approved", "rejected", "on_hold")) not null default "draft",
+                "status" varchar check ("status" in ("draft", "pending_rop", "approved", "rejected", "on_hold")) not null default "draft",
                 "version" integer not null default 1,
                 "current_reviewer_id" integer,
                 "data" text,
@@ -177,7 +177,6 @@ return new class extends Migration
                 CASE 
                     WHEN status = "draft" THEN "draft"
                     WHEN status = "pending_rop" THEN "pending_rop"
-                    WHEN status = "pending_accountant" THEN "pending_accountant"
                     WHEN status = "approved" THEN "approved"
                     WHEN status = "rejected" THEN "rejected"
                     WHEN status = "on_hold" THEN "on_hold"

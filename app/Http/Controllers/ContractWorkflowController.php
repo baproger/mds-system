@@ -24,21 +24,7 @@ class ContractWorkflowController extends Controller
         try {
             $this->stateService->submitToRop($contract, Auth::user());
             
-            return redirect()->back()->with('success', 'Договор отправлен на рассмотрение РОП');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-    }
-
-    /**
-     * Отправить договор на рассмотрение бухгалтера
-     */
-    public function submitToAccountant(Request $request, Contract $contract)
-    {
-        try {
-            $this->stateService->submitToAccountant($contract, Auth::user());
-            
-            return redirect()->back()->with('success', 'Договор отправлен на рассмотрение бухгалтера');
+            return redirect()->back()->with('success', 'Договор отправлен на проверку РОП');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }

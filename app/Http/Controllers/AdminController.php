@@ -210,7 +210,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,manager,rop,accountant',
+            'role' => 'required|in:admin,manager,rop',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
 
@@ -233,7 +233,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
-            'role' => 'required|in:admin,manager,rop,accountant',
+            'role' => 'required|in:admin,manager,rop',
             'branch_id' => 'nullable|exists:branches,id',
         ]);
 
@@ -390,9 +390,6 @@ class AdminController extends Controller
             $query = Contract::whereHas('user', function($q) use ($user) {
                 $q->where('branch_id', $user->branch_id);
             })->with(['user', 'branch']);
-        } elseif ($user->role === 'accountant') {
-            // Бухгалтер видит все договоры для одобрения
-            $query = Contract::with(['user', 'branch']);
         }
 
         // Поиск

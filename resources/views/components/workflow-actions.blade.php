@@ -4,66 +4,90 @@
     @php
         $user = Auth::user();
         $canSubmitToRop = $contract->canPerformAction('submit_to_rop', $user);
-        $canSubmitToAccountant = $contract->canPerformAction('submit_to_accountant', $user);
         $canApprove = $contract->canPerformAction('approve', $user);
         $canReject = $contract->canPerformAction('reject', $user);
         $canHold = $contract->canPerformAction('hold', $user);
         $canReturn = $contract->canPerformAction('return', $user);
+        $canStartProduction = $contract->canPerformAction('start_production', $user);
+        $canQualityCheck = $contract->canPerformAction('quality_check', $user);
+        $canMarkReady = $contract->canPerformAction('mark_ready', $user);
+        $canShip = $contract->canPerformAction('ship', $user);
+        $canComplete = $contract->canPerformAction('complete', $user);
     @endphp
 
+    <!-- Отправка на проверку РОП -->
     @if($canSubmitToRop)
         <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.submit-to-rop' : 'manager.contracts.submit-to-rop', $contract) }}" method="POST" class="d-inline">
             @csrf
-            <button type="submit" class="btn btn-warning btn-sm workflow-btn">
+            <button type="submit" class="btn btn-primary btn-sm workflow-btn" title="Отправить на проверку РОП">
                 <i class="fas fa-paper-plane"></i>
-                Отправить на РОП
+                Отправить РОП
             </button>
         </form>
     @endif
 
-    @if($canSubmitToAccountant)
-        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.submit-to-accountant' : 'rop.contracts.submit-to-accountant', $contract) }}" method="POST" class="d-inline">
-            @csrf
-            <button type="submit" class="btn btn-info btn-sm workflow-btn">
-                <i class="fas fa-paper-plane"></i>
-                Отправить бухгалтеру
-            </button>
-        </form>
-    @endif
-
-    @if($canApprove)
-        <button type="button" class="btn btn-success btn-sm workflow-btn" onclick="showApproveModal()">
-            <i class="fas fa-check-circle"></i>
-            Одобрить
-        </button>
-    @endif
-
-    @if($canReject)
-        <button type="button" class="btn btn-danger btn-sm workflow-btn" onclick="showRejectModal()">
-            <i class="fas fa-times-circle"></i>
-            Отклонить
-        </button>
-    @endif
-
-    @if($canHold)
-        <button type="button" class="btn btn-warning btn-sm workflow-btn" onclick="showHoldModal()">
-            <i class="fas fa-pause-circle"></i>
-            Приостановить
-        </button>
-    @endif
-
-    @if($canReturn)
-        <button type="button" class="btn btn-info btn-sm workflow-btn" onclick="showReturnModal()">
-            <i class="fas fa-undo"></i>
-            Вернуть на доработку
-        </button>
-    @endif
-
-    @if($user->can('view', $contract))
-        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.history' : (Auth::user()->role === 'manager' ? 'manager.contracts.history' : (Auth::user()->role === 'rop' ? 'rop.contracts.history' : 'accountant.contracts.history')), $contract) }}" class="btn btn-secondary btn-sm workflow-btn">
+    <!-- История изменений -->
+    @if($contract->changes()->count() > 0 || $contract->approvals()->count() > 0)
+        <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.history' : (Auth::user()->role === 'rop' ? 'rop.contracts.history' : 'manager.contracts.history')), $contract) }}" class="btn btn-secondary btn-sm workflow-btn">
             <i class="fas fa-history"></i>
-            История изменений
+            История
         </a>
+    @endif
+
+    <!-- Одобрение договора -->
+    @if($canApprove)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.approve' : 'rop.contracts.approve', $contract) }}" method="POST">
+            @csrf
+            <div class="input-group input-group-sm">
+                <input type="text" name="comment" class="form-control" placeholder="Комментарий к одобрению" required>
+                <button type="submit" class="btn btn-success btn-sm workflow-btn" title="Одобрить договор">
+                    <i class="fas fa-check-circle"></i>
+                    Одобрить
+                </button>
+            </div>
+        </form>
+    @endif
+
+    <!-- Отклонение договора -->
+    @if($canReject)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.reject' : 'rop.contracts.reject', $contract) }}" method="POST">
+            @csrf
+            <div class="input-group input-group-sm">
+                <input type="text" name="comment" class="form-control" placeholder="Причина отклонения" required>
+                <button type="submit" class="btn btn-danger btn-sm workflow-btn" title="Отклонить договор">
+                    <i class="fas fa-times-circle"></i>
+                    Отклонить
+                </button>
+            </div>
+        </form>
+    @endif
+
+    <!-- Приостановка договора -->
+    @if($canHold)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.hold' : 'rop.contracts.hold', $contract) }}" method="POST">
+            @csrf
+            <div class="input-group input-group-sm">
+                <input type="text" name="comment" class="form-control" placeholder="Причина приостановки" required>
+                <button type="submit" class="btn btn-warning btn-sm workflow-btn" title="Приостановить договор">
+                    <i class="fas fa-pause-circle"></i>
+                    Приостановить
+                </button>
+            </div>
+        </form>
+    @endif
+
+    <!-- Возврат на доработку -->
+    @if($canReturn)
+        <form action="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.return' : 'rop.contracts.return', $contract) }}" method="POST">
+            @csrf
+            <div class="input-group input-group-sm">
+                <input type="text" name="comment" class="form-control" placeholder="Что нужно исправить" required>
+                <button type="submit" class="btn btn-info btn-sm workflow-btn" title="Вернуть на доработку">
+                    <i class="fas fa-undo"></i>
+                    Вернуть
+                </button>
+            </div>
+        </form>
     @endif
 </div>
 

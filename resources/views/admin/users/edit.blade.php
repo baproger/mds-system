@@ -74,10 +74,6 @@
                                         <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>
                                             Администратор системы
                                         </option>
-                                        
-                                        <option value="accountant" {{ old('role', $user->role) == 'accountant' ? 'selected' : '' }}>
-                                            Бухгалтер
-                                        </option>
                                     </optgroup>
                                 </select>
                                 @error('role')
@@ -221,9 +217,6 @@
                                             <span class="personnel-tag manager-tag">Менеджер</span>
                                         @elseif($user->role == 'admin')
                                             <span class="personnel-tag admin-tag">Администратор системы</span>
-                                        
-                                        @elseif($user->role == 'accountant')
-                                            <span class="personnel-tag accountant-tag">Бухгалтер</span>
                                         @else
                                             <span class="empty-state">Не назначена</span>
                                         @endif
@@ -593,36 +586,13 @@
 }
 
 .admin-tag {
-    background: #fef3c7;
-    color: #d97706;
-    border: 1px solid #fcd34d;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
 }
 
-.admin-tag:hover {
-    background: #fde68a;
-    transform: scale(1.02);
-}
-
-/* director-tag removed */
-    background: #fce7f3;
-    color: #be185d;
-    border: 1px solid #f9a8d4;
-}
-
-/* director-tag hover removed */
-    background: #fbcfe8;
-    transform: scale(1.02);
-}
-
-.accountant-tag {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
-}
-
-.accountant-tag:hover {
-    background: #d1fae5;
-    transform: scale(1.02);
+.default-tag {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: white;
 }
 
 .branch-tag {

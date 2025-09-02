@@ -17,15 +17,14 @@ class NewRolesSeeder extends Seeder
     {
         $branch = Branch::first();
 
-        // Бухгалтер
+        // Создаем РОП
         User::create([
-            'name' => 'Айжан Бухгалтер',
-            'email' => 'accountant@mdsdoors.kz',
+            'name' => 'РОП Менеджер',
+            'email' => 'rop@mdsdoors.kz',
             'password' => Hash::make('password'),
-            'role' => 'accountant',
-            'branch_id' => $branch ? $branch->id : null,
+            'role' => 'rop',
+            'branch_id' => 1
         ]);
-
 
 
         // Роль директора удалена

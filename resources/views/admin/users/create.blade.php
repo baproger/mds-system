@@ -97,8 +97,11 @@
                                             Администратор системы
                                         </option>
                                         
-                                        <option value="accountant" {{ old('role') == 'accountant' ? 'selected' : '' }}>
-                                            Бухгалтер
+                                        <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>
+                                            Менеджер
+                                        </option>
+                                        <option value="rop" {{ old('role') == 'rop' ? 'selected' : '' }}>
+                                            РОП
                                         </option>
                                     </optgroup>
                                 </select>
@@ -387,9 +390,8 @@
 }
 
 .rop-tag {
-    background: #eef2ff;
-    color: #7c3aed;
-    border: 1px solid #c7d2fe;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
 }
 
 .rop-tag:hover {

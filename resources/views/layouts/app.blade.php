@@ -45,7 +45,7 @@
                     </li>
                     @endif
                     @auth
-                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop' || Auth::user()->role === 'accountant')
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->routeIs(Auth::user()->role . '.dashboard') ? 'active' : '' }}" 
                                href="{{ route(Auth::user()->role . '.dashboard') }}">
@@ -54,7 +54,7 @@
                         </li>
                         @endif
                         
-                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop' || Auth::user()->role === 'accountant')
+                        @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop')
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                                 <i class="fas fa-tachometer-alt me-2"></i> CRM
@@ -96,7 +96,7 @@
                                 <span>{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
-                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop' || Auth::user()->role === 'accountant')
+                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop')
                                 <li>
                                     <a class="dropdown-item" href="{{ route(Auth::user()->role . '.dashboard') }}">
                                         <i class="fas fa-shield-alt me-2"></i> Панель управления

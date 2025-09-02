@@ -23,15 +23,13 @@
             </div>
             
             <div class="role-card" data-role="rop">
-                <div class="role-icon">
-                    <i class="fas fa-crown"></i>
+                <div class="role-icon rop-icon">
+                    <i class="fas fa-user-tie"></i>
                 </div>
-                <div class="role-content">
-                    <div class="role-name">ROP</div>
-                    <div class="role-description">Sales department head</div>
-                </div>
+                <div class="role-name">РОП</div>
+                <div class="role-description">Руководитель отдела продаж</div>
                 <div class="role-badge rop-badge">
-                    <span>Leadership</span>
+                    <i class="fas fa-star"></i>
                 </div>
             </div>
         </div>
@@ -62,18 +60,6 @@
             
             
             
-            <div class="role-card" data-role="accountant">
-                <div class="role-icon">
-                    <i class="fas fa-calculator"></i>
-                </div>
-                <div class="role-content">
-                    <div class="role-name">Accountant</div>
-                    <div class="role-description">Financial reporting</div>
-                </div>
-                <div class="role-badge accountant-badge">
-                    <span>Finance</span>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -261,7 +247,12 @@
 }
 
 .rop-badge {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
 }
 
 .admin-badge {

@@ -11,9 +11,9 @@
             <p class="page-subtitle">Договор №{{ $contract->contract_number }}</p>
         </div>
         <div class="header-actions">
-            <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.show' : (Auth::user()->role === 'manager' ? 'manager.contracts.show' : (Auth::user()->role === 'rop' ? 'rop.contracts.show' : 'accountant.contracts.show')), $contract) }}" class="btn btn-secondary btn-sm">
-                <i class="fas fa-arrow-left"></i>
-                Назад к договору
+            <a href="{{ route(Auth::user()->role === 'admin' ? 'admin.contracts.show' : (Auth::user()->role === 'rop' ? 'rop.contracts.show' : 'manager.contracts.show')), $contract) }}" class="btn btn-secondary btn-sm">
+                <i class="fas fa-eye"></i>
+                Просмотр договора
             </a>
         </div>
     </div>

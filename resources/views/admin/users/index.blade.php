@@ -98,8 +98,6 @@
                                     <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Администратор</option>
                                     <option value="manager" {{ request('role') == 'manager' ? 'selected' : '' }}>Менеджер</option>
                                     <option value="rop" {{ request('role') == 'rop' ? 'selected' : '' }}>РОП</option>
-                                    
-                                    <option value="accountant" {{ request('role') == 'accountant' ? 'selected' : '' }}>Бухгалтер</option>
                                 </select>
                             </div>
                             
@@ -176,15 +174,10 @@
                                             <span class="personnel-tag email-tag"><i class="fas fa-envelope tag-icon"></i><span style="margin-left:4px;">{{ $user->email }}</span></span>
                                             @if($user->role === 'admin')
                                                 <span class="personnel-tag admin-tag"><i class="fas fa-shield-alt tag-icon"></i><span style="margin-left:4px;">Администратор</span></span>
-                                            @elseif($user->role === 'accountant')
-                                                <span class="personnel-tag accountant-tag"><i class="fas fa-calculator tag-icon"></i><span style="margin-left:4px;">Бухгалтер</span></span>
-                                            
-                                            @elseif($user->role === 'manager')
-                                                <span class="personnel-tag manager-tag"><i class="fas fa-user-tag tag-icon"></i><span style="margin-left:4px;">Менеджер</span></span>
                                             @elseif($user->role === 'rop')
-                                                <span class="personnel-tag rop-tag"><i class="fas fa-crown tag-icon"></i><span style="margin-left:4px;">РОП</span></span>
+                                                <span class="personnel-tag rop-tag"><i class="fas fa-user-tie tag-icon"></i><span style="margin-left:4px;">РОП</span></span>
                                             @else
-                                                <span class="personnel-tag user-tag"><i class="fas fa-user tag-icon"></i><span style="margin-left:4px;">{{ ucfirst($user->role) }}</span></span>
+                                                <span class="personnel-tag default-tag">{{ ucfirst($user->role) }}</span>
                                             @endif
                                             @if($user->branch)
                                                 <span class="personnel-tag branch-tag"><i class="fas fa-building tag-icon"></i><span style="margin-left:4px;">{{ $user->branch->name }}</span></span>
@@ -502,9 +495,13 @@
 }
 
 .rop-tag {
-    background: #eef2ff;
-    color: #7c3aed;
-    border: 1px solid #c7d2fe;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+}
+
+.default-tag {
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    color: white;
 }
 
 .user-tag {

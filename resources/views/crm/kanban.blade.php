@@ -12,13 +12,6 @@
                     Канбан доска
                 </h1>
                 
-                @if(Auth::user()->role === 'accountant')
-                    <div class="alert alert-info mb-0 py-2 px-3" role="alert">
-                        <i class="fas fa-eye me-2"></i>
-                        <strong>Режим просмотра:</strong> Бухгалтер может только просматривать договоры
-                    </div>
-                @endif
-                
                 <div class="d-flex gap-2">
                     <div class="filter-group">
                         <label class="filter-label">Филиал:</label>
@@ -559,13 +552,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация Sortable для каждой колонки
     const columns = document.querySelectorAll('.kanban-column');
     columns.forEach(column => {
-        const userRole = '{{ Auth::user()->role }}';
-        
-        // Бухгалтер не может перемещать договоры
-        if (userRole === 'accountant') {
-            return;
-        }
-        
         new Sortable(column.querySelector('.column-content'), {
             group: 'contracts',
             animation: 150,
@@ -601,13 +587,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateContractStatus(contractId, newStatus) {
-    // Проверяем роль пользователя - бухгалтер не может изменять статусы
-    const userRole = '{{ Auth::user()->role }}';
-    if (userRole === 'accountant') {
-        showNotification('Бухгалтер не может изменять статусы договоров', 'warning');
-        return;
-    }
-    
     const url = `{{ route(Auth::user()->role . '.crm.update-status', ['contract' => ':contractId']) }}`.replace(':contractId', contractId);
     
     fetch(url, {

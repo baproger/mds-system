@@ -14,13 +14,9 @@ return new class extends Migration
         // Удаляем пользователей с ролью accountant
         DB::table('users')->where('role', 'accountant')->delete();
         
-        // Для SQLite нужно пересоздать таблицу
+        // Обновляем enum ролей
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-        });
-        
-        Schema::table('users', function (Blueprint $table) {
-            $table->enum('role', ['manager', 'admin'])->default('manager')->after('password');
+            $table->enum('role', ['manager', 'admin', 'rop'])->default('manager')->change();
         });
     }
 

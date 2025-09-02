@@ -50,12 +50,18 @@
                         <i class="fas fa-user-tie"></i>
                         <span>Менеджеры</span>
                     </a>
-                    @endif
-                    @if(Auth::user()->role === 'rop')
-                    <a href="{{ route('rop.managers.index') }}" class="nav-item {{ request()->routeIs('rop.managers.*') ? 'active' : '' }}">
-                        <i class="fas fa-user-tie"></i>
-                        <span>Менеджеры</span>
-                    </a>
+                    @elseif(Auth::user()->role === 'accountant')
+                    <div class="nav-section">
+                        <div class="nav-section-title">Просмотр</div>
+                        <a href="{{ route(Auth::user()->role . '.managers.index') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.managers.*') ? 'active' : '' }}">
+                            <i class="fas fa-users-cog"></i>
+                            <span>Менеджеры</span>
+                        </a>
+                        <a href="{{ route(Auth::user()->role . '.branches.index') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.branches.*') ? 'active' : '' }}">
+                            <i class="fas fa-building"></i>
+                            <span>Филиалы</span>
+                        </a>
+                    </div>
                     @endif
                     <a href="{{ route(Auth::user()->role . '.contracts.index') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.contracts.*') ? 'active' : '' }}">
                         <i class="fas fa-file-contract"></i>
@@ -120,8 +126,6 @@
                                 <span class="badge badge-secondary">Менеджер</span>
                             @elseif(Auth::user()->role === 'rop')
                                 <span class="badge badge-info">РОП</span>
-                            @elseif(Auth::user()->role === 'accountant')
-                                <span class="badge badge-success">Бухгалтер</span>
                             @else
                                 <span class="badge badge-info">{{ ucfirst(Auth::user()->role) }}</span>
                             @endif

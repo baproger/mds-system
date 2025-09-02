@@ -53,8 +53,9 @@ class Contract extends Model
     const FUNNEL_ORDER = [
         self::STATUS_DRAFT,
         self::STATUS_PENDING_ROP,
-        self::STATUS_PENDING_ACCOUNTANT,
         self::STATUS_APPROVED,
+        self::STATUS_REJECTED,
+        self::STATUS_ON_HOLD,
         self::STATUS_IN_PRODUCTION,
         self::STATUS_QUALITY_CHECK,
         self::STATUS_READY,
@@ -67,7 +68,6 @@ class Contract extends Model
      */
     const REVERSIBLE_STATUSES = [
         self::STATUS_PENDING_ROP,
-        self::STATUS_PENDING_ACCOUNTANT,
         self::STATUS_APPROVED,
         self::STATUS_IN_PRODUCTION,
         self::STATUS_QUALITY_CHECK
