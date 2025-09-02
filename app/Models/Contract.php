@@ -227,14 +227,13 @@ class Contract extends Model
     }
 
     /**
-     * Получить статус для отображения (статический метод)
+     * Получить человекочитаемую метку статуса
      */
     public static function getStatusLabel($status)
     {
         $labels = [
             self::STATUS_DRAFT => 'Черновик',
             self::STATUS_PENDING_ROP => 'На проверке РОП',
-            self::STATUS_PENDING_ACCOUNTANT => 'На проверке бухгалтера',
             self::STATUS_APPROVED => 'Одобрен',
             self::STATUS_REJECTED => 'Отклонен',
             self::STATUS_ON_HOLD => 'Приостановлен',
@@ -246,69 +245,51 @@ class Contract extends Model
             self::STATUS_RETURNED => 'Возвращен на доработку',
         ];
 
-        return $labels[$status] ?? $status;
+        return $labels[$status] ?? 'Неизвестный статус';
     }
 
     /**
-     * Получить цвет статуса
-     */
-    public function getStatusColorAttribute()
-    {
-        return self::getStatusColor($this->status);
-    }
-
-    /**
-     * Получить цвет статуса (статический метод)
+     * Получить цвет для статуса
      */
     public static function getStatusColor($status)
     {
         $colors = [
-            self::STATUS_DRAFT => 'secondary',
-            self::STATUS_PENDING_ROP => 'warning',
-            self::STATUS_PENDING_ACCOUNTANT => 'info',
-            self::STATUS_APPROVED => 'success',
-            self::STATUS_REJECTED => 'danger',
-            self::STATUS_ON_HOLD => 'dark',
-            self::STATUS_IN_PRODUCTION => 'primary',
-            self::STATUS_QUALITY_CHECK => 'info',
-            self::STATUS_READY => 'success',
-            self::STATUS_SHIPPED => 'warning',
-            self::STATUS_COMPLETED => 'success',
-            self::STATUS_RETURNED => 'secondary',
+            self::STATUS_DRAFT => '#6b7280',
+            self::STATUS_PENDING_ROP => '#f59e0b',
+            self::STATUS_APPROVED => '#10b981',
+            self::STATUS_REJECTED => '#ef4444',
+            self::STATUS_ON_HOLD => '#8b5cf6',
+            self::STATUS_IN_PRODUCTION => '#3b82f6',
+            self::STATUS_QUALITY_CHECK => '#06b6d4',
+            self::STATUS_READY => '#84cc16',
+            self::STATUS_SHIPPED => '#f97316',
+            self::STATUS_COMPLETED => '#059669',
+            self::STATUS_RETURNED => '#6b7280',
         ];
 
-        return $colors[$status] ?? 'secondary';
+        return $colors[$status] ?? '#6b7280';
     }
 
     /**
-     * Получить иконку статуса
-     */
-    public function getStatusIconAttribute()
-    {
-        return self::getStatusIcon($this->status);
-    }
-
-    /**
-     * Получить иконку статуса (статический метод)
+     * Получить иконку для статуса
      */
     public static function getStatusIcon($status)
     {
         $icons = [
             self::STATUS_DRAFT => 'fas fa-edit',
-            self::STATUS_PENDING_ROP => 'fas fa-clock',
-            self::STATUS_PENDING_ACCOUNTANT => 'fas fa-calculator',
+            self::STATUS_PENDING_ROP => 'fas fa-user-tie',
             self::STATUS_APPROVED => 'fas fa-check-circle',
             self::STATUS_REJECTED => 'fas fa-times-circle',
             self::STATUS_ON_HOLD => 'fas fa-pause-circle',
             self::STATUS_IN_PRODUCTION => 'fas fa-cogs',
             self::STATUS_QUALITY_CHECK => 'fas fa-search',
-            self::STATUS_READY => 'fas fa-box',
+            self::STATUS_READY => 'fas fa-shipping-fast',
             self::STATUS_SHIPPED => 'fas fa-truck',
             self::STATUS_COMPLETED => 'fas fa-flag-checkered',
             self::STATUS_RETURNED => 'fas fa-undo',
         ];
 
-        return $icons[$status] ?? 'fas fa-file';
+        return $icons[$status] ?? 'fas fa-circle';
     }
 
     /**
