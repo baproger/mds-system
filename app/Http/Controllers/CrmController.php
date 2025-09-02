@@ -126,7 +126,7 @@ class CrmController extends Controller
         if (!$contract->canPerformAction($action, $user)) {
             if ($user->role === 'admin' && $contract->canPerformAction('admin_change_status', $user)) {
                 $action = 'admin_change_status';
-            } elseif (in_array($user->role, ['rop', 'manager']) && $this->canUserChangeStatus($contract, $user, $newStatus)) {
+            } elseif (in_array($user->role, ['rop', 'manager']) && $this->canRopChangeStatus($contract, $user, $newStatus)) {
                 $action = 'user_change_status';
             } else {
                 \Log::warning('Попытка изменения статуса без прав', [
@@ -317,7 +317,6 @@ class CrmController extends Controller
     {
         $actions = [
             Contract::STATUS_PENDING_ROP => 'submit_to_rop',
-            Contract::STATUS_PENDING_ACCOUNTANT => 'submit_to_accountant',
             Contract::STATUS_APPROVED => 'approve',
             Contract::STATUS_IN_PRODUCTION => 'start_production',
             Contract::STATUS_QUALITY_CHECK => 'quality_check',
@@ -361,7 +360,6 @@ class CrmController extends Controller
         $icons = [
             Contract::STATUS_DRAFT => 'edit',
             Contract::STATUS_PENDING_ROP => 'user-tie',
-            Contract::STATUS_PENDING_ACCOUNTANT => 'calculator',
             Contract::STATUS_APPROVED => 'check-circle',
             Contract::STATUS_REJECTED => 'times-circle',
             Contract::STATUS_ON_HOLD => 'pause-circle',
@@ -386,16 +384,24 @@ class CrmController extends Controller
     }
 
     /**
-     * Проверяет, может ли РОП изменить статус договора
+     * Проверяет, может ли пользователь изменить статус договора
      */
-    private function canRopChangeStatus(Contract $contract, User $rop, string $newStatus): bool
+    private function canRopChangeStatus(Contract $contract, User $user, string $newStatus): bool
     {
-        // РОП может изменять статусы только для договоров своего филиала
-        if ($contract->branch_id !== $rop->branch_id) {
-            return false;
+        // Проверяем права в зависимости от роли
+        if ($user->role === 'rop') {
+            // РОП может изменять статусы только для договоров своего филиала
+            if ($contract->branch_id !== $user->branch_id) {
+                return false;
+            }
+        } elseif ($user->role === 'manager') {
+            // Менеджер может изменять статусы только для своих договоров
+            if ($contract->user_id !== $user->id) {
+                return false;
+            }
         }
 
-        // РОП может изменять статусы в рамках workflow
+        // Определяем разрешенные переходы для разных ролей
         $allowedTransitions = [
             Contract::STATUS_PENDING_ROP => [Contract::STATUS_APPROVED, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
             Contract::STATUS_APPROVED => [Contract::STATUS_IN_PRODUCTION, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD],
