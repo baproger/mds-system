@@ -50,7 +50,8 @@
                         <i class="fas fa-user-tie"></i>
                         <span>Менеджеры</span>
                     </a>
-
+                    @endif
+                    
                     <a href="{{ route(Auth::user()->role . '.contracts.index') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.contracts.*') ? 'active' : '' }}">
                         <i class="fas fa-file-contract"></i>
                         <span>Договоры</span>
