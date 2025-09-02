@@ -213,6 +213,19 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->group(function () {
     Route::post('/contracts/{contract}/submit-to-rop', [ContractWorkflowController::class, 'submitToRop'])->name('contracts.submit-to-rop');
     Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
+    
+    // Workflow действия для договоров (расширенная воронка)
+    Route::post('/contracts/{contract}/start-production', [ContractWorkflowController::class, 'startProduction'])->name('contracts.start-production');
+    Route::post('/contracts/{contract}/quality-check', [ContractWorkflowController::class, 'qualityCheck'])->name('contracts.quality-check');
+    Route::post('/contracts/{contract}/mark-ready', [ContractWorkflowController::class, 'markReady'])->name('contracts.mark-ready');
+    Route::post('/contracts/{contract}/ship', [ContractWorkflowController::class, 'ship'])->name('contracts.ship');
+    Route::post('/contracts/{contract}/complete', [ContractWorkflowController::class, 'complete'])->name('contracts.complete');
+    
+    // Дополнительные workflow действия
+    Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
+    Route::post('/contracts/{contract}/reject', [ContractWorkflowController::class, 'reject'])->name('contracts.reject');
+    Route::post('/contracts/{contract}/hold', [ContractWorkflowController::class, 'hold'])->name('contracts.hold');
+    Route::post('/contracts/{contract}/return', [ContractWorkflowController::class, 'returnForRevision'])->name('contracts.return');
 });
 
 // Workflow маршруты для РОП

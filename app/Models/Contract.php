@@ -325,7 +325,7 @@ class Contract extends Model
     }
 
     /**
-     * Получить прогресс воронки в процентах
+    * Получить прогресс воронки в процентах
      */
     public function getFunnelProgressAttribute()
     {

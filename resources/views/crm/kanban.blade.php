@@ -1,686 +1,1676 @@
 @extends('layouts.admin')
 
+@push('meta')
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
+
 @section('title', 'Канбан-доска')
 
 @section('content')
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="edit-branch-container">
-                <div class="page-header">
-                    <div class="header-content">
-                        <div class="header-icon">
-                            <i class="fas fa-trello"></i>
-                        </div>
-                        <div class="header-text">
-                            <h1 class="page-title">Канбан-доска</h1>
-                            <p class="page-subtitle">Визуальное управление договорами</p>
-                        </div>
-                    </div>
-                </div>
+<div class="kanban-container">
+    <!-- Заголовок канбан доски -->
+    <div class="kanban-header">
+        <h1 class="kanban-title">Канбан доска</h1>
+        <p class="kanban-subtitle">Управление сделками и заявками в реальном времени</p>
+    </div>
 
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-columns"></i>
-                        <span>Доска договоров</span>
-                    </div>
-                    
-                    <div class="kanban-board">
-                        @foreach($statuses as $status)
-                        <div class="kanban-column" data-status="{{ $status }}">
-                            <div class="column-header">
-                                <div class="column-title">
-                                    <div class="status-icon" style="background-color: {{ \App\Models\Contract::getStatusColor($status) }}">
-                                        <i class="{{ \App\Models\Contract::getStatusIcon($status) }}"></i>
-                                    </div>
-                                    <div class="status-info">
-                                        <div class="status-name">{{ \App\Models\Contract::getStatusLabel($status) }}</div>
-                                        <div class="status-count">{{ isset($contractsByStatus[$status]) ? $contractsByStatus[$status]->count() : 0 }} договоров</div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="column-content" id="column-{{ $status }}">
-                                @if(isset($contractsByStatus[$status]))
-                                    @foreach($contractsByStatus[$status] as $contract)
-                                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
-                                        <div class="contract-header">
-                                            <div class="contract-number">#{{ $contract->contract_number }}</div>
-                                            <div class="contract-amount">{{ number_format($contract->order_total, 0, ',', ' ') }} ₸</div>
-                                        </div>
-                                        
-                                        <div class="contract-body">
-                                            <div class="contract-client">{{ $contract->client }}</div>
-                                            <div class="contract-date">{{ $contract->created_at->format('d.m.Y') }}</div>
-                                        </div>
-                                        
-                                        <div class="contract-footer">
-                                            <div class="contract-manager">
-                                                <i class="fas fa-user tag-icon"></i>
-                                                {{ $contract->manager ?? 'Не назначен' }}
-                                            </div>
-                                            <div class="contract-actions">
-                                                <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" 
-                                                   class="btn-action" title="Просмотр">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="contract-progress">
-                                            <div class="progress">
-                                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
-                                            </div>
-                                            <small class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</small>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                @endif
+    <!-- Контейнер колонок - только горизонтально -->
+    <div class="kanban-columns">
+        <!-- Колонка: Черновик -->
+        <div class="kanban-column" data-status="draft">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon draft"></div>
+                    <span>Черновик</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['draft'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['draft'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->created_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot"></div>
+                                <span class="status-text">Нет задач</span>
                             </div>
                         </div>
-                        @endforeach
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }} 〒</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
                     </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: На проверке РОП -->
+        <div class="kanban-column" data-status="pending_rop">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon pending-rop"></div>
+                    <span>На проверке РОП</span>
                 </div>
+                <div class="column-stats">{{ count($contractsByStatus['pending_rop'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['pending_rop'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot warning"></div>
+                                <span class="status-text">На проверке</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Одобрен -->
+        <div class="kanban-column" data-status="approved">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon approved"></div>
+                    <span>Одобрен</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['approved'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['approved'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot"></div>
+                                <span class="status-text">Одобрено</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Отклонен -->
+        <div class="kanban-column" data-status="rejected">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon rejected"></div>
+                    <span>Отклонен</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['rejected'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['rejected'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot error"></div>
+                                <span class="status-text">Отклонено</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Приостановлен -->
+        <div class="kanban-column" data-status="on_hold">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon on-hold"></div>
+                    <span>Приостановлен</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['on_hold'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['on_hold'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot on-hold"></div>
+                                <span class="status-text">Приостановлено</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: В производстве -->
+        <div class="kanban-column" data-status="in_production">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon in-production"></div>
+                    <span>В производстве</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['in_production'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['in_production'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot"></div>
+                                <span class="status-text">В производстве</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Контроль качества -->
+        <div class="kanban-column" data-status="quality_check">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon quality-check"></div>
+                    <span>Контроль качества</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['quality_check'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['quality_check'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot quality-check"></div>
+                                <span class="status-text">Контроль качества</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Готов к отгрузке -->
+        <div class="kanban-column" data-status="ready">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon ready"></div>
+                    <span>Готов к отгрузке</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['ready'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['ready'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot ready"></div>
+                                <span class="status-text">Готов к отгрузке</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Отгружен -->
+        <div class="kanban-column" data-status="shipped">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon shipped"></div>
+                    <span>Отгружен</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['shipped'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['shipped'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot shipped"></div>
+                                <span class="status-text">Отгружен</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Завершен -->
+        <div class="kanban-column" data-status="completed">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon completed"></div>
+                    <span>Завершен</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['completed'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['completed'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot completed"></div>
+                                <span class="status-text">Завершен</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
+            </div>
+        </div>
+
+        <!-- Колонка: Возвращен на доработку -->
+        <div class="kanban-column" data-status="returned">
+            <div class="column-header">
+                <div class="column-title">
+                    <div class="status-icon returned"></div>
+                    <span>Возвращен на доработку</span>
+                </div>
+                <div class="column-stats">{{ count($contractsByStatus['returned'] ?? []) }}</div>
+            </div>
+            
+            <!-- Карточки сделок -->
+            <div class="column-content">
+                @forelse($contractsByStatus['returned'] ?? [] as $contract)
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                        <div class="card-header">
+                            <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
+                        </div>
+                        
+                        <div class="card-meta">
+                            <div class="card-time">{{ $contract->updated_at->format('d.m.Y H:i') }}</div>
+                            <div class="card-status">
+                                <div class="status-dot returned"></div>
+                                <span class="status-text">Возвращен на доработку</span>
+                            </div>
+                        </div>
+                        
+                        <div class="card-progress">
+                            <div class="progress">
+                                <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
+                        </div>
+                        
+                        <div class="card-manager">
+                            <i class="fas fa-user manager-icon"></i>
+                            <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
+                        
+                        <div class="card-amount-bottom">〒{{ number_format($contract->order_total ?? 0, 0, ',', ' ') }}</div>
+                        
+                        <div class="card-actions">
+                            <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <button class="btn-action" title="Позвонить">
+                                <i class="fas fa-phone"></i>
+                            </button>
+                            <button class="btn-action" title="Сообщение">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                        </div>
+                    </div>
+                @empty
+                    <!-- Пустая колонка без элементов -->
+                @endforelse
             </div>
         </div>
     </div>
 </div>
 
 <style>
-.edit-branch-container {
-    max-width: 1400px;
-    margin: 0 auto;
+/* Современный дизайн канбан доски */
+.kanban-container {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    min-height: 100vh;
+    padding: 20px 10px 10px 300px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Заголовок канбан доски */
+.kanban-header {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
     padding: 24px;
+    margin-bottom: 24px;
 }
 
-.page-header {
-    margin-bottom: 32px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.header-content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.header-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.kanban-title {
     color: white;
-    font-size: 20px;
-}
-
-.page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #6b7280;
+    margin: 0 0 16px 0;
+}
+
+.kanban-subtitle {
+    color: #94a3b8;
+    font-size: 16px;
     margin: 0;
 }
 
-.page-subtitle {
-    font-size: 14px;
-    color: #6b7280;
-    margin: 4px 0 0 0;
-}
-
-.form-section {
-    background: white;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f3f4f6;
-}
-
-.section-header {
+/* Контейнер колонок - только горизонтально */
+.kanban-columns {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 24px;
-    padding-bottom: 16px;
-    border-bottom: 2px solid #f3f4f6;
-    font-weight: 600;
-    font-size: 16px;
-    color: #374151;
+    gap: 16px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    min-height: 400px;
 }
 
-.section-header i {
-    color: #1ba4e9;
-    font-size: 18px;
-}
-
-.kanban-board {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
+/* Колонка канбан - компактная */
 .kanban-column {
-    background: #fafafa;
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 12px;
-    padding: 20px;
-    border: 1px solid #f3f4f6;
-    min-height: 600px;
-    display: flex;
-    flex-direction: column;
-    transition: all 0.2s ease;
+    padding: 16px;
+    backdrop-filter: blur(10px);
+    min-width: 280px;
+    max-width: 280px;
+    flex-shrink: 0;
+    height: fit-content;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
 }
 
-.kanban-column.drag-over {
-    background: #f0f9ff;
-    border: 2px dashed #1ba4e9;
+.kanban-column:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* Заголовок колонки с цветными квадратиками */
 .column-header {
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
 }
 
 .column-title {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
 }
 
 .status-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #618ee6;
-    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
     flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.status-info {
-    flex: 1;
+/* Цвета для разных статусов */
+.status-icon.draft {
+    background: #6b7280; /* Темно-серый */
 }
 
-.status-name {
-    font-weight: 600;
-    color: #374151;
-    font-size: 16px;
-    margin-bottom: 4px;
+.status-icon.pending-rop {
+    background: #f59e0b; /* Оранжевый */
 }
 
-.status-count {
-    font-size: 14px;
-    color: #6b7280;
+.status-icon.approved {
+    background: #10b981; /* Зеленый */
 }
 
-.column-content {
-    flex: 1;
-    min-height: 400px;
-    padding: 10px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+.status-icon.rejected {
+    background: #ef4444; /* Красный */
 }
 
+.status-icon.on-hold {
+    background: #8b5cf6; /* Фиолетовый */
+}
+
+.status-icon.in-production {
+    background: #3b82f6; /* Синий */
+}
+
+.status-icon.quality-check {
+    background: #06b6d4; /* Голубой */
+}
+
+.status-icon.ready {
+    background: #84cc16; /* Лаймовый */
+}
+
+.status-icon.shipped {
+    background: #f97316; /* Темно-оранжевый */
+}
+
+.status-icon.completed {
+    background: #059669; /* Темно-зеленый */
+}
+
+.status-icon.returned {
+    background: #6b7280; /* Темно-серый */
+}
+
+
+
+.column-stats {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    min-width: 20px;
+    text-align: center;
+}
+
+
+
+
+
+/* Карточка сделки - компактная */
 .contract-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
     cursor: grab;
-    transition: all 0.3s ease;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    animation: cardSlideIn 0.3s ease;
 }
 
 .contract-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-    border-color: #1ba4e9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 .contract-card:active {
     cursor: grabbing;
 }
 
-.contract-card.dragging {
-    opacity: 0.6;
-    transform: rotate(5deg) scale(0.95);
+/* Заголовок карточки - минималистичный */
+.card-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 8px 0;
 }
 
-.contract-header {
+.card-number {
+    color: #475569;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.5px;
+}
+
+
+
+/* Время и статус */
+.card-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
-.contract-number {
-    font-weight: 600;
-    color: #374151;
-    font-size: 15px;
-}
-
-.contract-amount {
-    font-weight: 600;
-    color: #10b981;
-    font-size: 14px;
-}
-
-.contract-body {
-    margin-bottom: 12px;
-}
-
-.contract-client {
+.card-time {
+    color: #64748b;
+    font-size: 10px;
     font-weight: 500;
-    color: #374151;
-    margin-bottom: 6px;
-    font-size: 14px;
 }
 
-.contract-date {
-    font-size: 13px;
-    color: #6b7280;
-}
-
-.contract-footer {
+.card-status {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    gap: 4px;
 }
 
-.contract-manager {
-    font-size: 13px;
-    color: #6b7280;
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10b981;
+}
+
+.status-dot.warning {
+    background: #f59e0b;
+}
+
+.status-dot.error {
+    background: #ef4444;
+}
+
+.status-dot.on-hold {
+    background: #8b5cf6;
+}
+
+.status-dot.in-production {
+    background: #3b82f6;
+}
+
+.status-dot.quality-check {
+    background: #06b6d4;
+}
+
+.status-dot.ready {
+    background: #84cc16;
+}
+
+.status-dot.shipped {
+    background: #f97316;
+}
+
+.status-dot.completed {
+    background: #059669;
+}
+
+.status-dot.returned {
+    background: #6b7280;
+}
+
+.status-text {
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+/* Прогресс - компактный */
+.card-progress {
+    margin-bottom: 8px;
+}
+
+.progress {
+    background: #e2e8f0;
+    border-radius: 6px;
+    height: 4px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    color: #64748b;
+    font-size: 9px;
+    font-weight: 500;
+    margin-top: 4px;
+    display: block;
+}
+
+/* Менеджер */
+.card-manager {
     display: flex;
     align-items: center;
     gap: 6px;
+    margin-bottom: 8px;
 }
 
-.contract-actions {
+.card-amount-bottom {
+    color: #059669;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: left;
+    margin-bottom: 8px;
+    padding: 4px 8px;
+    background: rgba(5, 150, 105, 0.1);
+    border-radius: 6px;
+}
+
+.manager-icon {
+    color: #64748b;
+    font-size: 10px;
+}
+
+.manager-name {
+    color: #475569;
+    font-size: 10px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Действия - компактные */
+.card-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .btn-action {
-    background: #f8f9fa;
-    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
     border-radius: 6px;
-    padding: 6px 8px;
-    color: #6b7280;
+    padding: 6px;
+    color: #64748b;
     text-decoration: none;
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-action::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-action:hover::before {
+    left: 100%;
 }
 
 .btn-action:hover {
-    background: #1ba4e9;
+    background: #3b82f6;
     color: white;
-    border-color: #1ba4e9;
+    border-color: #3b82f6;
     transform: translateY(-1px);
 }
 
-.contract-progress {
-    margin-top: 12px;
+
+
+/* Поиск - современный дизайн */
+.kanban-search {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 16px 20px 16px 48px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    width: 100%;
+    max-width: 450px;
+    margin-top: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    backdrop-filter: blur(10px);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-.progress {
-    height: 6px;
-    background: #f3f4f6;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 6px;
+.kanban-search::placeholder {
+    color: rgba(148, 163, 184, 0.8);
+    font-weight: 400;
 }
 
-.progress-bar {
-    height: 100%;
-    background: linear-gradient(90deg, #1ba4e9, #ac76e3);
-    border-radius: 3px;
-    transition: width 0.3s ease;
+.kanban-search:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.6);
+    background: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+    transform: translateY(-1px);
 }
 
-.progress-text {
+.kanban-search:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.kanban-search::before {
+    content: '🔍';
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    opacity: 0.7;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.kanban-search:focus::before {
+    opacity: 1;
+}
+
+.kanban-search:focus {
+    animation: searchPulse 2s infinite;
+}
+
+/* Индикатор результатов поиска */
+.search-results-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-top: 16px;
+    backdrop-filter: blur(10px);
+    animation: cardSlideIn 0.3s ease;
+}
+
+.search-count {
+    color: #60a5fa;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.search-clear {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    padding: 6px 12px;
+    border-radius: 8px;
     font-size: 12px;
-    color: #6b7280;
-    text-align: center;
-    display: block;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
 
-.tag-icon {
-    margin-right: 6px;
-    opacity: 0.85;
+.search-clear:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
 }
 
-/* Анимации */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #1e293b;
+    color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    animation: slideInRight 0.3s ease;
+    max-width: 400px;
 }
 
-.form-section {
-    animation: fadeIn 0.3s ease-out;
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.form-section:nth-child(1) { animation-delay: 0.1s; }
-.form-section:nth-child(2) { animation-delay: 0.2s; }
-.form-section:nth-child(3) { animation-delay: 0.3s; }
-
-.contract-card {
-    animation: fadeIn 0.3s ease-out;
+.notification-message {
+    color: white;
+    font-weight: 500;
+    flex: 1;
 }
 
-/* Адаптивность */
-@media (max-width: 768px) {
-    .edit-branch-container {
+.notification-close {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.notification-close:hover {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes searchPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    }
+}
+
+/* Sortable.js стили */
+.sortable-ghost {
+    opacity: 0.4;
+    transform: rotate(5deg);
+}
+
+.sortable-chosen {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.sortable-drag {
+    opacity: 0.8;
+    transform: rotate(5deg) scale(1.05);
+}
+
+/* Исправления для колонок */
+.kanban-column .column-content {
+    min-height: 150px;
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 640px) {
+    .kanban-columns {
+        gap: 12px;
+        padding-bottom: 16px;
+    }
+    
+    .kanban-container {
         padding: 16px;
     }
     
-    .kanban-board {
-        grid-template-columns: 1fr;
+    .kanban-header {
+        padding: 20px;
+    }
+    
+    .kanban-title {
+        font-size: 24px;
+    }
+    
+    .kanban-subtitle {
+        font-size: 14px;
+    }
+    
+    .column-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+    }
+    
+    .contract-card {
+        padding: 10px;
+    }
+    
+    .card-actions {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .btn-action {
+        min-width: 24px;
+        height: 24px;
+        padding: 4px;
     }
     
     .kanban-column {
-        min-height: unset;
+        min-width: 250px;
+        max-width: 250px;
     }
 }
 
-@media (max-width: 1024px) {
-    .kanban-board {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+/* Статусные индикаторы */
+.status-dot {
+    position: relative;
+}
+
+.status-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: inherit;
+    opacity: 0.3;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0.1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.3;
     }
 }
+
+/* Индикатор прокрутки */
+.scroll-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(59, 130, 246, 0.9);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.scroll-indicator.show {
+    opacity: 1;
+}
+
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
+// Современная канбан доска с Sortable.js
 document.addEventListener('DOMContentLoaded', function() {
-    // Инициализация Sortable для каждой колонки
-    const columns = document.querySelectorAll('.kanban-column');
-    columns.forEach(column => {
-        new Sortable(column.querySelector('.column-content'), {
-            group: 'contracts',
-            animation: 150,
-            ghostClass: 'sortable-ghost',
-            chosenClass: 'sortable-chosen',
-            dragClass: 'sortable-drag',
-            onEnd: function(evt) {
-                const contractId = evt.item.dataset.contractId;
-                // Получаем статус из родительского элемента kanban-column
-                const newStatus = evt.to.closest('.kanban-column').dataset.status;
-                
-                console.log('Drag & Drop Debug:', {
-                    contractId,
-                    newStatus,
-                    toElement: evt.to,
-                    toDataset: evt.to.dataset,
-                    parentColumn: evt.to.closest('.kanban-column'),
-                    parentDataset: evt.to.closest('.kanban-column').dataset,
-                    fromStatus: evt.from.closest('.kanban-column').dataset.status,
-                    toStatus: evt.to.closest('.kanban-column').dataset.status
-                });
-                
-                // Валидация статуса перед отправкой
-                if (!newStatus || newStatus.trim() === '') {
-                    console.error('Ошибка: новый статус пустой или неопределен', { newStatus, to: evt.to });
-                    showNotification('Ошибка: не удалось определить новый статус', 'error');
-                    return;
-                }
-                
-                if (evt.from !== evt.to) {
-                    console.log('Обновление статуса:', { contractId, newStatus, from: evt.from.closest('.kanban-column').dataset.status, to: evt.to.closest('.kanban-column').dataset.status });
-                    updateContractStatus(contractId, newStatus);
-                }
-            }
-        });
-    });
-    
-    // Добавляем визуальную обратную связь при перетаскивании
-    columns.forEach(column => {
-        column.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.closest('.kanban-column').classList.add('drag-over');
-        });
-        
-        column.addEventListener('dragleave', function(e) {
-            this.closest('.kanban-column').classList.remove('drag-over');
-        });
-        
-        column.addEventListener('drop', function(e) {
-            this.closest('.kanban-column').classList.remove('drag-over');
-        });
-    });
+    initializeKanban();
 });
 
-function updateContractStatus(contractId, newStatus) {
-    // Дополнительная валидация на фронтенде
-    if (!contractId || !newStatus || newStatus.trim() === '') {
-        console.error('Ошибка валидации:', { contractId, newStatus });
-        showNotification('Ошибка: некорректные данные для обновления', 'error');
-        return;
-    }
+// Индикатор прокрутки
+function setupScrollIndicator() {
+    const scrollContainer = document.querySelector('.kanban-columns');
+    const indicator = document.createElement('div');
+    indicator.className = 'scroll-indicator';
+    indicator.innerHTML = '← Прокрутите для просмотра всех воронок →';
+    document.body.appendChild(indicator);
     
-    const url = `{{ route(Auth::user()->role . '.crm.update-status', ['contract' => ':contractId']) }}`.replace(':contractId', contractId);
-    
-    console.log('Отправка запроса на обновление статуса:', { contractId, newStatus, url });
-    
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
-        },
-        body: JSON.stringify({
-            status: newStatus
-        })
-    })
-    .then(response => {
-        console.log('Ответ сервера:', response.status, response.statusText);
-        return response.json();
-    })
-    .then(data => {
-        console.log('Данные ответа:', data);
-        if (data.success) {
-            // Обновляем счетчики
-            updateColumnCounters();
-            showNotification('Статус договора обновлен', 'success');
-            
-            // НЕ перезагружаем страницу, а обновляем данные через AJAX
-            refreshKanbanData();
-        } else {
-            showNotification('Ошибка при обновлении статуса: ' + (data.error || 'Неизвестная ошибка'), 'error');
-            
-            // Возвращаем карточку на исходное место при ошибке
-            setTimeout(() => {
-                window.location.reload();
-            }, 2000);
-        }
-    })
-    .catch(error => {
-        console.error('Ошибка fetch:', error);
-        showNotification('Ошибка при обновлении статуса', 'error');
+    scrollContainer.addEventListener('scroll', function() {
+        const isAtStart = this.scrollLeft === 0;
+        const isAtEnd = this.scrollLeft + this.clientWidth >= this.scrollWidth;
         
-        // Возвращаем карточку на исходное место при ошибке
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000);
-    });
-}
-
-// Функция для обновления данных канбан-доски без перезагрузки
-function refreshKanbanData() {
-    const url = `{{ route(Auth::user()->role . '.crm.kanban-data') }}`;
-    const branchId = document.getElementById('branchFilter')?.value || '';
-    const userId = document.getElementById('managerFilter')?.value || '';
-    
-    fetch(url + `?branch_id=${branchId}&user_id=${userId}`, {
-        headers: {
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+        if (!isAtStart && !isAtEnd) {
+            indicator.innerHTML = '← → Прокрутите для просмотра всех воронок';
+            indicator.classList.add('show');
+        } else if (isAtStart) {
+            indicator.innerHTML = '→ Прокрутите вправо для просмотра всех воронок';
+            indicator.classList.add('show');
+        } else if (isAtEnd) {
+            indicator.innerHTML = '← Прокрутите влево для просмотра всех воронок';
+            indicator.classList.add('show');
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Обновляем данные на доске
-        updateKanbanBoard(data);
-    })
-    .catch(error => {
-        console.error('Ошибка при обновлении данных:', error);
-        // При ошибке обновления данных перезагружаем страницу
+        
+        // Скрываем индикатор через 3 секунды
         setTimeout(() => {
-            window.location.reload();
+            indicator.classList.remove('show');
         }, 3000);
     });
 }
 
-// Функция для обновления канбан-доски новыми данными
-function updateKanbanBoard(contractsByStatus) {
-    // Обновляем каждую колонку
-    Object.keys(contractsByStatus).forEach(status => {
-        const column = document.querySelector(`[data-status="${status}"]`);
-        if (column) {
-            const columnContent = column.querySelector('.column-content');
-            columnContent.innerHTML = '';
+// Улучшенная инициализация
+function initializeKanban() {
+    // Инициализация Sortable.js для каждой колонки
+    setupSortable();
+    
+
+    
+    // Инициализация поиска
+    setupSearchAndFilter();
+    
+    // Инициализация индикатора прокрутки
+    setupScrollIndicator();
+    
+    // Автообновление каждые 30 секунд
+    setInterval(updateKanbanData, 30000);
+    
+    // Плавная прокрутка к активной колонке
+    setupSmoothScrolling();
+}
+
+// Плавная прокрутка к активной колонке
+function setupSmoothScrolling() {
+    const columns = document.querySelectorAll('.kanban-column');
+    columns.forEach((column, index) => {
+        column.addEventListener('click', function() {
+            const container = document.querySelector('.kanban-columns');
+            const columnLeft = column.offsetLeft;
+            const containerWidth = container.clientWidth;
+            const scrollLeft = columnLeft - (containerWidth / 2) + (column.offsetWidth / 2);
             
-            // Добавляем договоры в колонку
-            contractsByStatus[status].forEach(contract => {
-                const contractCard = createContractCard(contract);
-                columnContent.appendChild(contractCard);
+            container.scrollTo({
+                left: scrollLeft,
+                behavior: 'smooth'
+            });
+        });
+    });
+}
+
+// Настройка Sortable.js
+function setupSortable() {
+    const columns = document.querySelectorAll('.kanban-column');
+    
+    columns.forEach(column => {
+        const columnContent = column.querySelector('.column-content');
+        if (columnContent) {
+            new Sortable(columnContent, {
+                group: 'contracts',
+                animation: 150,
+                ghostClass: 'sortable-ghost',
+                chosenClass: 'sortable-chosen',
+                dragClass: 'sortable-drag',
+                onEnd: function(evt) {
+                    const contractId = evt.item.dataset.contractId;
+                    const newStatus = evt.to.closest('.kanban-column').dataset.status;
+                    const oldStatus = evt.from.closest('.kanban-column').dataset.status;
+                    
+                    if (evt.from !== evt.to && newStatus && oldStatus !== newStatus) {
+                        updateContractStatus(contractId, newStatus, evt.item);
+                    }
+                }
             });
         }
     });
-    
-    // Обновляем счетчики
-    updateColumnCounters();
 }
 
-// Функция для создания карточки договора
-function createContractCard(contract) {
-    const card = document.createElement('div');
-    card.className = 'contract-card';
-    card.dataset.contractId = contract.id;
-    card.draggable = true;
-    
-    card.innerHTML = `
-        <div class="contract-header">
-            <div class="contract-number">#${contract.contract_number}</div>
-            <div class="contract-amount">${new Intl.NumberFormat('ru-RU').format(contract.order_total)} ₸</div>
-        </div>
+// Обновление статуса договора
+async function updateContractStatus(contractId, newStatus, card) {
+    try {
+        const url = `{{ route(Auth::user()->role . '.crm.update-status', ['contract' => ':contractId']) }}`.replace(':contractId', contractId);
         
-        <div class="contract-body">
-            <div class="contract-client">${contract.client}</div>
-            <div class="contract-date">${new Date(contract.created_at).toLocaleDateString('ru-RU')}</div>
-        </div>
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+            },
+            body: JSON.stringify({ status: newStatus })
+        });
         
-        <div class="contract-footer">
-            <div class="contract-manager">
-                <i class="fas fa-user tag-icon"></i>
-                ${contract.manager || 'Не назначен'}
-            </div>
-            <div class="contract-progress">
-                <div class="progress">
-                    <div class="progress-bar" style="width: ${contract.funnel_progress ?? 0}%"></div>
-                </div>
-                <span class="progress-text">${contract.funnel_progress ?? 0}% выполнено</span>
-            </div>
-        </div>
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                // Обновляем статистику колонок
+                updateColumnStats();
+                
+                // Показываем уведомление
+                showNotification('Статус обновлен успешно!', 'success');
+            } else {
+                throw new Error(data.error || 'Ошибка обновления статуса');
+            }
+        } else {
+            throw new Error('Ошибка обновления статуса');
+        }
+    } catch (error) {
+        console.error('Ошибка:', error);
+        showNotification('Ошибка обновления статуса: ' + error.message, 'error');
         
-        <div class="contract-actions">
-            <a href="${getContractShowUrl(contract.id)}" class="btn-action" title="Просмотр">
-                <i class="fas fa-eye"></i>
-            </a>
-        </div>
-    `;
-    
-    return card;
+        // Возвращаем карточку на исходное место при ошибке
+        setTimeout(() => {
+            location.reload();
+        }, 2000);
+    }
 }
 
-// Функция для получения URL просмотра договора
-function getContractShowUrl(contractId) {
-    const userRole = '{{ Auth::user()->role }}';
-    return `/${userRole}/contracts/${contractId}`;
-}
 
-function updateColumnCounters() {
+
+
+
+
+
+// Обновление статистики колонок
+function updateColumnStats() {
     const columns = document.querySelectorAll('.kanban-column');
     
     columns.forEach(column => {
         const status = column.dataset.status;
         const count = column.querySelectorAll('.contract-card').length;
-        const counter = column.querySelector('.status-count');
+        const statsElement = column.querySelector('.column-stats');
         
-        if (counter) {
-            counter.textContent = `${count} договоров`;
+        if (statsElement) {
+            statsElement.textContent = `${count} сделок`;
         }
     });
 }
 
-function showNotification(message, type) {
-    // Создаем элемент уведомления
+// Автообновление данных
+async function updateKanbanData() {
+    try {
+        const url = `{{ route(Auth::user()->role . '.crm.kanban-data') }}`;
+        const response = await fetch(url);
+        if (response.ok) {
+            const data = await response.json();
+            // Обновляем данные без перезагрузки
+            updateKanbanFromData(data);
+        }
+    } catch (error) {
+        console.error('Ошибка автообновления:', error);
+    }
+}
+
+// Обновление канбана из данных
+function updateKanbanFromData(data) {
+    // Здесь можно реализовать обновление без перезагрузки
+    // Пока просто обновляем статистику
+    updateColumnStats();
+}
+
+// Система уведомлений
+function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
-    notification.textContent = message;
-    
-    // Добавляем стили
-    notification.style.cssText = `
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 12px 20px;
-        border-radius: 8px;
-        color: white;
-        font-weight: 600;
-        z-index: 9999;
-        animation: slideIn 0.3s ease-out;
-        max-width: 300px;
-        word-wrap: break-word;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-message">${message}</span>
+            <button class="notification-close" onclick="this.parentElement.parentElement.remove()">&times;</button>
+        </div>
     `;
     
-    // Цвета для разных типов уведомлений
-    if (type === 'success') {
-        notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-    } else if (type === 'error') {
-        notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
-    } else if (type === 'warning') {
-        notification.style.background = 'linear-gradient(135deg, #f59e0b, #d97706)';
-    } else {
-        notification.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
-    }
-    
-    // Добавляем в DOM
     document.body.appendChild(notification);
     
-    // Удаляем через 5 секунд
+    // Автоматическое скрытие через 5 секунд
     setTimeout(() => {
-        notification.style.animation = 'slideOut 0.3s ease-in';
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 300);
+        if (notification.parentElement) {
+            notification.remove();
+        }
     }, 5000);
 }
 
-// CSS анимации для уведомлений
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
+// Поиск и фильтрация
+function setupSearchAndFilter() {
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Поиск по номеру договора, менеджеру, сумме...';
+    searchInput.className = 'kanban-search';
+    
+    const header = document.querySelector('.kanban-header');
+    header.appendChild(searchInput);
+    
+    let searchTimeout;
+    
+    searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.toLowerCase();
+        
+        // Очищаем предыдущий таймаут
+        clearTimeout(searchTimeout);
+        
+        // Сбрасываем подсветку
+        resetHighlight();
+        
+        // Устанавливаем новый таймаут для поиска
+        searchTimeout = setTimeout(() => {
+            filterContracts(query);
+        }, 300);
+    });
+    
+    // Очистка поиска
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            this.value = '';
+            resetHighlight();
+            filterContracts('');
+        }
+    });
+}
+
+function filterContracts(query) {
+    const cards = document.querySelectorAll('.contract-card');
+    const columns = document.querySelectorAll('.kanban-column');
+    let foundCount = 0;
+    
+    cards.forEach(card => {
+        const contractNumber = card.querySelector('.card-number')?.textContent.toLowerCase() || '';
+        const managerName = card.querySelector('.manager-name')?.textContent.toLowerCase() || '';
+        const amount = card.querySelector('.card-amount-bottom')?.textContent.toLowerCase() || '';
+        
+        const matches = contractNumber.includes(query) || 
+                       managerName.includes(query) || 
+                       amount.includes(query);
+        
+        if (matches) {
+            card.style.display = 'block';
+            card.style.animation = 'cardSlideIn 0.3s ease';
+            foundCount++;
+            // Подсвечиваем найденный текст
+            highlightText(card, query);
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    // Показываем/скрываем колонки в зависимости от наличия карточек
+    columns.forEach(column => {
+        const visibleCards = column.querySelectorAll('.contract-card[style*="display: block"]');
+        if (visibleCards.length === 0 && query) {
+            column.style.opacity = '0.3';
+        } else {
+            column.style.opacity = '1';
+        }
+    });
+    
+    // Показываем индикатор результатов поиска
+    showSearchResults(query, foundCount);
+}
+
+// Подсветка найденного текста
+function highlightText(card, query) {
+    const elements = card.querySelectorAll('.card-number, .manager-name, .card-amount-bottom');
+    elements.forEach(element => {
+        const text = element.textContent;
+        const regex = new RegExp(`(${query})`, 'gi');
+        element.innerHTML = text.replace(regex, '<mark style="background: #fef3c7; color: #92400e; padding: 1px 2px; border-radius: 2px;">$1</mark>');
+    });
+}
+
+// Сброс подсветки
+function resetHighlight() {
+    const marks = document.querySelectorAll('mark');
+    marks.forEach(mark => {
+        const parent = mark.parentElement;
+        parent.innerHTML = parent.innerHTML.replace(/<mark[^>]*>(.*?)<\/mark>/g, '$1');
+    });
+}
+
+// Показать результаты поиска
+function showSearchResults(query, count) {
+    // Удаляем предыдущий индикатор
+    const existingIndicator = document.querySelector('.search-results-indicator');
+    if (existingIndicator) {
+        existingIndicator.remove();
     }
     
-    @keyframes slideOut {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
+    if (query && count > 0) {
+        const indicator = document.createElement('div');
+        indicator.className = 'search-results-indicator';
+        indicator.innerHTML = `
+            <span class="search-count">Найдено: ${count} сделок</span>
+            <button class="search-clear" onclick="clearSearch()">Очистить</button>
+        `;
+        
+        const header = document.querySelector('.kanban-header');
+        header.appendChild(indicator);
     }
-`;
-document.head.appendChild(style);
+}
+
+// Очистить поиск
+function clearSearch() {
+    const searchInput = document.querySelector('.kanban-search');
+    if (searchInput) {
+        searchInput.value = '';
+        resetHighlight();
+        filterContracts('');
+        
+        // Удаляем индикатор результатов
+        const indicator = document.querySelector('.search-results-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+        
+        // Восстанавливаем все колонки
+        const columns = document.querySelectorAll('.kanban-column');
+        columns.forEach(column => {
+            column.style.opacity = '1';
+        });
+    }
+}
 </script>
-@endsection
