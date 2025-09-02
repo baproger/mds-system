@@ -160,8 +160,6 @@
                                     <div class="personnel-title">Административные роли</div>
                                     <div class="personnel-list">
                                         <span class="personnel-tag admin-tag">Администратор - полный доступ</span>
-                                        
-                                        <span class="personnel-tag accountant-tag">Бухгалтер - финансовая отчетность</span>
                                     </div>
                                 </div>
                             </div>
@@ -432,16 +430,7 @@
     transform: scale(1.02);
 }
 
-.accountant-tag {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
-}
 
-.accountant-tag:hover {
-    background: #d1fae5;
-    transform: scale(1.02);
-}
 
 .form-actions {
     display: flex;

@@ -156,10 +156,7 @@
                                     <div class="personnel-icon">
                                         @if($user->role === 'admin')
                                             <i class="fas fa-shield-alt"></i>
-                                        @elseif($user->role === 'accountant')
-                                            <i class="fas fa-calculator"></i>
-                                        
-                                            <i class="fas fa-user-tie"></i>
+
                                         @elseif($user->role === 'manager')
                                             <i class="fas fa-user"></i>
                                         @elseif($user->role === 'rop')
@@ -474,18 +471,6 @@
     background: #fef3c7;
     color: #d97706;
     border: 1px solid #fcd34d;
-}
-
-.accountant-tag {
-    background: #ecfdf5;
-    color: #059669;
-    border: 1px solid #a7f3d0;
-}
-
-/* director-tag removed */
-    background: #fce7f3;
-    color: #be185d;
-    border: 1px solid #f9a8d4;
 }
 
 .manager-tag {

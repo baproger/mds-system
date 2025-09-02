@@ -194,7 +194,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     
     // Workflow маршруты для админов
     Route::post('/contracts/{contract}/submit-to-rop', [ContractWorkflowController::class, 'submitToRop'])->name('contracts.submit-to-rop');
-    Route::post('/contracts/{contract}/submit-to-accountant', [ContractWorkflowController::class, 'submitToAccountant'])->name('contracts.submit-to-accountant');
     Route::post('/contracts/{contract}/approve', [ContractWorkflowController::class, 'approve'])->name('contracts.approve');
     Route::post('/contracts/{contract}/reject', [ContractWorkflowController::class, 'reject'])->name('contracts.reject');
     Route::post('/contracts/{contract}/hold', [ContractWorkflowController::class, 'hold'])->name('contracts.hold');
@@ -230,7 +229,6 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
 
 // Workflow маршруты для РОП
 Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function () {
-    Route::post('/contracts/{contract}/submit-to-accountant', [ContractWorkflowController::class, 'submitToAccountant'])->name('contracts.submit-to-accountant');
     Route::get('/contracts/{contract}/history', [ContractWorkflowController::class, 'history'])->name('contracts.history');
     
     // Workflow действия для договоров

@@ -156,12 +156,6 @@ class Contract extends Model
         if ($user->role === 'rop') {
             return in_array($this->status, [self::STATUS_PENDING_ROP, self::STATUS_REJECTED]);
         }
-
-        // Бухгалтер не может редактировать поля, только одобрять/отклонять
-        if ($user->role === 'accountant') {
-            return false;
-        }
-
         return false;
     }
 

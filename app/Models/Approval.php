@@ -105,7 +105,7 @@ class Approval extends Model
             'admin' => 'Администратор',
             'manager' => 'Менеджер',
             'rop' => 'РОП',
-            'accountant' => 'Бухгалтер',
+
             'user' => 'Пользователь',
         ];
 

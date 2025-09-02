@@ -259,11 +259,6 @@
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
 }
 
- 
-
-.accountant-badge {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-}
 
 /* Icon Colors */
 .role-card[data-role="manager"] .role-icon {
@@ -276,12 +271,6 @@
 
 .role-card[data-role="admin"] .role-icon {
     background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
- 
-
-.role-card[data-role="accountant"] .role-icon {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
 }
 
 /* Click Animation */
