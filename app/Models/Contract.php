@@ -399,8 +399,9 @@ class Contract extends Model
             $query->where('user_id', $userId);
         }
 
-        return $query->whereNotIn('status', [self::STATUS_COMPLETED, self::STATUS_REJECTED])
-                    ->orderBy('updated_at', 'desc')
+        // Показываем ВСЕ договоры, включая завершенные и отклоненные
+        // Это позволит видеть полную картину воронки продаж
+        return $query->orderBy('updated_at', 'desc')
                     ->get()
                     ->groupBy('status');
     }

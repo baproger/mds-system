@@ -570,19 +570,126 @@ function updateContractStatus(contractId, newStatus) {
             // Обновляем счетчики
             updateColumnCounters();
             showNotification('Статус договора обновлен', 'success');
-            // Обновляем страницу через 1 секунду для отображения изменений
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+            
+            // НЕ перезагружаем страницу, а обновляем данные через AJAX
+            refreshKanbanData();
         } else {
             console.error('Ошибка в ответе:', data.error);
             showNotification('Ошибка при обновлении статуса: ' + (data.error || 'Неизвестная ошибка'), 'error');
+            
+            // Возвращаем карточку на исходное место при ошибке
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
         }
     })
     .catch(error => {
         console.error('Ошибка запроса:', error);
         showNotification('Ошибка при обновлении статуса', 'error');
+        
+        // Возвращаем карточку на исходное место при ошибке
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000);
     });
+}
+
+// Функция для обновления данных канбан-доски без перезагрузки
+function refreshKanbanData() {
+    const url = `{{ route(Auth::user()->role . '.crm.kanban-data') }}`;
+    const branchId = document.getElementById('branchFilter')?.value || '';
+    const userId = document.getElementById('managerFilter')?.value || '';
+    
+    fetch(url + `?branch_id=${branchId}&user_id=${userId}`, {
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Обновляем данные на доске
+        updateKanbanBoard(data);
+    })
+    .catch(error => {
+        console.error('Ошибка при обновлении данных:', error);
+        // При ошибке обновления данных перезагружаем страницу
+        setTimeout(() => {
+            window.location.reload();
+        }, 3000);
+    });
+}
+
+// Функция для обновления канбан-доски новыми данными
+function updateKanbanBoard(contractsByStatus) {
+    // Обновляем каждую колонку
+    Object.keys(contractsByStatus).forEach(status => {
+        const column = document.querySelector(`[data-status="${status}"]`);
+        if (column) {
+            const columnContent = column.querySelector('.column-content');
+            columnContent.innerHTML = '';
+            
+            // Добавляем договоры в колонку
+            contractsByStatus[status].forEach(contract => {
+                const contractCard = createContractCard(contract);
+                columnContent.appendChild(contractCard);
+            });
+        }
+    });
+    
+    // Обновляем счетчики
+    updateColumnCounters();
+}
+
+// Функция для создания карточки договора
+function createContractCard(contract) {
+    const card = document.createElement('div');
+    card.className = 'contract-card';
+    card.dataset.contractId = contract.id;
+    card.draggable = true;
+    
+    card.innerHTML = `
+        <div class="contract-header">
+            <div class="contract-number">#${contract.contract_number}</div>
+            <div class="contract-amount">${new Intl.NumberFormat('ru-RU').format(contract.order_total)} ₸</div>
+        </div>
+        
+        <div class="contract-body">
+            <div class="contract-client">${contract.client}</div>
+            <div class="contract-date">${new Date(contract.created_at).toLocaleDateString('ru-RU')}</div>
+        </div>
+        
+        <div class="contract-footer">
+            <div class="contract-manager">
+                <i class="fas fa-user tag-icon"></i>
+                ${contract.manager || 'Не назначен'}
+            </div>
+            <div class="contract-progress">
+                <div class="progress">
+                    <div class="progress-bar" style="width: ${contract.funnel_progress}%"></div>
+                </div>
+                <span class="progress-text">${contract.funnel_progress}% выполнено</span>
+            </div>
+        </div>
+        
+        <div class="contract-actions">
+            <a href="${getContractShowUrl(contract.id)}" class="btn-action" title="Просмотр">
+                <i class="fas fa-eye"></i>
+            </a>
+        </div>
+    `;
+    
+    return card;
+}
+
+// Функция для получения URL просмотра договора
+function getContractShowUrl(contractId) {
+    const userRole = '{{ Auth::user()->role }}';
+    return `/${userRole}/contracts/${contractId}`;
+}
+
+// Функция для обновления канбан-доски
+function refreshKanban() {
+    refreshKanbanData();
 }
 
 function updateColumnCounters() {
@@ -599,30 +706,64 @@ function updateColumnCounters() {
     });
 }
 
-function refreshKanban() {
-    const branchId = document.getElementById('branchFilter').value;
-    const managerId = document.getElementById('managerFilter').value;
-    
-    const params = new URLSearchParams();
-    if (branchId) params.append('branch_id', branchId);
-    if (managerId) params.append('user_id', managerId);
-    
-    window.location.href = `{{ route(Auth::user()->role . '.crm.kanban') }}?${params.toString()}`;
-}
-
 function showNotification(message, type) {
-    // Простое уведомление
+    // Создаем элемент уведомления
     const notification = document.createElement('div');
-    notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} position-fixed`;
-    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999;';
+    notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
+    // Добавляем стили
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 8px;
+        color: white;
+        font-weight: 600;
+        z-index: 9999;
+        animation: slideIn 0.3s ease-out;
+        max-width: 300px;
+        word-wrap: break-word;
+    `;
+    
+    // Цвета для разных типов уведомлений
+    if (type === 'success') {
+        notification.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    } else if (type === 'error') {
+        notification.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+    } else {
+        notification.style.background = 'linear-gradient(135deg, #3b82f6, #2563eb)';
+    }
+    
+    // Добавляем в DOM
     document.body.appendChild(notification);
     
+    // Удаляем через 5 секунд
     setTimeout(() => {
-        notification.remove();
-    }, 3000);
+        notification.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.parentNode.removeChild(notification);
+            }
+        }, 300);
+    }, 5000);
 }
+
+// CSS анимации для уведомлений
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
 
 // Обработчики фильтров
 document.getElementById('branchFilter').addEventListener('change', refreshKanban);
