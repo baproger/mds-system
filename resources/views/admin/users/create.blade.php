@@ -96,13 +96,6 @@
                                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>
                                             Администратор системы
                                         </option>
-                                        
-                                        <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>
-                                            Менеджер
-                                        </option>
-                                        <option value="rop" {{ old('role') == 'rop' ? 'selected' : '' }}>
-                                            РОП
-                                        </option>
                                     </optgroup>
                                 </select>
                                 @error('role')
