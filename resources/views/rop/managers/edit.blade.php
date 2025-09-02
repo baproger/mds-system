@@ -209,13 +209,13 @@
 .manager-tag{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
 .form-actions{display:flex;justify-content:flex-end;gap:16px;padding-top:24px;border-top:1px solid #e5e7eb;margin-top:32px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
-    .btn i { color: #fff !important; }.btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
-    .btn i { color: #fff !important; }.btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
-    .btn i { color: #fff !important; }.btn-save{color:#fff;}
+    .btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+    .btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
+    .btn-save{color:#fff;}
 .btn-save i{color:#fff !important;}
 .btn-save{background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);color:#fff;box-shadow:0 2px 4px rgba(27,164,233,.2)}
-    .btn i { color: #fff !important; }.btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
-    .btn i { color: #fff !important; }@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media (max-width:768px){.edit-branch-container{padding:16px}.form-grid{grid-template-columns:1fr}.form-actions{flex-direction:column}.btn{width:100%;justify-content:center}}
-    .btn i { color: #fff !important; }</style>
+</style>
 @endsection

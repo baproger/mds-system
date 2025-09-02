@@ -670,28 +670,32 @@
 }
 
 .btn {
-    .btn i { color: #fff !important; }    display: inline-flex; 
-    align-items: center; 
-    gap: 8px; 
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     padding: 12px 24px;
-    border-radius: 8px; 
-    font-weight: 600; 
-    font-size: 14px; 
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
     text-decoration: none;
-    border: none; 
-    cursor: pointer; 
-    transition: .2s;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
 }
 
-.btn-save {
-    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%); 
-    color: #fff;
-    box-shadow: 0 2px 4px rgba(27,164,233,.2);
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn-save:hover { 
-    .btn i { color: #fff !important; }    transform: translateY(-1px); 
-    box-shadow: 0 4px 8px rgba(27,164,233,.3); 
+.btn-primary {
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(27, 164, 233, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -709,7 +713,7 @@
     }
     
     .form-actions .btn { 
-    .btn i { color: #fff !important; }        width: 100%; 
+        width: 100%; 
         justify-content: center; 
     }
 }

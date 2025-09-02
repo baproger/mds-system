@@ -214,22 +214,11 @@
     <script>
         // Функции для модального окна выхода
         function showLogoutModal() {
-            console.log('showLogoutModal called');
-            const modal = document.getElementById('logoutModal');
-            if (modal) {
-                modal.style.display = 'flex';
-                console.log('Modal displayed');
-            } else {
-                console.error('Modal not found');
-            }
+            document.getElementById('logoutModal').style.display = 'block';
         }
         
         function hideLogoutModal() {
-            console.log('hideLogoutModal called');
-            const modal = document.getElementById('logoutModal');
-            if (modal) {
-                modal.style.display = 'none';
-            }
+            document.getElementById('logoutModal').style.display = 'none';
         }
         
         // Закрытие модального окна при клике вне его

@@ -285,7 +285,7 @@ body {
 }
 
 .btn-calculate {
-    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     border: none;
     padding: 16px 24px;
@@ -302,7 +302,7 @@ body {
 }
 
 .btn-calculate:hover {
-    .btn i { color: #fff !important; }    transform: translateY(-1px);
+    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
@@ -331,7 +331,7 @@ body {
 .result-header-left { display: flex; align-items: center; gap: 8px; }
 
 .btn-copy {
-    .btn i { color: #fff !important; }    background: rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.15);
     color: #fff;
     border: 1px solid rgba(255,255,255,0.3);
     padding: 8px 12px;
@@ -346,7 +346,6 @@ body {
 }
 
 .btn-copy:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
-    .btn i { color: #fff !important; }
 .result-content {
     padding: 24px;
     color: #155724;

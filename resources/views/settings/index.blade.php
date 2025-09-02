@@ -248,16 +248,15 @@
 
 .form-actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:16px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
-    .btn i { color: #fff !important; }.btn-sm{padding:8px 12px;font-size:12px}
-    .btn i { color: #fff !important; }.btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
-    .btn i { color: #fff !important; }.btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
-    .btn i { color: #fff !important; }.btn-save{color:#fff;}
+    .btn-sm{padding:8px 12px;font-size:12px}
+    .btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+    .btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
+    .btn-save{color:#fff;}
 .btn-save i{color:#fff !important;}
 .btn-save{background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);color:#fff;box-shadow:0 2px 4px rgba(27,164,233,.2)}
-    .btn i { color: #fff !important; }.btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
-    .btn i { color: #fff !important; }.btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
-    .btn i { color: #fff !important; }.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
-    .btn i { color: #fff !important; }
+    .btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
+    .btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
+    .btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
 /* Статистика/карточки (если используешь) */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px}
 .stat-card{background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);border:1px solid #e2e8f0;border-radius:12px;padding:20px;display:flex;align-items:center;gap:16px;transition:.2s}
@@ -324,7 +323,7 @@
   .search-form .form-grid,.form-grid{grid-template-columns:1fr}
   .form-actions{flex-direction:column}
   .btn{width:100%;justify-content:center}
-    .btn i { color: #fff !important; }  .settings-card-header,.settings-card-body{padding:16px}
+    .settings-card-header,.settings-card-body{padding:16px}
 }
 </style>
 @endsection

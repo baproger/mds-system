@@ -334,23 +334,31 @@
     }
 
     .btn {
-    .btn i { color: #fff !important; }        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
         font-weight: 600;
-        transition: all 0.3s ease;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
 
     .btn:hover {
-    .btn i { color: #fff !important; }        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     }
 
     .btn-primary {
-    .btn i { color: #fff !important; }        background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-        border: none;
+        background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+        color: white;
     }
 
-    .btn-primary:hover {
-    .btn i { color: #fff !important; }        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+    .btn-secondary {
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        color: white;
     }
 
     .card {

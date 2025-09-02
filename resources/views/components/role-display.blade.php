@@ -448,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Optional: Show tooltip or trigger action
             const roleName = this.querySelector('.role-name').textContent;
-            console.log(`Role clicked: ${roleName}`);
+            // handleRoleClick(roleName); // This function is not defined in the original file
         });
     });
     

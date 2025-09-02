@@ -400,7 +400,7 @@
 }
 
 .btn {
-    .btn i { color: #fff !important; }    display: inline-flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
     padding: 12px 24px;
@@ -414,24 +414,24 @@
 }
 
 .btn-cancel {
-    .btn i { color: #fff !important; }    background: #f3f4f6;
+    background: #f3f4f6;
     color: #374151;
     border: 1px solid #d1d5db;
 }
 
 .btn-cancel:hover {
-    .btn i { color: #fff !important; }    background: #e5e7eb;
+    background: #e5e7eb;
     transform: translateY(-1px);
 }
 
 .btn-save {
-    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
     box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
 .btn-save:hover {
-    .btn i { color: #fff !important; }    transform: translateY(-1px);
+    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
 }
 
@@ -470,7 +470,7 @@
     }
     
     .btn {
-    .btn i { color: #fff !important; }        width: 100%;
+        width: 100%;
         justify-content: center;
     }
 }

@@ -543,44 +543,57 @@
 }
 
 .btn {
-    .btn i { color: #fff !important; }    display: inline-flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
-    text-decoration: none;
+    padding: 8px 16px;
     border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-size: 14px;
 }
 
 .btn-sm {
-    .btn i { color: #fff !important; }    padding: 8px 12px;
+    padding: 8px 12px;
     font-size: 12px;
 }
 
-.btn-cancel {
-    .btn i { color: #fff !important; }    background: #f3f4f6;
-    color: #374151;
-    border: 1px solid #d1d5db;
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btn-cancel:hover {
-    .btn i { color: #fff !important; }    background: #e5e7eb;
+.btn-secondary {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.btn-secondary:hover {
+    background: #e5e7eb;
     transform: translateY(-1px);
 }
 
-.btn-save {
-    .btn i { color: #fff !important; }    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+.btn-primary {
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
     color: white;
-    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
-.btn-save:hover {
-    .btn i { color: #fff !important; }    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(27, 164, 233, 0.3);
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
 }
 
 .empty-state {
@@ -811,13 +824,13 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 /* Кнопка удаления */
 .btn-danger {
-    .btn i { color: #fff !important; }    background: #ef4444;
+    background: #ef4444;
     color: white;
     border: 1px solid #ef4444;
 }
 
 .btn-danger:hover {
-    .btn i { color: #fff !important; }    background: #dc2626;
+    background: #dc2626;
     color: white;
     border-color: #dc2626;
 }

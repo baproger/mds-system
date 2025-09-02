@@ -66,7 +66,7 @@ body .container-fluid {
 }
 
 .header-actions .btn {
-    .btn i { color: #fff !important; }    padding: 8px 16px;
+    padding: 8px 16px;
     border-radius: 8px;
     font-weight: 600;
     font-size: 14px;
@@ -78,7 +78,7 @@ body .container-fluid {
 }
 
 .header-actions .btn:hover {
-    .btn i { color: #fff !important; }    transform: translateY(-1px);
+    transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
@@ -116,7 +116,7 @@ body .container-fluid {
 }
 
 .btn-admin-custom {
-    .btn i { color: #fff !important; }    padding: 12px 24px;
+    padding: 12px 24px;
     border-radius: 12px;
     font-weight: 600;
     font-size: 14px;
@@ -133,23 +133,23 @@ body .container-fluid {
 }
 
 .btn-admin-custom:hover {
-    .btn i { color: #fff !important; }    transform: translateY(-2px);
+    transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     background: #ac76e3;
     color: white;
 }
 
 .btn-admin-custom.animate-pulse {
-    .btn i { color: #fff !important; }    background: #ef4444;
+    background: #ef4444;
 }
 
 .btn-admin-custom.animate-pulse:hover {
-    .btn i { color: #fff !important; }    background: #dc2626;
+    background: #dc2626;
 }
 
 /* Стили для кнопок в карточках действий */
 .d-grid .btn-admin-custom {
-    .btn i { color: #fff !important; }    background: #1ba4e9;
+    background: #1ba4e9;
     color: white;
     border: none;
     border-radius: 12px;
@@ -166,7 +166,7 @@ body .container-fluid {
 }
 
 .d-grid .btn-admin-custom:hover {
-    .btn i { color: #fff !important; }    background: #ac76e3;
+    background: #ac76e3;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -174,23 +174,23 @@ body .container-fluid {
 }
 
 .d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #0ea5e9"] {
-    .btn i { color: #fff !important; }    background: #0ea5e9 !important;
+    background: #0ea5e9 !important;
 }
 
 .d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #0ea5e9"]:hover {
-    .btn i { color: #fff !important; }    background: #0284c7 !important;
+    background: #0284c7 !important;
 }
 
 .d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #10b981"] {
-    .btn i { color: #fff !important; }    background: #10b981 !important;
+    background: #10b981 !important;
 }
 
 .d-grid .btn-admin-custom[style*="background: linear-gradient(135deg, #10b981"]:hover {
-    .btn i { color: #fff !important; }    background: #059669 !important;
+    background: #059669 !important;
 }
 
 .btn-admin-custom:hover {
-    .btn i { color: #fff !important; }    transform: translateY(-2px);
+    transform: translateY(-2px);
     box-shadow: var(--shadow-xl);
 }
 
@@ -509,7 +509,7 @@ body .main-content {
     }
     
     .btn-admin-custom {
-    .btn i { color: #fff !important; }        width: 100%;
+        width: 100%;
         justify-content: center;
     }
     
@@ -933,11 +933,11 @@ body .container-fluid {
 
 /* Градиентные кнопки в шапке */
 .btn-gradient-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #ffffff !important; border: none; }
-    .btn i { color: #fff !important; }.btn-gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #ffffff !important; border: none; }
-    .btn i { color: #fff !important; }.btn-gradient-green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: #ffffff !important; border: none; }
-    .btn i { color: #fff !important; }.btn-gradient-indigo { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: #ffffff !important; border: none; }
-    .btn i { color: #fff !important; }.btn-gradient-red:hover, .btn-gradient-blue:hover, .btn-gradient-green:hover, .btn-gradient-indigo:hover { filter: brightness(0.95); color: #ffffff !important; }
-    .btn i { color: #fff !important; }
+    .btn-gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #ffffff !important; border: none; }
+    .btn-gradient-green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: #ffffff !important; border: none; }
+    .btn-gradient-indigo { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: #ffffff !important; border: none; }
+    .btn-gradient-red:hover, .btn-gradient-blue:hover, .btn-gradient-green:hover, .btn-gradient-indigo:hover { filter: brightness(0.95); color: #ffffff !important; }
+
 .print-btn:hover {
     border-color: #0ea5e9;
 }
@@ -1060,7 +1060,7 @@ body .container-fluid {
 .table-card-custom,
 .stat-card-custom,
 .btn-admin-custom {
-    .btn i { color: #fff !important; }    box-shadow: 
+    box-shadow: 
         0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
@@ -1068,9 +1068,92 @@ body .container-fluid {
 .table-card-custom:hover,
 .stat-card-custom:hover,
 .btn-admin-custom:hover {
-    .btn i { color: #fff !important; }    box-shadow: 
+    box-shadow: 
         0 10px 15px -3px rgba(0, 0, 0, 0.1),
         0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: #1ba4e9;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0ea5e9;
+}
+
+.btn-secondary {
+    background: #6b7280;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+}
+
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn-info {
+    background: #0ea5e9;
+    color: white;
+}
+
+.btn-info:hover {
+    background: #0284c7;
+}
+
+.btn-warning {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-warning:hover {
+    background: #d97706;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    color: white;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(27, 164, 233, 0.3);
 }
 </style>
 

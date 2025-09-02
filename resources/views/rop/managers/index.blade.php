@@ -262,16 +262,16 @@
 .form-control:focus{outline:none;border-color:#1ba4e9;background:#fff;box-shadow:0 0 0 3px rgba(27,164,233,.1)}
 .form-actions{display:flex;gap:8px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
-    .btn i { color: #fff !important; }.btn-sm{padding:8px 12px;font-size:12px}
-    .btn i { color: #fff !important; }.btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
-    .btn i { color: #fff !important; }.btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
-    .btn i { color: #fff !important; }.btn-save{color:#fff;}
+    .btn-sm{padding:8px 12px;font-size:12px}
+    .btn-cancel{background:#f3f4f6;color:#374151;border:1px solid #d1d5db}
+    .btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
+    .btn-save{color:#fff;}
 .btn-save i{color:#fff !important;}
 .btn-save{background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);color:#fff;box-shadow:0 2px 4px rgba(27,164,233,.2)}
-    .btn i { color: #fff !important; }.btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
-    .btn i { color: #fff !important; }.btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
-    .btn i { color: #fff !important; }.btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
-    .btn i { color: #fff !important; }.personnel-section{display:flex;flex-direction:column;gap:16px}
+    .btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
+    .btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#fff;box-shadow:0 2px 4px rgba(239,68,68,.2)}
+    .btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
+    .personnel-section{display:flex;flex-direction:column;gap:16px}
 .personnel-item{display:flex;align-items:flex-start;padding:16px;background:#fafafa;border-radius:8px;border:1px solid #f0f0f0;transition:.2s}
 .personnel-item:hover{background:#f8f9fa;border-color:#e9ecef;transform:translateY(-1px)}
 .personnel-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0}

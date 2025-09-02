@@ -545,10 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateContractStatus(contractId, newStatus) {
-    console.log('Обновление статуса:', { contractId, newStatus });
-    
     const url = `{{ route(Auth::user()->role . '.crm.update-status', ['contract' => ':contractId']) }}`.replace(':contractId', contractId);
-    console.log('URL запроса:', url);
     
     fetch(url, {
         method: 'POST',
@@ -561,11 +558,9 @@ function updateContractStatus(contractId, newStatus) {
         })
     })
     .then(response => {
-        console.log('Ответ сервера:', response);
         return response.json();
     })
     .then(data => {
-        console.log('Данные ответа:', data);
         if (data.success) {
             // Обновляем счетчики
             updateColumnCounters();
@@ -574,7 +569,6 @@ function updateContractStatus(contractId, newStatus) {
             // НЕ перезагружаем страницу, а обновляем данные через AJAX
             refreshKanbanData();
         } else {
-            console.error('Ошибка в ответе:', data.error);
             showNotification('Ошибка при обновлении статуса: ' + (data.error || 'Неизвестная ошибка'), 'error');
             
             // Возвращаем карточку на исходное место при ошибке
@@ -584,7 +578,6 @@ function updateContractStatus(contractId, newStatus) {
         }
     })
     .catch(error => {
-        console.error('Ошибка запроса:', error);
         showNotification('Ошибка при обновлении статуса', 'error');
         
         // Возвращаем карточку на исходное место при ошибке
