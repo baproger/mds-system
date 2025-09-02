@@ -414,15 +414,18 @@ document.addEventListener('DOMContentLoaded', function() {
             dragClass: 'sortable-drag',
             onEnd: function(evt) {
                 const contractId = evt.item.dataset.contractId;
-                const newStatus = evt.to.dataset.status;
+                // Получаем статус из родительского элемента kanban-column
+                const newStatus = evt.to.closest('.kanban-column').dataset.status;
                 
                 console.log('Drag & Drop Debug:', {
                     contractId,
                     newStatus,
                     toElement: evt.to,
                     toDataset: evt.to.dataset,
-                    fromStatus: evt.from.dataset.status,
-                    toStatus: evt.to.dataset.status
+                    parentColumn: evt.to.closest('.kanban-column'),
+                    parentDataset: evt.to.closest('.kanban-column').dataset,
+                    fromStatus: evt.from.closest('.kanban-column').dataset.status,
+                    toStatus: evt.to.closest('.kanban-column').dataset.status
                 });
                 
                 // Валидация статуса перед отправкой
@@ -433,7 +436,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 
                 if (evt.from !== evt.to) {
-                    console.log('Обновление статуса:', { contractId, newStatus, from: evt.from.dataset.status, to: evt.to.dataset.status });
+                    console.log('Обновление статуса:', { contractId, newStatus, from: evt.from.closest('.kanban-column').dataset.status, to: evt.to.closest('.kanban-column').dataset.status });
                     updateContractStatus(contractId, newStatus);
                 }
             }
