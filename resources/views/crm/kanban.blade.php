@@ -6,45 +6,6 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1 class="h3 mb-0">
-                    <i class="fas fa-tasks text-primary me-2"></i>
-                    Канбан доска
-                </h1>
-                
-                <div class="d-flex gap-2">
-                    <div class="filter-group">
-                        <label class="filter-label">Филиал:</label>
-                        <select id="branchFilter" class="form-select">
-                            <option value="">Все филиалы</option>
-                            @foreach($branches as $branch)
-                                <option value="{{ $branch->id }}" {{ $branchId == $branch->id ? 'selected' : '' }}>
-                                    {{ $branch->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label class="filter-label">Менеджер:</label>
-                        <select id="managerFilter" class="form-select">
-                            <option value="">Все менеджеры</option>
-                            @foreach($managers as $manager)
-                                <option value="{{ $manager->id }}" {{ $userId == $manager->id ? 'selected' : '' }}>
-                                    {{ $manager->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <button class="btn-filter" onclick="refreshKanban()">
-                            <i class="fas fa-sync-alt"></i> Обновить
-                        </button>
-                    </div>
-                </div>
-            </div>
-
             <div class="edit-branch-container">
                 <div class="page-header">
                     <div class="header-content">
@@ -54,45 +15,6 @@
                         <div class="header-text">
                             <h1 class="page-title">Канбан-доска</h1>
                             <p class="page-subtitle">Визуальное управление договорами</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-section">
-                    <div class="section-header">
-                        <i class="fas fa-filter"></i>
-                        <span>Фильтры</span>
-                    </div>
-                    
-                    <div class="filters-container">
-                        <div class="filter-group">
-                            <label class="filter-label">Филиал:</label>
-                            <select id="branchFilter" class="form-select">
-                                <option value="">Все филиалы</option>
-                                @foreach($branches as $branch)
-                                    <option value="{{ $branch->id }}" {{ $branchId == $branch->id ? 'selected' : '' }}>
-                                        {{ $branch->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <label class="filter-label">Менеджер:</label>
-                            <select id="managerFilter" class="form-select">
-                                <option value="">Все менеджеры</option>
-                                @foreach($managers as $manager)
-                                    <option value="{{ $manager->id }}" {{ $userId == $manager->id ? 'selected' : '' }}>
-                                        {{ $manager->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group">
-                            <button class="btn-filter" onclick="refreshKanban()">
-                                <i class="fas fa-sync-alt"></i> Обновить
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -232,60 +154,6 @@
 .section-header i {
     color: #1ba4e9;
     font-size: 18px;
-}
-
-.filters-container {
-    display: flex;
-    gap: 20px;
-    align-items: end;
-    flex-wrap: wrap;
-}
-
-.filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.filter-label {
-    font-weight: 500;
-    color: #495057;
-    font-size: 14px;
-}
-
-.form-select {
-    min-width: 200px;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 14px;
-    background: #f9fafb;
-    transition: all 0.2s ease;
-}
-
-.form-select:focus {
-    outline: none;
-    border-color: #1ba4e9;
-    box-shadow: 0 0 0 3px rgba(27, 164, 233, 0.1);
-}
-
-.btn-filter {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.btn-filter:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(27, 164, 233, 0.2);
 }
 
 .kanban-board {
@@ -516,20 +384,6 @@
         padding: 16px;
     }
     
-    .filters-container {
-        flex-direction: column;
-        align-items: stretch;
-    }
-    
-    .filter-group {
-        width: 100%;
-    }
-    
-    .form-select {
-        min-width: unset;
-        width: 100%;
-    }
-    
     .kanban-board {
         grid-template-columns: 1fr;
     }
@@ -722,11 +576,6 @@ function getContractShowUrl(contractId) {
     return `/${userRole}/contracts/${contractId}`;
 }
 
-// Функция для обновления канбан-доски
-function refreshKanban() {
-    refreshKanbanData();
-}
-
 function updateColumnCounters() {
     const columns = document.querySelectorAll('.kanban-column');
     
@@ -801,9 +650,5 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
-
-// Обработчики фильтров
-document.getElementById('branchFilter').addEventListener('change', refreshKanban);
-document.getElementById('managerFilter').addEventListener('change', refreshKanban);
 </script>
 @endsection

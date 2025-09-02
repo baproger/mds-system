@@ -25,8 +25,8 @@ class CrmController extends Controller
     public function kanban(Request $request)
     {
         $user = Auth::user();
-        $branchId = $request->get('branch_id');
-        $userId = $request->get('user_id');
+        $branchId = null;
+        $userId = null;
 
         // Определяем фильтры в зависимости от роли
         if ($user->role === 'manager') {
@@ -40,12 +40,8 @@ class CrmController extends Controller
         
         // Получаем все статусы для отображения колонок
         $statuses = Contract::FUNNEL_ORDER;
-        
-        // Получаем филиалы для фильтра
-        $branches = Branch::all();
-        $managers = User::where('role', 'manager')->get();
 
-        return view('crm.kanban', compact('contractsByStatus', 'statuses', 'branches', 'managers', 'branchId', 'userId'));
+        return view('crm.kanban', compact('contractsByStatus', 'statuses'));
     }
 
     /**
