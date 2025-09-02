@@ -416,7 +416,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const contractId = evt.item.dataset.contractId;
                 const newStatus = evt.to.dataset.status;
                 
+                // Валидация статуса перед отправкой
+                if (!newStatus || newStatus.trim() === '') {
+                    console.error('Ошибка: новый статус пустой или неопределен', { newStatus, to: evt.to });
+                    showNotification('Ошибка: не удалось определить новый статус', 'error');
+                    return;
+                }
+                
                 if (evt.from !== evt.to) {
+                    console.log('Обновление статуса:', { contractId, newStatus, from: evt.from.dataset.status, to: evt.to.dataset.status });
                     updateContractStatus(contractId, newStatus);
                 }
             }
@@ -441,7 +449,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateContractStatus(contractId, newStatus) {
+    // Дополнительная валидация на фронтенде
+    if (!contractId || !newStatus || newStatus.trim() === '') {
+        console.error('Ошибка валидации:', { contractId, newStatus });
+        showNotification('Ошибка: некорректные данные для обновления', 'error');
+        return;
+    }
+    
     const url = `{{ route(Auth::user()->role . '.crm.update-status', ['contract' => ':contractId']) }}`.replace(':contractId', contractId);
+    
+    console.log('Отправка запроса на обновление статуса:', { contractId, newStatus, url });
     
     fetch(url, {
         method: 'POST',
@@ -454,9 +471,11 @@ function updateContractStatus(contractId, newStatus) {
         })
     })
     .then(response => {
+        console.log('Ответ сервера:', response.status, response.statusText);
         return response.json();
     })
     .then(data => {
+        console.log('Данные ответа:', data);
         if (data.success) {
             // Обновляем счетчики
             updateColumnCounters();
@@ -474,6 +493,7 @@ function updateContractStatus(contractId, newStatus) {
         }
     })
     .catch(error => {
+        console.error('Ошибка fetch:', error);
         showNotification('Ошибка при обновлении статуса', 'error');
         
         // Возвращаем карточку на исходное место при ошибке

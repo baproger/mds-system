@@ -37,7 +37,6 @@ class Contract extends Model
      */
     const STATUS_DRAFT = 'draft';                    // Черновик
     const STATUS_PENDING_ROP = 'pending_rop';        // На проверке РОП
-    const STATUS_PENDING_ACCOUNTANT = 'pending_accountant'; // На проверке бухгалтера
     const STATUS_APPROVED = 'approved';              // Одобрен
     const STATUS_REJECTED = 'rejected';              // Отклонен
     const STATUS_ON_HOLD = 'on_hold';                // Приостановлен
@@ -46,6 +45,7 @@ class Contract extends Model
     const STATUS_READY = 'ready';                    // Готов к отгрузке
     const STATUS_SHIPPED = 'shipped';                // Отгружен
     const STATUS_COMPLETED = 'completed';            // Завершен
+    const STATUS_RETURNED = 'returned';              // Возвращен на доработку
 
     /**
      * Порядок статусов в воронке
@@ -60,7 +60,8 @@ class Contract extends Model
         self::STATUS_QUALITY_CHECK,
         self::STATUS_READY,
         self::STATUS_SHIPPED,
-        self::STATUS_COMPLETED
+        self::STATUS_COMPLETED,
+        self::STATUS_RETURNED
     ];
 
     /**
@@ -242,6 +243,7 @@ class Contract extends Model
             self::STATUS_READY => 'Готов к отгрузке',
             self::STATUS_SHIPPED => 'Отгружен',
             self::STATUS_COMPLETED => 'Завершен',
+            self::STATUS_RETURNED => 'Возвращен на доработку',
         ];
 
         return $labels[$status] ?? $status;
@@ -272,6 +274,7 @@ class Contract extends Model
             self::STATUS_READY => 'success',
             self::STATUS_SHIPPED => 'warning',
             self::STATUS_COMPLETED => 'success',
+            self::STATUS_RETURNED => 'secondary',
         ];
 
         return $colors[$status] ?? 'secondary';
@@ -302,6 +305,7 @@ class Contract extends Model
             self::STATUS_READY => 'fas fa-box',
             self::STATUS_SHIPPED => 'fas fa-truck',
             self::STATUS_COMPLETED => 'fas fa-flag-checkered',
+            self::STATUS_RETURNED => 'fas fa-undo',
         ];
 
         return $icons[$status] ?? 'fas fa-file';

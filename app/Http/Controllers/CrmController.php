@@ -110,6 +110,40 @@ class CrmController extends Controller
         $user = Auth::user();
         $newStatus = $request->input('status');
 
+        // Валидация входных данных
+        if (empty($newStatus) || is_null($newStatus)) {
+            \Log::error('Попытка обновления статуса с пустым значением', [
+                'contract_id' => $contract->id,
+                'new_status' => $newStatus,
+                'user_id' => $user->id
+            ]);
+            return response()->json(['error' => 'Статус не может быть пустым'], 400);
+        }
+
+        // Проверяем, что новый статус валиден
+        $validStatuses = [
+            Contract::STATUS_DRAFT,
+            Contract::STATUS_PENDING_ROP,
+            Contract::STATUS_APPROVED,
+            Contract::STATUS_REJECTED,
+            Contract::STATUS_ON_HOLD,
+            Contract::STATUS_IN_PRODUCTION,
+            Contract::STATUS_QUALITY_CHECK,
+            Contract::STATUS_READY,
+            Contract::STATUS_SHIPPED,
+            Contract::STATUS_COMPLETED,
+            Contract::STATUS_RETURNED
+        ];
+
+        if (!in_array($newStatus, $validStatuses)) {
+            \Log::error('Попытка обновления статуса с невалидным значением', [
+                'contract_id' => $contract->id,
+                'new_status' => $newStatus,
+                'user_id' => $user->id
+            ]);
+            return response()->json(['error' => 'Невалидный статус'], 400);
+        }
+
         // Логируем для отладки
         \Log::info('Обновление статуса договора', [
             'contract_id' => $contract->id,
