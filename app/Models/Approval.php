@@ -50,6 +50,11 @@ class Approval extends Model
             'reject' => 'Отклонен',
             'hold' => 'Приостановлен',
             'return' => 'Возвращен на доработку',
+            'start_production' => 'Производство начато',
+            'quality_check' => 'Отправлен на контроль качества',
+            'mark_ready' => 'Готов к отгрузке',
+            'ship' => 'Отгружен',
+            'complete' => 'Завершен',
         ];
 
         return $labels[$this->action] ?? $this->action;
@@ -66,6 +71,11 @@ class Approval extends Model
             'reject' => 'danger',
             'hold' => 'warning',
             'return' => 'info',
+            'start_production' => 'info',
+            'quality_check' => 'warning',
+            'mark_ready' => 'success',
+            'ship' => 'primary',
+            'complete' => 'success',
         ];
 
         return $colors[$this->action] ?? 'secondary';
@@ -82,6 +92,11 @@ class Approval extends Model
             'reject' => 'fas fa-times-circle',
             'hold' => 'fas fa-pause-circle',
             'return' => 'fas fa-undo',
+            'start_production' => 'fas fa-cogs',
+            'quality_check' => 'fas fa-search',
+            'mark_ready' => 'fas fa-check-double',
+            'ship' => 'fas fa-shipping-fast',
+            'complete' => 'fas fa-flag-checkered',
         ];
 
         return $icons[$this->action] ?? 'fas fa-circle';
