@@ -205,7 +205,7 @@
     <script>
         // Функции для модального окна выхода
         function showLogoutModal() {
-            document.getElementById('logoutModal').style.display = 'block';
+            document.getElementById('logoutModal').style.display = 'flex';
         }
         
         function hideLogoutModal() {

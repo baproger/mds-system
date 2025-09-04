@@ -21,7 +21,7 @@ Route::get("/", function () {
         }
         return redirect()->route("contracts.index");
     }
-    return redirect()->route("contracts.index");
+    return view('welcome');
 });
 
 //
