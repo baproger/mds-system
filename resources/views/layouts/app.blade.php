@@ -96,19 +96,19 @@
                                 <span>{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0">
-                                @if(Auth::user()->role === 'admin' || Auth::user()->role === 'manager' || Auth::user()->role === 'rop')
                                 <li>
                                     <a class="dropdown-item" href="{{ route(Auth::user()->role . '.dashboard') }}">
                                         <i class="fas fa-shield-alt me-2"></i> Панель управления
                                     </a>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
-                                @endif
+                                @if(!in_array(Auth::user()->role, ['production', 'accountant']))
                                 <li>
                                     <a class="dropdown-item" href="{{ route(Auth::user()->role . '.profile.show') }}">
                                         <i class="fas fa-user me-2"></i> Профиль
                                     </a>
                                 </li>
+                                @endif
                                 <li>
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-cog me-2"></i> Настройки

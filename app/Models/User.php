@@ -51,6 +51,16 @@ class User extends Authenticatable
         return $query->where('role', 'rop');
     }
 
+    public function scopeProduction($query)
+    {
+        return $query->where('role', 'production');
+    }
+
+    public function scopeAccountant($query)
+    {
+        return $query->where('role', 'accountant');
+    }
+
     public function scopeSalesStaff($query)
     {
         return $query->whereIn('role', ['manager', 'rop']);

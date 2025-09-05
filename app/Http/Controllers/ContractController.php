@@ -19,17 +19,8 @@ class ContractController extends Controller
         $query = Contract::with(['user', 'branch']);
         $user = Auth::user();
         
-        // Ограничение по ролям
-        if ($user->role === 'manager') {
-            // Обычный менеджер видит только свои договоры
-            $query->where('user_id', $user->id);
-        } elseif ($user->role === 'rop') {
-            // РОП видит все договоры своего филиала
-            $query->where('branch_id', $user->branch_id);
-        } else {
-            // Обычные пользователи видят только свои договоры
-            $query->where('user_id', $user->id);
-        }
+        // Применяем фильтрацию по роли пользователя
+        $query->forRole($user);
         
         if ($request->filled('search')) {
             $search = $request->search;

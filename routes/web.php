@@ -18,6 +18,10 @@ Route::get("/", function () {
             return redirect()->route('manager.dashboard');
         } elseif (Auth::user()->role === 'rop') {
             return redirect()->route('rop.dashboard');
+        } elseif (Auth::user()->role === 'production') {
+            return redirect()->route('production.crm.kanban');
+        } elseif (Auth::user()->role === 'accountant') {
+            return redirect()->route('accountant.crm.kanban');
         }
         return redirect()->route("contracts.index");
     }
@@ -241,6 +245,31 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::post('/contracts/{contract}/mark-ready', [ContractWorkflowController::class, 'markReady'])->name('contracts.mark-ready');
     Route::post('/contracts/{contract}/ship', [ContractWorkflowController::class, 'ship'])->name('contracts.ship');
     Route::post('/contracts/{contract}/complete', [ContractWorkflowController::class, 'complete'])->name('contracts.complete');
+});
+
+// Маршруты для Production роли
+Route::middleware(['auth'])->prefix('production')->name('production.')->group(function () {
+    Route::get('/dashboard', [CrmController::class, 'dashboard'])->name('dashboard');
+    Route::get('/contracts', [ContractController::class, 'index'])->name('contracts.index');
+    Route::get('/contracts/{contract}', [ContractController::class, 'show'])->name('contracts.show');
+    Route::get('/contracts/{contract}/print', [ContractController::class, 'print'])->name('contracts.print');
+    Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
+    Route::get('/crm/kanban-data', [CrmController::class, 'kanbanData'])->name('crm.kanban-data');
+    Route::post('/crm/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+// Маршруты для Accountant роли
+Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(function () {
+    Route::get('/dashboard', [CrmController::class, 'dashboard'])->name('dashboard');
+    Route::get('/contracts', [ContractController::class, 'index'])->name('contracts.index');
+    Route::get('/contracts/{contract}', [ContractController::class, 'show'])->name('contracts.show');
+    Route::get('/contracts/{contract}/print', [ContractController::class, 'print'])->name('contracts.print');
+    Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
+    Route::get('/crm/kanban-data', [CrmController::class, 'kanbanData'])->name('crm.kanban-data');
+    Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
+    Route::post('/crm/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Роуты директора удалены

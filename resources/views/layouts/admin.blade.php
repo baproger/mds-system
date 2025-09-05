@@ -19,24 +19,31 @@
             <!-- Scrollable navigation area -->
             <div class="sidebar-scrollable">
                 <nav class="sidebar-nav">
+                @if(in_array(Auth::user()->role, ['production', 'accountant']))
+                <!-- Минимальное меню для production и accountant -->
+                <div class="nav-section">
+                    <div class="nav-section-title">CRM</div>
+                    <a href="{{ route(Auth::user()->role . '.crm.kanban') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.crm.kanban') ? 'active' : '' }}">
+                        <i class="fas fa-trello"></i>
+                        <span>Канбан-доска</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title">Система</div>
+                    <button type="button" class="nav-item nav-item-logout" onclick="showLogoutModal()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Выйти</span>
+                    </button>
+                </div>
+                @else
+                <!-- Полное меню для остальных ролей -->
                 <div class="nav-section">
                     <div class="nav-section-title">Управление</div>
-                    @if(Auth::user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route(Auth::user()->role . '.dashboard') }}" class="nav-item {{ request()->routeIs(Auth::user()->role . '.dashboard') ? 'active' : '' }}">
                         <i class="fas fa-tachometer-alt"></i>
                         <span>Dashboard</span>
                     </a>
-                    @elseif(Auth::user()->role === 'manager')
-                    <a href="{{ route('manager.dashboard') }}" class="nav-item {{ request()->routeIs('manager.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    @elseif(Auth::user()->role === 'rop')
-                    <a href="{{ route('rop.dashboard') }}" class="nav-item {{ request()->routeIs('rop.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-tachometer-alt"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    @endif
                     @if(Auth::user()->role === 'admin')
                     <a href="{{ route('admin.users.index') }}" class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
@@ -93,6 +100,7 @@
                         <span>Выйти</span>
                     </button>
                 </div>
+                @endif
                 </nav>
             </div>
 

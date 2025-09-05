@@ -156,6 +156,12 @@ class Contract extends Model
         if ($user->role === 'rop') {
             return in_array($this->status, [self::STATUS_PENDING_ROP, self::STATUS_REJECTED]);
         }
+
+        // Production и Accountant - только просмотр (read-only)
+        if (in_array($user->role, ['production', 'accountant'])) {
+            return false;
+        }
+
         return false;
     }
 
@@ -407,5 +413,49 @@ class Contract extends Model
         });
         
         return $contracts->groupBy('status');
+    }
+
+    /**
+     * Scope для фильтрации договоров по роли пользователя
+     */
+    public function scopeForRole($query, User $user)
+    {
+        switch ($user->role) {
+            case 'admin':
+                // Админ видит все договоры
+                return $query;
+                
+            case 'manager':
+                // Менеджер видит только свои договоры
+                return $query->where('user_id', $user->id);
+                
+            case 'rop':
+                // РОП видит договоры своего филиала
+                return $query->where('branch_id', $user->branch_id);
+                
+            case 'production':
+                // Production видит договоры в производстве и связанных статусах
+                return $query->whereIn('status', [
+                    self::STATUS_IN_PRODUCTION,
+                    self::STATUS_QUALITY_CHECK,
+                    self::STATUS_READY,
+                    self::STATUS_SHIPPED
+                ]);
+                
+            case 'accountant':
+                // Бухгалтер видит все договоры
+                return $query;
+                
+            default:
+                return $query->whereRaw('1 = 0'); // Ничего не показываем
+        }
+    }
+
+    /**
+     * Scope для договоров в производстве
+     */
+    public function scopeInProduction($query)
+    {
+        return $query->where('status', self::STATUS_IN_PRODUCTION);
     }
 }

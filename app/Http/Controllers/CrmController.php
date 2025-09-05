@@ -33,6 +33,11 @@ class CrmController extends Controller
             $userId = $user->id;
         } elseif ($user->role === 'rop') {
             $branchId = $user->branch_id;
+        } elseif ($user->role === 'production') {
+            // Production видит только договоры в производстве
+            $contractsByStatus = Contract::forRole($user)->get()->groupBy('status');
+            $statuses = Contract::FUNNEL_ORDER;
+            return view('crm.kanban', compact('contractsByStatus', 'statuses'));
         }
 
         // Получаем договоры для канбан-доски
@@ -42,6 +47,38 @@ class CrmController extends Controller
         $statuses = Contract::FUNNEL_ORDER;
 
         return view('crm.kanban', compact('contractsByStatus', 'statuses'));
+    }
+
+    /**
+     * Получить данные для канбан-доски (AJAX)
+     */
+    public function kanbanData(Request $request)
+    {
+        $user = Auth::user();
+        $branchId = null;
+        $userId = null;
+
+        // Определяем фильтры в зависимости от роли
+        if ($user->role === 'manager') {
+            $userId = $user->id;
+        } elseif ($user->role === 'rop') {
+            $branchId = $user->branch_id;
+        } elseif ($user->role === 'production') {
+            // Production видит только договоры в производстве
+            $contracts = Contract::forRole($user)->with(['user', 'branch'])->get();
+            return response()->json([
+                'contracts' => $contracts->groupBy('status'),
+                'statuses' => Contract::FUNNEL_ORDER
+            ]);
+        }
+
+        // Получаем договоры для канбан-доски
+        $contractsByStatus = Contract::getKanbanContracts($branchId, $userId);
+        
+        return response()->json([
+            'contracts' => $contractsByStatus,
+            'statuses' => Contract::FUNNEL_ORDER
+        ]);
     }
 
     /**
