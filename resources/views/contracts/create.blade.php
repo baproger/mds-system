@@ -472,7 +472,7 @@
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="mb-3">
-                                    <label for="order_total" class="form-label required">Общая стоимость</label>
+                                    <label for="order_total" class="form-label required">Общая стоимость заказа</label>
                                     <input type="number" class="form-control @error('order_total') is-invalid @enderror" 
                                            id="order_total" name="order_total" value="{{ old('order_total') }}" min="0" step="1" required>
                                     @error('order_total')

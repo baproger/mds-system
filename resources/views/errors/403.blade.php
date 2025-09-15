@@ -167,9 +167,14 @@
         <div class="error-details">
             <h3><i class="fas fa-exclamation-triangle icon"></i> Причина ошибки</h3>
             <p>
-                Вы пытаетесь получить доступ к договору, который не принадлежит вам или вашему филиалу. 
-                Каждый менеджер может просматривать только свои договоры, а РОП - договоры своего филиала.
+                У вас недостаточно прав для доступа к этому ресурсу. Возможные причины:
             </p>
+            <ul style="text-align: left; margin-top: 1rem; opacity: 0.9;">
+                <li>Вы пытаетесь получить доступ к договору, который не принадлежит вам или вашему филиалу</li>
+                <li>Ваша роль не позволяет выполнять это действие</li>
+                <li>Договор находится в статусе, который не позволяет его редактировать</li>
+                <li>Требуются дополнительные права доступа</li>
+            </ul>
         </div>
         
         <div class="error-actions">
@@ -177,6 +182,36 @@
                 <i class="fas fa-home icon"></i>
                 На главную
             </a>
+            
+            @auth
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-tachometer-alt icon"></i>
+                        Админ панель
+                    </a>
+                @elseif(Auth::user()->role === 'manager')
+                    <a href="{{ route('manager.dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-tachometer-alt icon"></i>
+                        Мой дашборд
+                    </a>
+                @elseif(Auth::user()->role === 'rop')
+                    <a href="{{ route('rop.dashboard') }}" class="btn btn-secondary">
+                        <i class="fas fa-tachometer-alt icon"></i>
+                        РОП дашборд
+                    </a>
+                @elseif(Auth::user()->role === 'production')
+                    <a href="{{ route('production.crm.kanban') }}" class="btn btn-secondary">
+                        <i class="fas fa-columns icon"></i>
+                        Канбан доска
+                    </a>
+                @elseif(Auth::user()->role === 'accountant')
+                    <a href="{{ route('accountant.crm.kanban') }}" class="btn btn-secondary">
+                        <i class="fas fa-columns icon"></i>
+                        Канбан доска
+                    </a>
+                @endif
+            @endauth
+            
             <a href="javascript:history.back()" class="btn btn-secondary">
                 <i class="fas fa-arrow-left icon"></i>
                 Назад

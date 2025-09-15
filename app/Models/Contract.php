@@ -195,23 +195,31 @@ class Contract extends Model
                        $this->status === self::STATUS_APPROVED;
 
             case 'quality_check':
-                return in_array($user->role, ['admin', 'rop', 'manager']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
                        $this->status === self::STATUS_IN_PRODUCTION;
 
             case 'mark_ready':
-                return in_array($user->role, ['admin', 'rop', 'manager']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
                        $this->status === self::STATUS_QUALITY_CHECK;
 
             case 'ship':
-                return in_array($user->role, ['admin', 'rop', 'manager']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
                        $this->status === self::STATUS_READY;
 
             case 'complete':
-                return in_array($user->role, ['admin', 'rop', 'manager']) && 
+                return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
                        $this->status === self::STATUS_SHIPPED;
 
             case 'admin_change_status':
                 return $user->role === 'admin';
+
+            case 'production_change_status':
+                return $user->role === 'production' && in_array($this->status, [
+                    self::STATUS_IN_PRODUCTION,
+                    self::STATUS_QUALITY_CHECK,
+                    self::STATUS_READY,
+                    self::STATUS_SHIPPED
+                ]);
 
             default:
                 return false;
@@ -232,17 +240,17 @@ class Contract extends Model
     public static function getStatusLabel($status)
     {
         $labels = [
-            self::STATUS_DRAFT => 'Черновик',
-            self::STATUS_PENDING_ROP => 'На проверке РОП',
-            self::STATUS_APPROVED => 'Одобрен',
-            self::STATUS_REJECTED => 'Отклонен',
-            self::STATUS_ON_HOLD => 'Приостановлен',
-            self::STATUS_IN_PRODUCTION => 'В производстве',
-            self::STATUS_QUALITY_CHECK => 'Контроль качества',
-            self::STATUS_READY => 'Готов к отгрузке',
-            self::STATUS_SHIPPED => 'Отгружен',
-            self::STATUS_COMPLETED => 'Завершен',
-            self::STATUS_RETURNED => 'Возвращен на доработку',
+            self::STATUS_DRAFT => 'Новая заявка',
+            self::STATUS_PENDING_ROP => 'На рассмотрении',
+            self::STATUS_APPROVED => 'Одобрено',
+            self::STATUS_REJECTED => 'Отклонено',
+            self::STATUS_ON_HOLD => 'Приостановлено',
+            self::STATUS_IN_PRODUCTION => 'В работе',
+            self::STATUS_QUALITY_CHECK => 'Проверка',
+            self::STATUS_READY => 'Готово',
+            self::STATUS_SHIPPED => 'Отправлено',
+            self::STATUS_COMPLETED => 'Завершено',
+            self::STATUS_RETURNED => 'На доработке',
         ];
 
         return $labels[$status] ?? 'Неизвестный статус';

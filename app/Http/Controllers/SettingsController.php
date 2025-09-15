@@ -79,7 +79,7 @@ class SettingsController extends Controller
     {
         // Только для админа
         if (Auth::user()->role !== 'admin') {
-            abort(403);
+            abort(403, 'Доступ запрещен. Требуются права администратора для изменения настроек.');
         }
         
         $request->validate([

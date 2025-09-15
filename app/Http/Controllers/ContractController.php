@@ -185,7 +185,7 @@ class ContractController extends Controller
                 abort(403, 'Доступ запрещен. Договор не принадлежит вашему филиалу.');
             }
         } elseif ($user->role !== 'admin') {
-            abort(403);
+            abort(403, 'Доступ запрещен. У вас нет прав для просмотра этого договора.');
         }
         
         return view('contracts.show', compact('contract'));
@@ -207,7 +207,7 @@ class ContractController extends Controller
                 abort(403, 'Доступ запрещен. Договор не принадлежит вашему филиалу.');
             }
         } elseif ($user->role !== 'admin') {
-            abort(403);
+            abort(403, 'Доступ запрещен. У вас нет прав для редактирования этого договора.');
         }
         
         $branches = Branch::all();
@@ -377,7 +377,7 @@ class ContractController extends Controller
                 abort(403, 'Доступ запрещен. Договор не принадлежит вашему филиалу.');
             }
         } elseif ($user->role !== 'admin') {
-            abort(403);
+            abort(403, 'Доступ запрещен. У вас нет прав для удаления этого договора.');
         }
 
         if ($contract->photo_path) {

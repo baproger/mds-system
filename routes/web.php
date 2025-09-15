@@ -255,7 +255,7 @@ Route::middleware(['auth'])->prefix('production')->name('production.')->group(fu
     Route::get('/contracts/{contract}/print', [ContractController::class, 'print'])->name('contracts.print');
     Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
     Route::get('/crm/kanban-data', [CrmController::class, 'kanbanData'])->name('crm.kanban-data');
-    Route::post('/crm/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -268,7 +268,7 @@ Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(fu
     Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
     Route::get('/crm/kanban-data', [CrmController::class, 'kanbanData'])->name('crm.kanban-data');
     Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
-    Route::post('/crm/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

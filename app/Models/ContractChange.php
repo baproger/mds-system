@@ -85,6 +85,11 @@ class ContractChange extends Model
             return '—';
         }
 
+        // Форматирование для статусов
+        if ($this->field === 'status') {
+            return $this->getStatusLabel($value);
+        }
+
         // Форматирование для денежных полей
         if (in_array($this->field, ['order_total', 'deposit', 'remainder'])) {
             return number_format($value, 0, '.', ' ') . ' ₸';
@@ -96,5 +101,27 @@ class ContractChange extends Model
         }
 
         return $value;
+    }
+
+    /**
+     * Получить человекочитаемое название статуса
+     */
+    private function getStatusLabel($status)
+    {
+        $labels = [
+            'draft' => 'Новая заявка',
+            'pending_rop' => 'На рассмотрении',
+            'approved' => 'Одобрено',
+            'rejected' => 'Отклонено',
+            'on_hold' => 'Приостановлено',
+            'in_production' => 'В работе',
+            'quality_check' => 'Проверка',
+            'ready' => 'Готово',
+            'shipped' => 'Отправлено',
+            'completed' => 'Завершено',
+            'returned' => 'На доработке',
+        ];
+
+        return $labels[$status] ?? $status;
     }
 }

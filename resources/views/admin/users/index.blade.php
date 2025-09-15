@@ -182,6 +182,9 @@
                                                 <span class="personnel-tag empty-tag"><i class="fas fa-minus-circle tag-icon"></i><span style="margin-left:4px;">Не назначен</span></span>
                                             @endif
                                             <span class="personnel-tag date-tag"><i class="fas fa-calendar-alt tag-icon"></i><span style="margin-left:4px;">{{ $user->created_at->format('d.m.Y') }}</span></span>
+                                            @if($user->contracts_count > 0)
+                                            <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i><span style="margin-left:4px;">{{ $user->contracts_count }}</span><span style="margin-left:6px; opacity:0.9;">договоров</span></span>
+                                            @endif
                                         </div>
                                     </div>
                                     <div class="personnel-actions">
@@ -197,9 +200,6 @@
                                             <button type="button" class="btn btn-sm btn-secondary" title="Нельзя удалить себя" disabled>
                                                 <i class="fas fa-ban"></i>
                                             </button>
-                                        @endif
-                                        @if($user->contracts_count > 0)
-                                            <span class="personnel-tag contract-tag"><i class="fas fa-file-contract tag-icon"></i><span style="margin-left:4px;">{{ $user->contracts_count }}</span><span style="margin-left:6px; opacity:0.9;">договоров</span></span>
                                         @endif
                                     </div>
                                 </div>

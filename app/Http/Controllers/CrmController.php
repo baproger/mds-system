@@ -36,7 +36,13 @@ class CrmController extends Controller
         } elseif ($user->role === 'production') {
             // Production видит только договоры в производстве
             $contractsByStatus = Contract::forRole($user)->get()->groupBy('status');
-            $statuses = Contract::FUNNEL_ORDER;
+            // Production видит только статусы, связанные с производством
+            $statuses = [
+                Contract::STATUS_IN_PRODUCTION,
+                Contract::STATUS_QUALITY_CHECK,
+                Contract::STATUS_READY,
+                Contract::STATUS_SHIPPED
+            ];
             return view('crm.kanban', compact('contractsByStatus', 'statuses'));
         }
 
@@ -66,9 +72,16 @@ class CrmController extends Controller
         } elseif ($user->role === 'production') {
             // Production видит только договоры в производстве
             $contracts = Contract::forRole($user)->with(['user', 'branch'])->get();
+            // Production видит только статусы, связанные с производством
+            $productionStatuses = [
+                Contract::STATUS_IN_PRODUCTION,
+                Contract::STATUS_QUALITY_CHECK,
+                Contract::STATUS_READY,
+                Contract::STATUS_SHIPPED
+            ];
             return response()->json([
                 'contracts' => $contracts->groupBy('status'),
-                'statuses' => Contract::FUNNEL_ORDER
+                'statuses' => $productionStatuses
             ]);
         }
 
@@ -193,17 +206,20 @@ class CrmController extends Controller
         // Проверяем права на изменение статуса
         $action = $this->getActionForStatus($newStatus);
         
-        // Если действие не найдено или пользователь не имеет прав, проверяем права админа, РОП или менеджера
+        // Если действие не найдено или пользователь не имеет прав, проверяем права админа, РОП, менеджера или production
         if (!$contract->canPerformAction($action, $user)) {
             if ($user->role === 'admin' && $contract->canPerformAction('admin_change_status', $user)) {
                 $action = 'admin_change_status';
             } elseif (in_array($user->role, ['rop', 'manager']) && $this->canRopChangeStatus($contract, $user, $newStatus)) {
                 $action = 'user_change_status';
+            } elseif ($user->role === 'production' && $contract->canPerformAction('production_change_status', $user)) {
+                $action = 'production_change_status';
             } else {
                 \Log::warning('Попытка изменения статуса без прав', [
                     'contract_id' => $contract->id,
                     'user_id' => $user->id,
-                    'action' => $action
+                    'action' => $action,
+                    'user_role' => $user->role
                 ]);
                 return response()->json(['error' => 'Нет прав для изменения статуса'], 403);
             }
