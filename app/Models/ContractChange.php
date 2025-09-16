@@ -56,11 +56,41 @@ class ContractChange extends Model
             'iin' => 'ИИН',
             'manager' => 'Менеджер',
             'order_total' => 'Общая сумма',
+            'order_deposit' => 'Предоплата',
+            'order_remainder' => 'Остаток предоплаты',
+            'order_due' => 'К оплате после изготовления',
             'deposit' => 'Депозит',
             'remainder' => 'Остаток',
             'due_date' => 'Дата оплаты',
             'payment_method' => 'Способ оплаты',
             'status' => 'Статус',
+            'date' => 'Дата договора',
+            'extra' => 'Дополнительные услуги',
+            'canvas_thickness' => 'Толщина полотна',
+            'steel_thickness' => 'Толщина стали',
+            'category' => 'Категория',
+            'model' => 'Модель',
+            'width' => 'Ширина',
+            'height' => 'Высота',
+            'leaf' => 'Створка',
+            'framugawidth' => 'Фрамуга боковая',
+            'framugaheight' => 'Фрамуга верхняя',
+            'outer_cover' => 'Наружное покрытие',
+            'outer_cover_color' => 'Цвет наружного покрытия',
+            'metal_cover_hidden' => 'Покрытие металла',
+            'metal_cover_color' => 'Цвет покрытия металла',
+            'inner_trim' => 'Внутренняя обшивка',
+            'inner_cover' => 'Внутреннее покрытие',
+            'inner_trim_color' => 'Цвет внутренней обшивки',
+            'glass_unit' => 'Стеклопакет',
+            'lock' => 'Замок',
+            'handle' => 'Ручка',
+            'measurement' => 'Замер',
+            'delivery' => 'Доставка',
+            'installation' => 'Установка',
+            'address' => 'Адрес',
+            'instagram' => 'Instagram',
+            'payment' => 'Способ оплаты',
         ];
 
         return $labels[$this->field] ?? $this->field;
@@ -91,13 +121,18 @@ class ContractChange extends Model
         }
 
         // Форматирование для денежных полей
-        if (in_array($this->field, ['order_total', 'deposit', 'remainder'])) {
+        if (in_array($this->field, ['order_total', 'order_deposit', 'order_remainder', 'order_due', 'deposit', 'remainder'])) {
             return number_format($value, 0, '.', ' ') . ' ₸';
         }
 
         // Форматирование для дат
         if (in_array($this->field, ['due_date', 'date'])) {
             return \Carbon\Carbon::parse($value)->format('d.m.Y');
+        }
+
+        // Форматирование для размеров (добавляем единицы измерения)
+        if (in_array($this->field, ['width', 'height', 'canvas_thickness', 'steel_thickness'])) {
+            return $value . ' мм';
         }
 
         return $value;
