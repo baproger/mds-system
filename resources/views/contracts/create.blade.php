@@ -328,10 +328,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="metal_cover" class="form-label">Покрытие металла</label>
-                                    <input type="text" class="form-control @error('metal_cover') is-invalid @enderror" 
-                                           id="metal_cover" name="metal_cover" value="{{ old('metal_cover') }}">
-                                    @error('metal_cover')
+                                    <label for="metal_cover_hidden" class="form-label">Покрытие металла</label>
+                                    <input type="text" class="form-control @error('metal_cover_hidden') is-invalid @enderror" 
+                                           id="metal_cover_hidden" name="metal_cover_hidden" value="{{ old('metal_cover_hidden') }}">
+                                    @error('metal_cover_hidden')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
