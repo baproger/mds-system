@@ -198,8 +198,14 @@ class ContractCalculationService
         ];
 
         foreach ($required as $field => $label) {
-            if (empty($data[$field])) {
-                $errors[] = "Поле «{$label}» обязательно.";
+            if (in_array($field, ['order_deposit', 'order_remainder', 'order_due'])) {
+                if (!isset($data[$field])) {
+                    $errors[] = "Поле «{$label}» обязательно.";
+                }
+            } else {
+                if (empty($data[$field])) {
+                    $errors[] = "Поле «{$label}» обязательно.";
+                }
             }
         }
 

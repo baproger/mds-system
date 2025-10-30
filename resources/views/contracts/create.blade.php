@@ -484,7 +484,7 @@
                                 <div class="mb-3">
                                     <label for="order_deposit" class="form-label required">Предоплата</label>
                                     <input type="number" class="form-control @error('order_deposit') is-invalid @enderror" 
-                                           id="order_deposit" name="order_deposit" value="{{ old('order_deposit') }}" min="0" step="1" required>
+                                           id="order_deposit" name="order_deposit" value="{{ old('order_deposit') }}" min="0" step="1" placeholder="Сумма в ₸">
                                     @error('order_deposit')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -494,7 +494,7 @@
                                 <div class="mb-3">
                                     <label for="order_remainder" class="form-label">Остаток предоплаты</label>
                                     <input type="number" class="form-control @error('order_remainder') is-invalid @enderror" 
-                                           id="order_remainder" name="order_remainder" value="{{ old('order_remainder') }}" min="0" step="1">
+                                           id="order_remainder" name="order_remainder" value="{{ old('order_remainder') }}" min="0" step="1" placeholder="Сумма в ₸">
                                     @error('order_remainder')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -504,7 +504,7 @@
                                 <div class="mb-3">
                                     <label for="order_due" class="form-label required">К оплате после изготовления</label>
                                     <input type="number" class="form-control @error('order_due') is-invalid @enderror" 
-                                           id="order_due" name="order_due" value="{{ old('order_due') }}" min="0" step="1" required>
+                                           id="order_due" name="order_due" value="{{ old('order_due') }}" min="0" step="1" placeholder="Сумма в ₸">
                                     @error('order_due')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
