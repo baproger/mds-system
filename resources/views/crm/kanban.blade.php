@@ -27,6 +27,67 @@
                     </div>
                 </div>
 
+                <!-- Поиск и фильтры - все на одной линии -->
+                <div class="kanban-filters-section">
+                    <div class="search-filters-line">
+                        <!-- Поиск -->
+                        <div class="search-box-modern">
+                            <i class="fas fa-search search-icon-modern"></i>
+                            <input type="text" id="kanbanSearch" class="search-input-modern" placeholder="Поиск по номеру договора, клиенту, телефону..." autocomplete="off">
+                            <button type="button" class="clear-search-modern" id="clearSearch" style="display:none;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Фильтры на одной линии -->
+                        <div class="filters-line">
+                            <div class="filter-item">
+                                <select id="filterManager" class="filter-select-modern">
+                                    <option value="">Менеджер</option>
+                                    @foreach(\App\Models\User::where('role', 'manager')->get() as $manager)
+                                        <option value="{{ $manager->id }}">{{ $manager->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <select id="filterPeriod" class="filter-select-modern">
+                                    <option value="">Период</option>
+                                    <option value="today">Сегодня</option>
+                                    <option value="week">Эта неделя</option>
+                                    <option value="month">Этот месяц</option>
+                                    <option value="quarter">Этот квартал</option>
+                                    <option value="year">Этот год</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-item">
+                                <select id="filterAmount" class="filter-select-modern">
+                                    <option value="">Сумма</option>
+                                    <option value="0-500000">До 500,000 ₸</option>
+                                    <option value="500000-1000000">500,000 - 1,000,000 ₸</option>
+                                    <option value="1000000-2000000">1,000,000 - 2,000,000 ₸</option>
+                                    <option value="2000000">Более 2,000,000 ₸</option>
+                                </select>
+                            </div>
+                            
+                            <button type="button" id="toggleFilters" class="btn-filters-modern">
+                                <i class="fas fa-sliders-h"></i>
+                                <span>Фильтры</span>
+                                <span class="filter-badge-modern" id="activeFiltersCount" style="display:none;">0</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Результаты (скрыто по умолчанию) -->
+                    <div class="filters-results-modern" id="filterResults" style="display:none;">
+                        <span class="results-text-modern">Найдено: <strong id="resultsCount">0</strong></span>
+                        <button type="button" id="clearFilters" class="btn-clear-modern">
+                            <i class="fas fa-times"></i> Сбросить
+                        </button>
+                    </div>
+                </div>
+
         <div class="kanban-columns-container">
           <div class="kanban-columns">
             @foreach([
@@ -51,17 +112,23 @@
                     
                 <div class="column-content">
                   @foreach(($contractsByStatus[$status] ?? []) as $contract)
-                    <div class="contract-card" data-contract-id="{{ $contract->id }}" data-status="{{ $contract->status }}" draggable="true">
+                    <div class="contract-card" 
+                         data-contract-id="{{ $contract->id }}" 
+                         data-status="{{ $contract->status }}"
+                         data-manager-id="{{ $contract->user_id ?? '' }}"
+                         data-branch-id="{{ $contract->branch_id ?? '' }}"
+                         data-amount="{{ $contract->order_total ?? 0 }}"
+                         data-date="{{ $contract->created_at->format('Y-m-d') }}"
+                         data-contract-number="{{ $contract->contract_number ?? $contract->id }}"
+                         data-client-name="{{ strtolower($contract->client ?? '') }}"
+                         data-client-phone="{{ $contract->phone ?? '' }}"
+                         draggable="true">
                       <div class="card-header">
+                        <div class="card-number-wrapper">
+                          <div class="status-dot {{ $contract->status }}"></div>
                         <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
                         </div>
-                        
-                      <div class="card-meta">
                         <div class="card-time">{{ $contract->created_at->format('d.m.Y H:i') }}</div>
-                        <div class="card-status">
-                          <div class="status-dot {{ $contract->status }}"></div>
-                          <span class="status-text">{{ \App\Models\Contract::getStatusLabel($contract->status) }}</span>
-                        </div>
                         </div>
                         
                       <div class="card-progress">
@@ -69,11 +136,6 @@
                           <div class="progress-bar" style="width: {{ $contract->funnel_progress ?? 0 }}%"></div>
                         </div>
                         <span class="progress-text">{{ $contract->funnel_progress ?? 0 }}% выполнено</span>
-                    </div>
-                    
-                      <div class="card-manager">
-                        <i class="fa-solid fa-user manager-icon"></i>
-                        <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
                             </div>
                             
                       @can('deals.view-amounts')
@@ -82,16 +144,16 @@
                                         </div>
                       @endcan
 
+                      <div class="card-footer">
+                        <div class="card-manager">
+                          <i class="fa-solid fa-user manager-icon"></i>
+                          <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
+                        </div>
                       <div class="card-actions">
                         <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
                           <i class="fa-regular fa-eye"></i>
                         </a>
-                        <button class="btn-action" title="Позвонить">
-                          <i class="fa-solid fa-phone"></i>
-                        </button>
-                        <button class="btn-action" title="Сообщение">
-                          <i class="fa-regular fa-comment-dots"></i>
-                        </button>
+                        </div>
                                         </div>
                                     </div>
                                     @endforeach
@@ -266,12 +328,6 @@ function applyCardStatusUI(cardEl, status){
     dot.className = 'status-dot ' + status;
   }
   
-  // Обновляем текст статуса
-  const txt = cardEl.querySelector('.status-text');
-  if (txt) {
-    txt.textContent = statusLabel(status);
-  }
-  
   // Обновляем прогресс-бар в зависимости от статуса
   const progressBar = cardEl.querySelector('.progress-bar');
   if (progressBar) {
@@ -325,5 +381,221 @@ function showNotification(message, type='success'){
     setTimeout(()=> n.remove(), 300);
   }, 2500);
 }
+
+/* ===== Фильтрация карточек ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('kanbanSearch');
+  const clearSearchBtn = document.getElementById('clearSearch');
+  const filterManager = document.getElementById('filterManager');
+  const filterPeriod = document.getElementById('filterPeriod');
+  const filterAmount = document.getElementById('filterAmount');
+  const clearFiltersBtn = document.getElementById('clearFilters');
+  const filterResults = document.getElementById('filterResults');
+  const resultsCount = document.getElementById('resultsCount');
+  const toggleFiltersBtn = document.getElementById('toggleFilters');
+  const activeFiltersCount = document.getElementById('activeFiltersCount');
+  
+  // Подсчет активных фильтров
+  function countActiveFilters() {
+    let count = 0;
+    if (filterManager?.value) count++;
+    if (filterPeriod?.value) count++;
+    if (filterAmount?.value) count++;
+    
+    if (activeFiltersCount) {
+      if (count > 0) {
+        activeFiltersCount.textContent = count;
+        activeFiltersCount.style.display = 'inline-flex';
+      } else {
+        activeFiltersCount.style.display = 'none';
+      }
+    }
+    
+    return count;
+  }
+  
+  // Обработчик очистки поиска
+  if (clearSearchBtn) {
+    clearSearchBtn.addEventListener('click', function() {
+      searchInput.value = '';
+      clearSearchBtn.classList.remove('visible');
+      applyFilters();
+    });
+  }
+  
+  // Показывать кнопку очистки при вводе
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      if (this.value) {
+        clearSearchBtn.classList.add('visible');
+      } else {
+        clearSearchBtn.classList.remove('visible');
+      }
+      applyFilters();
+    });
+  }
+  
+  // Обработчики фильтров
+  [filterManager, filterPeriod, filterAmount].forEach(filter => {
+    if (filter) {
+      filter.addEventListener('change', function() {
+        applyFilters();
+        countActiveFilters();
+      });
+    }
+  });
+  
+  // Кнопка переключения фильтров (для показа результатов)
+  if (toggleFiltersBtn) {
+    toggleFiltersBtn.addEventListener('click', function() {
+      const hasActiveFilters = filterManager?.value || filterPeriod?.value || filterAmount?.value || searchInput?.value;
+      if (hasActiveFilters) {
+        filterResults.style.display = filterResults.style.display === 'none' ? 'flex' : 'none';
+        toggleFiltersBtn.classList.toggle('active');
+      }
+    });
+  }
+  
+  // Очистить все фильтры
+  if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener('click', function() {
+      searchInput.value = '';
+      clearSearchBtn.classList.remove('visible');
+      if (filterManager) filterManager.value = '';
+      if (filterPeriod) filterPeriod.value = '';
+      if (filterAmount) filterAmount.value = '';
+      filterResults.style.display = 'none';
+      if (toggleFiltersBtn) toggleFiltersBtn.classList.remove('active');
+      applyFilters();
+      countActiveFilters();
+    });
+  }
+  
+  // Функция применения фильтров
+  function applyFilters() {
+    const searchTerm = (searchInput?.value || '').toLowerCase().trim();
+    const managerId = filterManager?.value || '';
+    const period = filterPeriod?.value || '';
+    const amountRange = filterAmount?.value || '';
+    
+    const allCards = document.querySelectorAll('.contract-card');
+    let visibleCount = 0;
+    
+    allCards.forEach(card => {
+      let matches = true;
+      
+      // Поиск по тексту (номер договора, клиент, телефон)
+      if (searchTerm) {
+        const contractNumber = (card.dataset.contractNumber || '').toLowerCase();
+        const clientName = (card.dataset.clientName || '');
+        const clientPhone = (card.dataset.clientPhone || '').replace(/\s+/g, '');
+        const searchPhone = searchTerm.replace(/\s+/g, '');
+        
+        matches = matches && (
+          contractNumber.includes(searchTerm) ||
+          clientName.includes(searchTerm) ||
+          clientPhone.includes(searchPhone)
+        );
+      }
+      
+      // Фильтр по менеджеру
+      if (matches && managerId) {
+        matches = matches && card.dataset.managerId === managerId;
+      }
+      
+      // Фильтр по периоду
+      if (matches && period) {
+        const cardDate = new Date(card.dataset.date);
+        const now = new Date();
+        let startDate = new Date();
+        
+        switch(period) {
+          case 'today':
+            startDate.setHours(0, 0, 0, 0);
+            break;
+          case 'week':
+            startDate.setDate(now.getDate() - now.getDay());
+            startDate.setHours(0, 0, 0, 0);
+            break;
+          case 'month':
+            startDate.setDate(1);
+            startDate.setHours(0, 0, 0, 0);
+            break;
+          case 'quarter':
+            const quarter = Math.floor(now.getMonth() / 3);
+            startDate.setMonth(quarter * 3, 1);
+            startDate.setHours(0, 0, 0, 0);
+            break;
+          case 'year':
+            startDate.setMonth(0, 1);
+            startDate.setHours(0, 0, 0, 0);
+            break;
+        }
+        
+        matches = matches && cardDate >= startDate && cardDate <= now;
+      }
+      
+      // Фильтр по сумме
+      if (matches && amountRange) {
+        const amount = parseFloat(card.dataset.amount) || 0;
+        const [min, max] = amountRange.split('-').map(v => v ? parseFloat(v) : null);
+        
+        if (max !== null) {
+          matches = matches && amount >= min && amount < max;
+        } else {
+          matches = matches && amount >= min;
+        }
+      }
+      
+      // Показываем/скрываем карточку
+      if (matches) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    // Обновляем счетчики колонок
+    updateColumnStats();
+    
+    // Показываем результаты фильтрации если есть активные фильтры
+    if (filterResults && resultsCount) {
+      resultsCount.textContent = visibleCount;
+      const hasActiveFilters = searchTerm || managerId || period || amountRange;
+      if (hasActiveFilters) {
+        filterResults.style.display = 'flex';
+      } else {
+        filterResults.style.display = 'none';
+        if (toggleFiltersBtn) toggleFiltersBtn.classList.remove('active');
+      }
+    }
+    
+    // Обновляем счетчик активных фильтров
+    countActiveFilters();
+  }
+  
+  // Обновление счетчиков колонок с учетом фильтров
+  function updateColumnStatsWithFilters() {
+    document.querySelectorAll('.kanban-column-section').forEach(column => {
+      const columnContent = column.querySelector('.column-content');
+      const visibleCards = columnContent.querySelectorAll('.contract-card:not([style*="display: none"])');
+      const stats = column.querySelector('.column-stats');
+      if (stats) {
+        stats.textContent = visibleCards.length;
+      }
+    });
+  }
+  
+  // Переопределяем updateColumnStats для учета фильтров
+  const originalUpdateColumnStats = window.updateColumnStats;
+  window.updateColumnStats = function() {
+    if (originalUpdateColumnStats) originalUpdateColumnStats();
+    updateColumnStatsWithFilters();
+  };
+  
+  // Инициализация при загрузке
+  countActiveFilters();
+});
 </script>
 @endsection
