@@ -194,6 +194,19 @@ class CrmController extends Controller
             return response()->json(['error' => 'Невалидный статус'], 400);
         }
 
+        // Специальное правило для менеджера: только DRAFT -> PENDING_ROP
+        if ($user->role === 'manager') {
+            if (!($contract->status === Contract::STATUS_DRAFT && $newStatus === Contract::STATUS_PENDING_ROP)) {
+                \Log::warning('Менеджер попытался изменить недопустимый статус', [
+                    'contract_id' => $contract->id,
+                    'from' => $contract->status,
+                    'to' => $newStatus,
+                    'user_id' => $user->id,
+                ]);
+                return response()->json(['error' => 'Менеджерам доступно только отправить на рассмотрение'], 403);
+            }
+        }
+
         // Логируем для отладки
         \Log::info('Обновление статуса договора', [
             'contract_id' => $contract->id,
