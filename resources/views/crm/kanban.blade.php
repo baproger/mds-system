@@ -51,7 +51,7 @@
                     
                 <div class="column-content">
                   @foreach(($contractsByStatus[$status] ?? []) as $contract)
-                    <div class="contract-card" data-contract-id="{{ $contract->id }}" draggable="true">
+                    <div class="contract-card" data-contract-id="{{ $contract->id }}" data-status="{{ $contract->status }}" draggable="true">
                       <div class="card-header">
                         <div class="card-number">№{{ $contract->contract_number ?? $contract->id }}</div>
                         </div>
@@ -106,106 +106,7 @@
     </div>
 </div>
 
-<style>
-:root{
-  --bg: #f7f8fa;
-  --card: #ffffff;
-  --text: #111827;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --subtle: #f3f4f6;
-  --accent: #2563eb;
-  --accent-2: #8b5cf6;
-  --success: #10b981;
-  --danger: #ef4444;
-  --shadow: 0 1px 2px rgba(0,0,0,.06);
-  --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
-}
-body{ background:var(--bg); color:var(--text); }
-.container-fluid{ background:var(--bg); }
-
-.kanban-columns-container{ overflow-x:auto; margin:0 -24px; padding:0 24px 24px; }
-.kanban-columns{ display:flex; gap:16px; min-height:600px; }
-
-.kanban-column-section{
-  min-width:300px; max-width:300px; flex-shrink:0; margin-bottom:0;
-  padding:16px; background:var(--card); border-radius:12px;
-  box-shadow:var(--shadow); border:1px solid var(--border);
-}
-.kanban-column-section .section-header{
-  margin-bottom:12px; padding-bottom:10px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between; gap:8px;
-}
-.kanban-column-section .section-header i{ color:var(--accent); font-size:18px; }
-.section-header span{ font:600 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji"; }
-.column-stats{ background:var(--subtle); color:var(--muted); padding:4px 8px; border-radius:999px; font:600 12px/1 system-ui; }
-
-.column-content{ min-height:140px; max-height:70vh; overflow-y:auto; padding-bottom:8px; }
-.column-content:empty{ border:1px dashed var(--border); border-radius:8px; padding:14px; min-height:160px; background:var(--subtle); }
-.column-content:empty::after{ content:"Перетащите договор сюда"; display:block; text-align:center; color:var(--muted); font-size:12px; }
-
-.contract-card{
-  background:var(--card); border-radius:10px; padding:12px; margin-bottom:12px;
-  box-shadow:var(--shadow); border:1px solid var(--border);
-  transition:transform .15s ease, box-shadow .2s ease, border-color .2s ease; cursor:grab;
-}
-.contract-card:hover{ transform:translateY(-2px); box-shadow:var(--shadow-lg); border-color:var(--subtle); }
-.contract-card:active{ cursor:grabbing; }
-
-.card-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding-bottom:8px; border-bottom:1px solid var(--border); }
-.card-number{ color:var(--text); font:600 14px/1 system-ui; }
-
-.card-meta{ display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
-.card-time{ color:var(--muted); font-size:11px; }
-.card-status{ display:flex; align-items:center; gap:6px; }
-.status-dot{ width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 0 2px rgba(0,0,0,0); }
-.status-dot.draft{ background:#6b7280; }
-.status-dot.pending_rop{ background:#f59e0b; }
-.status-dot.approved{ background:#10b981; }
-.status-dot.rejected{ background:#ef4444; }
-.status-dot.on_hold{ background:#8b5cf6; }
-.status-dot.in_production{ background:#3b82f6; }
-.status-dot.quality_check{ background:#06b6d4; }
-.status-dot.ready{ background:#84cc16; }
-.status-dot.shipped{ background:#f97316; }
-.status-dot.completed{ background:#059669; }
-.status-dot.returned{ background:#6b7280; }
-.status-text{ color:var(--muted); font-size:11px; }
-
-.card-progress{ margin-bottom:8px; }
-.progress{ background:var(--subtle); border-radius:4px; height:6px; overflow:hidden; }
-.progress-bar{ background:linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%); height:100%; border-radius:4px; transition:width .3s ease; }
-.progress-text{ color:var(--muted); font-size:11px; margin-top:4px; }
-
-.card-manager{ display:flex; align-items:center; gap:6px; margin-bottom:8px; }
-.manager-icon{ color:var(--muted); font-size:12px; }
-.manager-name{ color:var(--text); font:500 12px/1 system-ui; }
-.card-amount-bottom{ color:#059669; font-weight:700; font-size:14px; margin-bottom:8px; }
-
-.card-actions{ display:flex; gap:6px; }
-.btn-action{ background:var(--subtle); border:1px solid var(--border); border-radius:6px; padding:6px; color:var(--muted); text-decoration:none; transition:all .15s ease; display:flex; align-items:center; justify-content:center; min-width:28px; height:28px; cursor:pointer; }
-.btn-action:hover{ background:var(--accent); color:#fff; border-color:var(--accent); transform:translateY(-1px); }
-
-.notification{ position:fixed; top:20px; right:20px; background:var(--success); color:#fff; padding:12px 20px; border-radius:8px; box-shadow:var(--shadow-lg); z-index:10000; opacity:0; transform:translateY(-20px); transition:all .3s ease; }
-.notification.show{ opacity:1; transform:translateY(0); }
-.notification.error{ background:var(--danger); }
-
-/* Drag styles */
-.sortable-ghost{ opacity:.35; background:var(--subtle); border:2px dashed var(--border); transform:rotate(1deg); }
-.sortable-chosen{ transform:scale(1.02); box-shadow:var(--shadow-lg); z-index:1000; cursor:grabbing !important; }
-.sortable-drag{ opacity:.95; transform:rotate(1deg) scale(1.03); box-shadow:var(--shadow-lg); z-index:1001; }
-
-/* Animations & responsive */
-@keyframes cardSlideIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
-@media (max-width:1024px){ .kanban-column-section{ min-width:280px; max-width:280px; } }
-@media (max-width:768px){
-  .edit-branch-container{ padding:16px; }
-  .kanban-columns-container{ margin:0 -16px; padding:0 16px 16px; }
-  .kanban-column-section{ min-width:260px; max-width:260px; padding:12px; }
-  .card-actions{ flex-wrap:wrap; gap:4px; }
-  .btn-action{ min-width:24px; height:24px; padding:4px; }
-}
-</style>
+{{-- Styles moved to resources/css/app.css (Kanban unified) --}}
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 <script>
@@ -213,6 +114,11 @@ document.addEventListener('DOMContentLoaded', () => {
   setupSortable();
   updateColumnStats();
   setupWheelHorizontalScroll();
+  // Normalize progress UI on first render based on status mapping
+  document.querySelectorAll('.contract-card').forEach(card => {
+    const status = card.getAttribute('data-status');
+    if (status) applyCardStatusUI(card, status);
+  });
 });
 
 function setupWheelHorizontalScroll(){

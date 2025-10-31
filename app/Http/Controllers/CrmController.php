@@ -422,7 +422,8 @@ class CrmController extends Controller
             Contract::STATUS_QUALITY_CHECK => 'quality_check',
             Contract::STATUS_READY => 'mark_ready',
             Contract::STATUS_SHIPPED => 'ship',
-            Contract::STATUS_COMPLETED => 'complete'
+            Contract::STATUS_COMPLETED => 'complete',
+            Contract::STATUS_RETURNED => 'return'
         ];
 
         return $actions[$status] ?? '';
@@ -502,13 +503,15 @@ class CrmController extends Controller
         }
 
         // Определяем разрешенные переходы для разных ролей
+        // Разрешаем возвращать на доработку (returned) из большинства этапов,
+        // кроме завершенного (completed)
         $allowedTransitions = [
             Contract::STATUS_PENDING_ROP => [Contract::STATUS_APPROVED, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
-            Contract::STATUS_APPROVED => [Contract::STATUS_IN_PRODUCTION, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD],
-            Contract::STATUS_IN_PRODUCTION => [Contract::STATUS_QUALITY_CHECK, Contract::STATUS_ON_HOLD],
-            Contract::STATUS_QUALITY_CHECK => [Contract::STATUS_READY, Contract::STATUS_ON_HOLD],
-            Contract::STATUS_READY => [Contract::STATUS_SHIPPED, Contract::STATUS_ON_HOLD],
-            Contract::STATUS_SHIPPED => [Contract::STATUS_COMPLETED, Contract::STATUS_ON_HOLD],
+            Contract::STATUS_APPROVED => [Contract::STATUS_IN_PRODUCTION, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
+            Contract::STATUS_IN_PRODUCTION => [Contract::STATUS_QUALITY_CHECK, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
+            Contract::STATUS_QUALITY_CHECK => [Contract::STATUS_READY, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
+            Contract::STATUS_READY => [Contract::STATUS_SHIPPED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
+            Contract::STATUS_SHIPPED => [Contract::STATUS_COMPLETED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
         ];
 
         $currentStatus = $contract->status;

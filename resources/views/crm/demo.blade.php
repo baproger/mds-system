@@ -58,6 +58,8 @@
                     </div>
                 </div>
 
+
+
                 <div class="form-section">
                     <div class="section-header">
                         <i class="fas fa-chart-bar"></i>
@@ -370,6 +372,8 @@
 .form-section:nth-child(2) { animation-delay: 0.2s; }
 .form-section:nth-child(3) { animation-delay: 0.3s; }
 
+
+
 .stat-card {
     animation: fadeIn 0.3s ease-out;
 }
@@ -403,6 +407,7 @@
         text-align: center;
         gap: 12px;
     }
+
 }
 
 @media (max-width: 1024px) {

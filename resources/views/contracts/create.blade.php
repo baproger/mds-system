@@ -19,19 +19,10 @@
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('contracts.store') }}" enctype="multipart/form-data" class="search-form">
-                    @csrf
-                <form method="POST" action="{{ route('contracts.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('contracts.store') }}" enctype="multipart/form-data" class="unified-form">
                     @csrf
                     
-                    <!-- Основная информация -->
-                    <div class="form-section">
-                        <div class="section-header">
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <i class="fas fa-info-circle"></i>
-                                <span>Основная информация</span>
-                            </div>
-                        </div>
+                    <div class="form-container">
                             <div class="form-group">
                                 <label for="contract_number" class="form-label required">
                                     <i class="fas fa-hashtag"></i> Номер договора
@@ -104,11 +95,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                    </div>
-
-                    <!-- Информация о клиенте -->
-                    <div class="form-section">
-                        <h5><i class="fas fa-user"></i> Информация о клиенте</h5>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -177,11 +163,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Характеристики двери -->
-                    <div class="form-section">
-                        <h5><i class="fas fa-door-open"></i> Характеристики двери</h5>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -320,11 +301,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Покрытия и материалы -->
-                    <div class="form-section">
-                        <h5><i class="fas fa-palette"></i> Покрытия и материалы</h5>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -437,11 +413,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Дополнительные услуги -->
-                    <div class="form-section">
-                        <h5><i class="fas fa-tools"></i> Дополнительные услуги</h5>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -464,11 +435,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Финансовая информация -->
-                    <div class="form-section">
-                        <h5><i class="fas fa-money-bill-wave"></i> Финансовая информация</h5>
                         <div class="row">
                             <div class="col-md-3">
                                 <div class="mb-3">
@@ -511,11 +477,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Фотографии -->
-                    <div class="form-section">
-                        <h5><i class="fas fa-camera"></i> Фотографии</h5>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
@@ -539,7 +500,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <!-- Кнопки действий -->
                     <div class="form-actions">
                         <a href="{{ route('contracts.index') }}" class="btn btn-cancel">
@@ -564,10 +525,8 @@ body{background:var(--bg-primary)}
 .page-title{font-size:28px;font-weight:700;color:#6b7280;margin:0}
 .page-subtitle{font-size:14px;color:#6b7280;margin:4px 0 0 0}
 
-.form-section{background:#fff;border-radius:12px;padding:24px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid #f3f4f6;animation:fadeIn .3s ease-out}
-.section-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid #f3f4f6;font-weight:600;font-size:16px;color:#374151}
-.section-header i{color:#fff;font-size:18px}
-.section-actions{display:flex;gap:12px}
+.unified-form{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid #f3f4f6}
+.form-container{display:flex;flex-direction:column;gap:20px}
 
 .search-form .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:24px}
 .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
