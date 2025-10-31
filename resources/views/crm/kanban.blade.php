@@ -121,11 +121,6 @@
   --shadow: 0 1px 2px rgba(0,0,0,.06);
   --shadow-lg: 0 8px 24px rgba(0,0,0,.08);
 }
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#0b0d11; --card:#111418; --text:#e5e7eb; --muted:#9ca3af; --border:#1f232a; --subtle:#161a20; --shadow:0 1px 2px rgba(0,0,0,.4); --shadow-lg:0 10px 30px rgba(0,0,0,.45);
-  }
-}
 body{ background:var(--bg); color:var(--text); }
 .container-fluid{ background:var(--bg); }
 
