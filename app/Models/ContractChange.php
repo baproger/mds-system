@@ -19,6 +19,7 @@ class ContractChange extends Model
         'version_from',
         'version_to',
         'changed_at',
+        'comment',
     ];
 
     protected $casts = [

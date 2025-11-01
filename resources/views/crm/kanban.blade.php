@@ -70,12 +70,6 @@
                                     <option value="2000000">Более 2,000,000 ₸</option>
                                 </select>
                             </div>
-                            
-                            <button type="button" id="toggleFilters" class="btn-filters-modern">
-                                <i class="fas fa-sliders-h"></i>
-                                <span>Фильтры</span>
-                                <span class="filter-badge-modern" id="activeFiltersCount" style="display:none;">0</span>
-                            </button>
                         </div>
                     </div>
                     
@@ -150,6 +144,9 @@
                           <span class="manager-name">{{ $contract->user->name ?? 'Не назначен' }}</span>
                         </div>
                       <div class="card-actions">
+                        <button type="button" class="btn-action btn-history" data-contract-id="{{ $contract->id }}" data-contract-number="{{ $contract->contract_number ?? $contract->id }}" title="История статусов">
+                          <i class="fa-solid fa-clock-rotate-left"></i>
+                        </button>
                         <a href="{{ route(Auth::user()->role . '.contracts.show', $contract) }}" class="btn-action" title="Просмотр">
                           <i class="fa-regular fa-eye"></i>
                         </a>
@@ -194,6 +191,60 @@ function setupWheelHorizontalScroll(){
   }, {passive:false});
 }
 
+// Проверка допустимости перехода между статусами
+// Предотвращает перемещение заявок сразу в конец воронки без прохождения промежуточных этапов
+function isValidStatusTransition(oldStatus, newStatus) {
+  // Порядок статусов в воронке (последовательность этапов)
+  const funnelOrder = [
+    'draft',
+    'pending_rop',
+    'approved',
+    'in_production',
+    'quality_check',
+    'ready',
+    'shipped',
+    'completed'
+  ];
+
+  // Специальные статусы (не в основной воронке, но могут использоваться)
+  const specialStatuses = ['rejected', 'on_hold', 'returned'];
+
+  // Завершенные нельзя перемещать
+  if (oldStatus === 'completed') {
+    return false;
+  }
+
+  // Если перемещение в специальный статус, разрешаем (они обрабатываются отдельно на сервере)
+  if (specialStatuses.includes(newStatus)) {
+    return true;
+  }
+
+  // Если перемещение из специального статуса в обычный, разрешаем (проверка будет на сервере)
+  if (specialStatuses.includes(oldStatus)) {
+    return true;
+  }
+
+  // Получаем индексы текущего и нового статуса в воронке
+  const oldIndex = funnelOrder.indexOf(oldStatus);
+  const newIndex = funnelOrder.indexOf(newStatus);
+
+  // Если один из статусов не найден в воронке, разрешаем (проверка будет на сервере)
+  if (oldIndex === -1 || newIndex === -1) {
+    return true;
+  }
+
+  // Вычисляем разницу шагов
+  const stepDiff = newIndex - oldIndex;
+  
+  // Разрешаем:
+  // - Переход назад (stepDiff < 0) - можно вернуться на любой предыдущий этап
+  // - Остаться на месте (stepDiff === 0) - в ту же колонку (будет отфильтровано в onEnd)
+  // - Один шаг вперед (stepDiff === 1) - следующий этап
+  // Запрещаем:
+  // - Пропуск этапов вперед (stepDiff > 1) - нельзя перепрыгивать через этапы
+  return stepDiff <= 1;
+}
+
 function setupSortable() {
   const columns = document.querySelectorAll('.kanban-column-section');
     columns.forEach(column => {
@@ -214,6 +265,23 @@ function setupSortable() {
         evt.item.style.transform = 'rotate(2deg) scale(1.05)';
         evt.item.style.zIndex = '1000';
       },
+      onMove: function(evt) {
+        // Проверяем допустимость перехода перед перемещением
+        const oldStatus = evt.from.closest('.kanban-column-section')?.dataset.status;
+        const newStatus = evt.to.closest('.kanban-column-section')?.dataset.status;
+        
+        if (!oldStatus || !newStatus) {
+          return true; // Разрешаем, если не можем определить статусы
+        }
+
+        // Если переход недопустим, блокируем перемещение
+        if (!isValidStatusTransition(oldStatus, newStatus)) {
+          showNotification('Недопустимый переход! Заявку нельзя перемещать в эту стадию без прохождения промежуточных этапов.', 'error');
+          return false; // Блокируем перемещение
+        }
+
+        return true; // Разрешаем перемещение
+      },
             onEnd: function(evt) {
         document.body.style.cursor = '';
         evt.item.style.opacity = '1';
@@ -231,15 +299,65 @@ function setupSortable() {
           return;
         }
 
-        // Обновляем статус
-        updateContractStatus(contractId, newStatus, item, oldStatus);
+        // Дополнительная проверка на всякий случай
+        if (!isValidStatusTransition(oldStatus, newStatus)) {
+          // Возвращаем карточку в исходную колонку
+          const oldColumn = document.querySelector(`[data-status="${oldStatus}"] .column-content`);
+          if (oldColumn) {
+            oldColumn.appendChild(item);
+          }
+          updateColumnStats();
+          showNotification('Недопустимый переход! Заявку нельзя перемещать в эту стадию без прохождения промежуточных этапов.', 'error');
+          return;
+        }
+
+        // Показываем модальное окно для комментария
+        showCommentModal(contractId, newStatus, item, oldStatus);
       }
     });
 });
 }
 
+// Сохраняем ссылку на карточку для возврата
+let currentDragItem = null;
+let currentDragOldStatus = null;
+
+/* Показать модальное окно для комментария */
+function showCommentModal(contractId, newStatus, item, oldStatus) {
+  const modal = document.getElementById('commentModal');
+  const commentInput = document.getElementById('commentInput');
+  const statusLabel = modal.querySelector('.comment-modal-status-label');
+  
+  // Сохраняем ссылку на карточку
+  currentDragItem = item;
+  currentDragOldStatus = oldStatus;
+  
+  // Получаем названия статусов
+  const statusLabels = {
+    'draft': 'Новая заявка',
+    'pending_rop': 'На рассмотрении',
+    'approved': 'Одобрено',
+    'rejected': 'Отклонено',
+    'on_hold': 'Приостановлено',
+    'in_production': 'В работе',
+    'quality_check': 'Проверка',
+    'ready': 'Готово',
+    'shipped': 'Отправлено',
+    'completed': 'Завершено',
+    'returned': 'На доработке'
+  };
+  
+  statusLabel.textContent = statusLabels[newStatus] || newStatus;
+  commentInput.value = '';
+  modal.setAttribute('data-contract-id', contractId);
+  modal.setAttribute('data-new-status', newStatus);
+  modal.setAttribute('data-old-status', oldStatus);
+  modal.classList.add('show');
+  commentInput.focus();
+}
+
 /* Обновление статуса контракта */
-async function updateContractStatus(contractId, newStatus, item, oldStatus) {
+async function updateContractStatus(contractId, newStatus, item, oldStatus, comment = null) {
   try {
     // Показываем индикатор загрузки
     item.style.opacity = '0.6';
@@ -251,7 +369,7 @@ async function updateContractStatus(contractId, newStatus, item, oldStatus) {
             'Content-Type': 'application/json',
         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
       },
-      body: JSON.stringify({ status: newStatus })
+      body: JSON.stringify({ status: newStatus, comment: comment })
     });
 
     if (!response.ok) {
@@ -392,8 +510,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const clearFiltersBtn = document.getElementById('clearFilters');
   const filterResults = document.getElementById('filterResults');
   const resultsCount = document.getElementById('resultsCount');
-  const toggleFiltersBtn = document.getElementById('toggleFilters');
-  const activeFiltersCount = document.getElementById('activeFiltersCount');
   
   // Подсчет активных фильтров
   function countActiveFilters() {
@@ -401,15 +517,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (filterManager?.value) count++;
     if (filterPeriod?.value) count++;
     if (filterAmount?.value) count++;
-    
-    if (activeFiltersCount) {
-      if (count > 0) {
-        activeFiltersCount.textContent = count;
-        activeFiltersCount.style.display = 'inline-flex';
-      } else {
-        activeFiltersCount.style.display = 'none';
-      }
-    }
     
     return count;
   }
@@ -445,17 +552,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
   
-  // Кнопка переключения фильтров (для показа результатов)
-  if (toggleFiltersBtn) {
-    toggleFiltersBtn.addEventListener('click', function() {
-      const hasActiveFilters = filterManager?.value || filterPeriod?.value || filterAmount?.value || searchInput?.value;
-      if (hasActiveFilters) {
-        filterResults.style.display = filterResults.style.display === 'none' ? 'flex' : 'none';
-        toggleFiltersBtn.classList.toggle('active');
-      }
-    });
-  }
-  
   // Очистить все фильтры
   if (clearFiltersBtn) {
     clearFiltersBtn.addEventListener('click', function() {
@@ -465,7 +561,6 @@ document.addEventListener('DOMContentLoaded', function() {
       if (filterPeriod) filterPeriod.value = '';
       if (filterAmount) filterAmount.value = '';
       filterResults.style.display = 'none';
-      if (toggleFiltersBtn) toggleFiltersBtn.classList.remove('active');
       applyFilters();
       countActiveFilters();
     });
@@ -567,7 +662,6 @@ document.addEventListener('DOMContentLoaded', function() {
         filterResults.style.display = 'flex';
       } else {
         filterResults.style.display = 'none';
-        if (toggleFiltersBtn) toggleFiltersBtn.classList.remove('active');
       }
     }
     
@@ -597,5 +691,769 @@ document.addEventListener('DOMContentLoaded', function() {
   // Инициализация при загрузке
   countActiveFilters();
 });
+
+/* ===== История статусов ===== */
+document.addEventListener('DOMContentLoaded', function() {
+  // Обработчик для кнопок истории
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.btn-history')) {
+      const button = e.target.closest('.btn-history');
+      const contractId = button.getAttribute('data-contract-id');
+      const contractNumber = button.getAttribute('data-contract-number');
+      if (contractId) {
+        showHistoryModal(contractId, contractNumber);
+      }
+    }
+  });
+
+  // Закрытие модального окна
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('history-modal-overlay') || e.target.closest('.history-modal-close')) {
+      closeHistoryModal();
+    }
+  });
+
+  // Закрытие по ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && document.querySelector('.history-modal-overlay.show')) {
+      closeHistoryModal();
+    }
+    if (e.key === 'Escape' && document.querySelector('.comment-modal-overlay.show')) {
+      closeCommentModal();
+    }
+  });
+
+  // Обработчик для модального окна комментария
+  const commentConfirmBtn = document.getElementById('commentConfirmBtn');
+  const commentCancelBtn = document.getElementById('commentCancelBtn');
+  const commentInput = document.getElementById('commentInput');
+  
+  if (commentConfirmBtn) {
+    commentConfirmBtn.addEventListener('click', function() {
+      const modal = document.getElementById('commentModal');
+      const contractId = modal.getAttribute('data-contract-id');
+      const newStatus = modal.getAttribute('data-new-status');
+      const oldStatus = modal.getAttribute('data-old-status');
+      const comment = commentInput.value.trim();
+      
+      // Находим карточку контракта
+      const card = document.querySelector(`[data-contract-id="${contractId}"]`);
+      const oldColumn = document.querySelector(`[data-status="${oldStatus}"] .column-content`);
+      
+      if (!card || !oldColumn) {
+        closeCommentModal();
+        return;
+      }
+      
+      // Закрываем модальное окно
+      closeCommentModal();
+      
+      // Обновляем статус с комментарием
+      updateContractStatus(contractId, newStatus, card, oldStatus, comment);
+    });
+  }
+  
+  if (commentCancelBtn) {
+    commentCancelBtn.addEventListener('click', function() {
+      // Возвращаем карточку в исходную колонку
+      if (currentDragItem && currentDragOldStatus) {
+        const oldColumn = document.querySelector(`[data-status="${currentDragOldStatus}"] .column-content`);
+        if (oldColumn && currentDragItem.parentElement !== oldColumn) {
+          oldColumn.appendChild(currentDragItem);
+          updateColumnStats();
+        }
+      }
+      
+      closeCommentModal();
+    });
+  }
+  
+  // Закрытие по клику на overlay
+  const commentModal = document.getElementById('commentModal');
+  if (commentModal) {
+    commentModal.addEventListener('click', function(e) {
+      if (e.target === commentModal) {
+        // Возвращаем карточку при закрытии
+        if (currentDragItem && currentDragOldStatus) {
+          const oldColumn = document.querySelector(`[data-status="${currentDragOldStatus}"] .column-content`);
+          if (oldColumn && currentDragItem.parentElement !== oldColumn) {
+            oldColumn.appendChild(currentDragItem);
+            updateColumnStats();
+          }
+        }
+        closeCommentModal();
+      }
+    });
+  }
+  
+  // Подтверждение комментария по Enter (Ctrl+Enter)
+  if (commentInput) {
+    commentInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        commentConfirmBtn.click();
+      }
+    });
+  }
+});
+
+function closeCommentModal() {
+  const modal = document.getElementById('commentModal');
+  modal.classList.remove('show');
+  const commentInput = document.getElementById('commentInput');
+  if (commentInput) {
+    commentInput.value = '';
+  }
+  // Очищаем ссылки
+  currentDragItem = null;
+  currentDragOldStatus = null;
+}
+
+async function showHistoryModal(contractId, contractNumber = null) {
+  const overlay = document.getElementById('historyModal');
+  const content = overlay.querySelector('.history-modal-content');
+  const loader = overlay.querySelector('.history-loader');
+  const list = overlay.querySelector('.history-list');
+  const titleElement = overlay.querySelector('.history-modal-title span');
+  
+  // Показываем модальное окно
+  overlay.classList.add('show');
+  list.innerHTML = '';
+  loader.style.display = 'flex';
+  
+  // Устанавливаем временный номер заявки если он был передан
+  if (contractNumber) {
+    titleElement.textContent = `История статусов заявки №${contractNumber}`;
+  }
+
+  try {
+    const response = await fetch(`{{ route(Auth::user()->role . '.crm.history', ['contract' => 'CONTRACT_ID']) }}`.replace('CONTRACT_ID', contractId), {
+      headers: {
+        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка загрузки истории');
+    }
+
+    const data = await response.json();
+    
+    // Обновляем заголовок с номером заявки из ответа
+    if (data.contract_number) {
+      const titleElement = overlay.querySelector('.history-modal-title span');
+      titleElement.textContent = `История статусов заявки №${data.contract_number}`;
+    }
+    
+    if (data.success && data.history.length > 0) {
+      list.innerHTML = data.history.map((item, index) => {
+        const isLast = index === 0;
+        const statusColors = {
+          'draft': '#6b7280',
+          'pending_rop': '#f59e0b',
+          'approved': '#10b981',
+          'rejected': '#ef4444',
+          'on_hold': '#8b5cf6',
+          'in_production': '#3b82f6',
+          'quality_check': '#06b6d4',
+          'ready': '#84cc16',
+          'shipped': '#f97316',
+          'completed': '#059669',
+          'returned': '#6b7280'
+        };
+        
+        const oldColor = statusColors[item.old_status] || '#9ca3af';
+        const newColor = statusColors[item.new_status] || '#3b82f6';
+        
+        return `
+          <div class="history-item ${isLast ? 'history-item-latest' : ''}">
+            <div class="history-timeline">
+              <div class="history-dot" style="background: ${newColor}; border-color: ${newColor};"></div>
+              ${!isLast ? '<div class="history-line"></div>' : ''}
+            </div>
+            <div class="history-content">
+              <div class="history-status-change">
+                <span class="status-badge status-badge-old" style="background: ${oldColor}15; color: ${oldColor}; border-color: ${oldColor}40;">
+                  ${item.old_status_label}
+                </span>
+                <i class="fa-solid fa-arrow-right history-arrow"></i>
+                <span class="status-badge status-badge-new" style="background: ${newColor}15; color: ${newColor}; border-color: ${newColor}40;">
+                  ${item.new_status_label}
+                </span>
+              </div>
+              <div class="history-meta">
+                <div class="history-user">
+                  <i class="fa-solid fa-user"></i>
+                  <span>${item.user_name}</span>
+                  <span class="history-role">(${getRoleLabel(item.user_role)})</span>
+                </div>
+                <div class="history-time">
+                  <i class="fa-solid fa-clock"></i>
+                  <span>${item.changed_at}</span>
+                </div>
+              </div>
+              ${item.comment ? `
+              <div class="history-comment">
+                <i class="fa-solid fa-comment"></i>
+                <span>${item.comment}</span>
+              </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    } else {
+      list.innerHTML = '<div class="history-empty">История изменений статусов отсутствует</div>';
+    }
+  } catch (error) {
+    console.error('Ошибка загрузки истории:', error);
+    list.innerHTML = '<div class="history-error">Ошибка загрузки истории. Попробуйте позже.</div>';
+  } finally {
+    loader.style.display = 'none';
+  }
+}
+
+function closeHistoryModal() {
+  const overlay = document.getElementById('historyModal');
+  overlay.classList.remove('show');
+}
+
+function getRoleLabel(role) {
+  const labels = {
+    'admin': 'Администратор',
+    'manager': 'Менеджер',
+    'rop': 'РОП',
+    'production': 'Производство',
+    'accountant': 'Бухгалтер'
+  };
+  return labels[role] || role;
+}
 </script>
+
+<!-- Модальное окно истории -->
+<div class="history-modal-overlay" id="historyModal">
+  <div class="history-modal-content">
+    <div class="history-modal-header">
+      <div class="history-modal-title">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>История статусов заявки</span>
+      </div>
+      <button type="button" class="history-modal-close">
+        <i class="fa-solid fa-times"></i>
+      </button>
+    </div>
+    <div class="history-modal-body">
+      <div class="history-loader">
+        <div class="history-spinner"></div>
+        <span>Загрузка истории...</span>
+      </div>
+      <div class="history-list"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Модальное окно истории */
+.history-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.history-modal-overlay.show {
+  display: flex;
+  opacity: 1;
+}
+
+.history-modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 700px;
+  max-height: 85vh;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  animation: historyModalSlideIn 0.3s ease-out;
+}
+
+@keyframes historyModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.history-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border-radius: 20px 20px 0 0;
+}
+
+.history-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.history-modal-title i {
+  color: #3b82f6;
+  font-size: 22px;
+}
+
+.history-modal-close {
+  background: transparent;
+  border: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.history-modal-close:hover {
+  background: #f3f4f6;
+  color: #374151;
+  transform: rotate(90deg);
+}
+
+.history-modal-body {
+  padding: 24px 28px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.history-loader {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  gap: 16px;
+}
+
+.history-loader.show {
+  display: flex;
+}
+
+.history-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: historySpinnerRotate 0.8s linear infinite;
+}
+
+@keyframes historySpinnerRotate {
+  to { transform: rotate(360deg); }
+}
+
+.history-loader span {
+  color: #6b7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.history-item {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  position: relative;
+}
+
+.history-item-latest {
+  background: linear-gradient(90deg, #eff6ff 0%, transparent 100%);
+  border-radius: 12px;
+  padding: 20px 16px;
+  margin: 0 -16px;
+}
+
+.history-timeline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.history-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid;
+  background: #3b82f6;
+  z-index: 2;
+  position: relative;
+}
+
+.history-item-latest .history-dot {
+  width: 18px;
+  height: 18px;
+  border-width: 4px;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.history-line {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(180deg, #e5e7eb 0%, transparent 100%);
+  min-height: 40px;
+  margin-top: 8px;
+}
+
+.history-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-status-change {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-badge-old {
+  opacity: 0.7;
+}
+
+.history-arrow {
+  color: #9ca3af;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.history-meta {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.history-user,
+.history-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.history-user i,
+.history-time i {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.history-role {
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.history-empty,
+.history-error {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.history-error {
+  color: #ef4444;
+}
+
+/* Скроллбар для модального окна */
+.history-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.history-modal-body::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 3px;
+}
+
+.history-modal-body::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+
+.history-modal-body::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.history-comment {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #f9fafb;
+  border-left: 3px solid #3b82f6;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.history-comment i {
+  color: #3b82f6;
+  margin-top: 2px;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.history-comment span {
+  flex: 1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* Модальное окно для комментария */
+.comment-modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 10001;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.comment-modal-overlay.show {
+  display: flex;
+  opacity: 1;
+}
+
+.comment-modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  animation: commentModalSlideIn 0.3s ease-out;
+}
+
+@keyframes commentModalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.comment-modal-header {
+  padding: 24px 28px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border-radius: 20px 20px 0 0;
+}
+
+.comment-modal-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.comment-modal-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.comment-modal-status-label {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #eff6ff;
+  color: #3b82f6;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+.comment-modal-body {
+  padding: 24px 28px;
+}
+
+.comment-input-wrapper {
+  position: relative;
+}
+
+.comment-input-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.comment-input {
+  width: 100%;
+  min-height: 100px;
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  font-family: Inter, system-ui, sans-serif;
+  color: #1f2937;
+  resize: vertical;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.comment-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.comment-input::placeholder {
+  color: #9ca3af;
+}
+
+.comment-input-hint {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.comment-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.comment-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comment-btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.comment-btn-cancel:hover {
+  background: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.comment-btn-confirm {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.comment-btn-confirm:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.comment-btn:active {
+  transform: translateY(0);
+}
+</style>
+
+<!-- Модальное окно для комментария -->
+<div class="comment-modal-overlay" id="commentModal">
+  <div class="comment-modal-content">
+    <div class="comment-modal-header">
+      <div class="comment-modal-title">
+        <i class="fa-solid fa-comment-dots"></i> Комментарий к изменению статуса
+      </div>
+      <div class="comment-modal-subtitle">
+        Перемещение в статус: <span class="comment-modal-status-label"></span>
+      </div>
+    </div>
+    <div class="comment-modal-body">
+      <div class="comment-input-wrapper">
+        <label class="comment-input-label">Комментарий (необязательно)</label>
+        <textarea 
+          id="commentInput" 
+          class="comment-input" 
+          placeholder="Добавьте комментарий к изменению статуса..."
+          maxlength="500"></textarea>
+        <div class="comment-input-hint">
+          <i class="fa-solid fa-info-circle"></i>
+          <span>Нажмите Ctrl+Enter или кнопку "Подтвердить" для сохранения</span>
+        </div>
+      </div>
+      <div class="comment-modal-actions">
+        <button type="button" class="comment-btn comment-btn-cancel" id="commentCancelBtn">
+          <i class="fa-solid fa-times"></i>
+          Отмена
+        </button>
+        <button type="button" class="comment-btn comment-btn-confirm" id="commentConfirmBtn">
+          <i class="fa-solid fa-check"></i>
+          Подтвердить
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection

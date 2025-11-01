@@ -3281,15 +3281,6 @@ body {
 .filter-select-modern:focus{ color:#1f2937; }
 .filter-select-modern option{ color:#1f2937; background:#ffffff; }
 
-/* Кнопка фильтров */
-.btn-filters-modern{ padding:10px 16px; background:#ffffff; border:1px solid #e5e7eb; border-radius:8px; color:#374151; font:500 14px/1.4 Inter,system-ui,sans-serif; cursor:pointer; transition:all .25s cubic-bezier(0.4,0,0.2,1); display:flex; align-items:center; gap:8px; white-space:nowrap; position:relative; }
-.btn-filters-modern:hover{ background:#f9fafb; border-color:#d1d5db; transform:translateY(-1px); box-shadow:0 2px 4px rgba(0,0,0,0.05); }
-.btn-filters-modern.active{ background:var(--accent); border-color:var(--accent); color:#ffffff; }
-.btn-filters-modern.active:hover{ background:#2563eb; transform:translateY(-1px); box-shadow:0 4px 8px rgba(59,130,246,0.3); }
-.btn-filters-modern i{ font-size:13px; transition:transform .3s ease; }
-.btn-filters-modern.active i{ transform:rotate(90deg); }
-.filter-badge-modern{ display:inline-flex; align-items:center; justify-content:center; min-width:18px; height:18px; padding:0 5px; background:rgba(255,255,255,0.2); color:#ffffff; border-radius:9px; font:600 10px/1 Inter,system-ui,sans-serif; margin-left:4px; }
-.btn-filters-modern:not(.active) .filter-badge-modern{ background:var(--accent); color:#ffffff; }
 
 /* Результаты фильтрации */
 .filters-results-modern{ display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding:10px 14px; background:#f9fafb; border-radius:8px; border:1px solid #e5e7eb; animation:slideDown .3s ease; }
@@ -3310,7 +3301,6 @@ body {
   .search-box-modern{ min-width:100%; }
   .filters-line{ flex-direction:column; width:100%; }
   .filter-select-modern{ width:100%; border-left:none; border-top:1px solid #e5e7eb; }
-  .btn-filters-modern{ width:100%; justify-content:center; }
 }
 
 /* ===== Kanban (unified CRM style) ===== */

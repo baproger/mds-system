@@ -159,6 +159,7 @@ class CrmController extends Controller
     {
         $user = Auth::user();
         $newStatus = $request->input('status');
+        $comment = $request->input('comment');
 
         // Валидация входных данных
         if (empty($newStatus) || is_null($newStatus)) {
@@ -243,7 +244,7 @@ class CrmController extends Controller
         $contract->save();
 
         // Логируем изменение
-        $this->logStatusChange($contract, $oldStatus, $newStatus, $user);
+        $this->logStatusChange($contract, $oldStatus, $newStatus, $user, $comment);
 
         \Log::info('Статус договора успешно обновлен', [
             'contract_id' => $contract->id,
@@ -477,11 +478,54 @@ class CrmController extends Controller
     /**
      * Логировать изменение статуса
      */
-    private function logStatusChange($contract, $oldStatus, $newStatus, $user)
+    private function logStatusChange($contract, $oldStatus, $newStatus, $user, $comment = null)
     {
-        // Здесь можно добавить логирование в отдельную таблицу
-        // или использовать существующую систему логов
-        \Log::info("Contract {$contract->contract_number} status changed from {$oldStatus} to {$newStatus} by user {$user->name}");
+        // Сохраняем изменение статуса в базу данных для истории
+        \App\Models\ContractChange::create([
+            'contract_id' => $contract->id,
+            'user_id' => $user->id,
+            'role' => $user->role,
+            'field' => 'status',
+            'old_value' => $oldStatus,
+            'new_value' => $newStatus,
+            'version_from' => $contract->version,
+            'version_to' => $contract->version,
+            'changed_at' => now(),
+            'comment' => $comment,
+        ]);
+
+        \Log::info("Contract {$contract->contract_number} status changed from {$oldStatus} to {$newStatus} by user {$user->name}" . ($comment ? " with comment: {$comment}" : ""));
+    }
+
+    /**
+     * Получить историю статусов контракта
+     */
+    public function getHistory(Contract $contract)
+    {
+        $history = \App\Models\ContractChange::where('contract_id', $contract->id)
+            ->where('field', 'status')
+            ->with('user')
+            ->orderBy('changed_at', 'desc')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'contract_number' => $contract->contract_number ?? $contract->id,
+            'history' => $history->map(function ($change) {
+                return [
+                    'id' => $change->id,
+                    'old_status' => $change->old_value,
+                    'new_status' => $change->new_value,
+                    'old_status_label' => $change->formatted_old_value,
+                    'new_status_label' => $change->formatted_new_value,
+                    'user_name' => $change->user->name ?? 'Неизвестно',
+                    'user_role' => $change->role,
+                    'changed_at' => $change->changed_at->format('d.m.Y H:i:s'),
+                    'changed_at_timestamp' => $change->changed_at->timestamp,
+                    'comment' => $change->comment,
+                ];
+            })
+        ]);
     }
 
     /**

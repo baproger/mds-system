@@ -74,6 +74,7 @@ Route::middleware(['auth', 'manager'])->prefix('manager')->name('manager.')->gro
     Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
     Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
     Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
+    Route::get('/crm/contracts/{contract}/history', [CrmController::class, 'getHistory'])->name('crm.history');
     
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
@@ -109,6 +110,7 @@ Route::middleware(['auth', 'rop'])->prefix('rop')->name('rop.')->group(function 
     Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
     Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
     Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
+    Route::get('/crm/contracts/{contract}/history', [CrmController::class, 'getHistory'])->name('crm.history');
     
     // Калькулятор дверей
     Route::get('/calculator', [App\Http\Controllers\CalculatorController::class, 'index'])->name('calculator.index');
@@ -158,6 +160,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
     Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
     Route::get('/crm/kanban-data', [CrmController::class, 'getKanbanData'])->name('crm.kanban-data');
+    Route::get('/crm/contracts/{contract}/history', [CrmController::class, 'getHistory'])->name('crm.history');
     
     // Управление менеджерами и РОП (только для admin)
     Route::get('/managers', [AdminManagerController::class, 'index'])->name('managers.index');
@@ -256,6 +259,7 @@ Route::middleware(['auth'])->prefix('production')->name('production.')->group(fu
     Route::get('/crm/kanban', [CrmController::class, 'kanban'])->name('crm.kanban');
     Route::get('/crm/kanban-data', [CrmController::class, 'kanbanData'])->name('crm.kanban-data');
     Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::get('/crm/contracts/{contract}/history', [CrmController::class, 'getHistory'])->name('crm.history');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
@@ -269,6 +273,7 @@ Route::middleware(['auth'])->prefix('accountant')->name('accountant.')->group(fu
     Route::get('/crm/kanban-data', [CrmController::class, 'kanbanData'])->name('crm.kanban-data');
     Route::get('/crm/dashboard', [CrmController::class, 'dashboard'])->name('crm.dashboard');
     Route::post('/crm/contracts/{contract}/update-status', [CrmController::class, 'updateStatus'])->name('crm.update-status');
+    Route::get('/crm/contracts/{contract}/history', [CrmController::class, 'getHistory'])->name('crm.history');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
