@@ -15,6 +15,12 @@
     <div class="container-fluid">
         <!-- Sidebar -->
         <div class="sidebar">
+            <!-- Header with logo -->
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <img src="{{ asset('images/logomds.png') }}" alt="MDS Doors" class="logo-img">
+                </div>
+            </div>
 
             <!-- Scrollable navigation area -->
             <div class="sidebar-scrollable">
@@ -104,8 +110,20 @@
                 </nav>
             </div>
 
-            <!-- Footer with user profile -->
+            <!-- Footer with theme toggle and user profile -->
             <div class="sidebar-footer">
+                <!-- Theme Toggle -->
+                <div class="theme-toggle-container">
+                    <div class="theme-toggle-wrapper">
+                        <i class="fas fa-sun theme-icon theme-icon-sun"></i>
+                        <label class="theme-switch">
+                            <input type="checkbox" id="themeToggle">
+                            <span class="theme-slider"></span>
+                        </label>
+                        <i class="fas fa-moon theme-icon theme-icon-moon"></i>
+                    </div>
+                </div>
+                
                 <!-- User profile -->
                 <div class="user-profile">
                     <div class="user-avatar">
@@ -113,7 +131,6 @@
                     </div>
                     <div class="user-info">
                         <div class="user-name">{{ Auth::user()->name }}</div>
-                        <div class="user-email">{{ Auth::user()->email }}</div>
                         <div class="user-role">
                             @if(Auth::user()->role === 'admin')
                                 <span class="badge badge-primary">Администратор</span>
@@ -125,6 +142,9 @@
                                 <span class="badge badge-info">{{ ucfirst(Auth::user()->role) }}</span>
                             @endif
                         </div>
+                    </div>
+                    <div class="user-action-icon">
+                        <i class="fas fa-ellipsis-v"></i>
                     </div>
                 </div>
             </div>
@@ -227,6 +247,27 @@
                 modal.addEventListener('click', function(e) {
                     if (e.target === this) {
                         hideLogoutModal();
+                    }
+                });
+            }
+            
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                // Check for saved theme preference or respect OS preference
+                if (localStorage.getItem('theme') === 'dark' || 
+                    (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
+                    document.body.classList.add('dark-mode');
+                    themeToggle.checked = true;
+                }
+                
+                themeToggle.addEventListener('change', function() {
+                    document.body.classList.toggle('dark-mode');
+                    
+                    if (document.body.classList.contains('dark-mode')) {
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        localStorage.setItem('theme', 'light');
                     }
                 });
             }

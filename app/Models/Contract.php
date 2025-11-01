@@ -39,9 +39,6 @@ class Contract extends Model
     const STATUS_PENDING_ROP = 'pending_rop';        // На проверке РОП
     const STATUS_APPROVED = 'approved';              // Одобрен
     const STATUS_REJECTED = 'rejected';              // Отклонен
-    const STATUS_ON_HOLD = 'on_hold';                // Приостановлен
-    const STATUS_IN_PRODUCTION = 'in_production';    // В производстве
-    const STATUS_QUALITY_CHECK = 'quality_check';    // Контроль качества
     const STATUS_READY = 'ready';                    // Готов к отгрузке
     const STATUS_SHIPPED = 'shipped';                // Отгружен
     const STATUS_COMPLETED = 'completed';            // Завершен
@@ -55,9 +52,6 @@ class Contract extends Model
         self::STATUS_PENDING_ROP,
         self::STATUS_APPROVED,
         self::STATUS_REJECTED,
-        self::STATUS_ON_HOLD,
-        self::STATUS_IN_PRODUCTION,
-        self::STATUS_QUALITY_CHECK,
         self::STATUS_READY,
         self::STATUS_SHIPPED,
         self::STATUS_COMPLETED,
@@ -69,9 +63,7 @@ class Contract extends Model
      */
     const REVERSIBLE_STATUSES = [
         self::STATUS_PENDING_ROP,
-        self::STATUS_APPROVED,
-        self::STATUS_IN_PRODUCTION,
-        self::STATUS_QUALITY_CHECK
+        self::STATUS_APPROVED
     ];
 
     /**
@@ -191,16 +183,10 @@ class Contract extends Model
                        $this->status === self::STATUS_PENDING_ROP;
 
             case 'start_production':
+            case 'quality_check':
+            case 'mark_ready':
                 return in_array($user->role, ['admin', 'rop', 'manager']) && 
                        $this->status === self::STATUS_APPROVED;
-
-            case 'quality_check':
-                return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
-                       $this->status === self::STATUS_IN_PRODUCTION;
-
-            case 'mark_ready':
-                return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
-                       $this->status === self::STATUS_QUALITY_CHECK;
 
             case 'ship':
                 return in_array($user->role, ['admin', 'rop', 'manager', 'production']) && 
@@ -215,8 +201,7 @@ class Contract extends Model
 
             case 'production_change_status':
                 return $user->role === 'production' && in_array($this->status, [
-                    self::STATUS_IN_PRODUCTION,
-                    self::STATUS_QUALITY_CHECK,
+                    self::STATUS_APPROVED,
                     self::STATUS_READY,
                     self::STATUS_SHIPPED
                 ]);
@@ -244,9 +229,6 @@ class Contract extends Model
             self::STATUS_PENDING_ROP => 'На рассмотрении',
             self::STATUS_APPROVED => 'Одобрено',
             self::STATUS_REJECTED => 'Отклонено',
-            self::STATUS_ON_HOLD => 'Приостановлено',
-            self::STATUS_IN_PRODUCTION => 'В работе',
-            self::STATUS_QUALITY_CHECK => 'Проверка',
             self::STATUS_READY => 'Готово',
             self::STATUS_SHIPPED => 'Отправлено',
             self::STATUS_COMPLETED => 'Завершено',
@@ -266,9 +248,6 @@ class Contract extends Model
             self::STATUS_PENDING_ROP => '#f59e0b',
             self::STATUS_APPROVED => '#10b981',
             self::STATUS_REJECTED => '#ef4444',
-            self::STATUS_ON_HOLD => '#8b5cf6',
-            self::STATUS_IN_PRODUCTION => '#3b82f6',
-            self::STATUS_QUALITY_CHECK => '#06b6d4',
             self::STATUS_READY => '#84cc16',
             self::STATUS_SHIPPED => '#f97316',
             self::STATUS_COMPLETED => '#059669',
@@ -288,9 +267,6 @@ class Contract extends Model
             self::STATUS_PENDING_ROP => 'fas fa-user-tie',
             self::STATUS_APPROVED => 'fas fa-check-circle',
             self::STATUS_REJECTED => 'fas fa-times-circle',
-            self::STATUS_ON_HOLD => 'fas fa-pause-circle',
-            self::STATUS_IN_PRODUCTION => 'fas fa-cogs',
-            self::STATUS_QUALITY_CHECK => 'fas fa-search',
             self::STATUS_READY => 'fas fa-shipping-fast',
             self::STATUS_SHIPPED => 'fas fa-truck',
             self::STATUS_COMPLETED => 'fas fa-flag-checkered',
@@ -348,7 +324,7 @@ class Contract extends Model
         }
         
         // Исключаем отклоненные и возвращенные статусы из расчета прогресса
-        $excludedStatuses = [self::STATUS_REJECTED, self::STATUS_ON_HOLD, self::STATUS_RETURNED];
+        $excludedStatuses = [self::STATUS_REJECTED, self::STATUS_RETURNED];
         $validStatuses = array_filter($funnelOrder, function($status) use ($excludedStatuses) {
             return !in_array($status, $excludedStatuses);
         });
@@ -442,10 +418,9 @@ class Contract extends Model
                 return $query->where('branch_id', $user->branch_id);
                 
             case 'production':
-                // Production видит договоры в производстве и связанных статусах
+                // Production видит договоры одобренные и связанных статусах
                 return $query->whereIn('status', [
-                    self::STATUS_IN_PRODUCTION,
-                    self::STATUS_QUALITY_CHECK,
+                    self::STATUS_APPROVED,
                     self::STATUS_READY,
                     self::STATUS_SHIPPED
                 ]);
@@ -464,6 +439,6 @@ class Contract extends Model
      */
     public function scopeInProduction($query)
     {
-        return $query->where('status', self::STATUS_IN_PRODUCTION);
+        return $query->where('status', self::STATUS_APPROVED);
     }
 }

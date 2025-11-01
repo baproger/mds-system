@@ -89,9 +89,6 @@
               'pending_rop'    => ['icon' => 'fa-solid fa-user-check',  'name' => 'На рассмотрении'],
               'approved'       => ['icon' => 'fa-solid fa-circle-check','name' => 'Одобрено'],
               'rejected'       => ['icon' => 'fa-solid fa-circle-xmark','name' => 'Отклонено'],
-              'on_hold'        => ['icon' => 'fa-solid fa-circle-pause','name' => 'Приостановлено'],
-              'in_production'  => ['icon' => 'fa-solid fa-gears',       'name' => 'В работе'],
-              'quality_check'  => ['icon' => 'fa-solid fa-clipboard-check','name' => 'Проверка'],
               'ready'          => ['icon' => 'fa-solid fa-truck-fast',  'name' => 'Готово'],
               'shipped'        => ['icon' => 'fa-solid fa-truck',       'name' => 'Отправлено'],
               'completed'      => ['icon' => 'fa-solid fa-flag-checkered','name' => 'Завершено'],
@@ -199,15 +196,13 @@ function isValidStatusTransition(oldStatus, newStatus) {
     'draft',
     'pending_rop',
     'approved',
-    'in_production',
-    'quality_check',
     'ready',
     'shipped',
     'completed'
   ];
 
   // Специальные статусы (не в основной воронке, но могут использоваться)
-  const specialStatuses = ['rejected', 'on_hold', 'returned'];
+  const specialStatuses = ['rejected', 'returned'];
 
   // Завершенные нельзя перемещать
   if (oldStatus === 'completed') {
@@ -338,9 +333,6 @@ function showCommentModal(contractId, newStatus, item, oldStatus) {
     'pending_rop': 'На рассмотрении',
     'approved': 'Одобрено',
     'rejected': 'Отклонено',
-    'on_hold': 'Приостановлено',
-    'in_production': 'В работе',
-    'quality_check': 'Проверка',
     'ready': 'Готово',
     'shipped': 'Отправлено',
     'completed': 'Завершено',
@@ -407,13 +399,10 @@ async function updateContractStatus(contractId, newStatus, item, oldStatus, comm
 
 function statusLabel(status){
   const map = {
-    draft:'Новая заявка', 
+    draft:'Новая заявка',
     pending_rop:'На рассмотрении', 
     approved:'Одобрено',
     rejected:'Отклонено', 
-    on_hold:'Приостановлено', 
-    in_production:'В работе',
-    quality_check:'Проверка', 
     ready:'Готово', 
     shipped:'Отправлено', 
     completed:'Завершено', 
@@ -428,11 +417,8 @@ function getProgressForStatus(status){
     pending_rop: 25,
     approved: 40,
     rejected: 0,
-    on_hold: 30,
-    in_production: 50,
-    quality_check: 70,
-    ready: 85,
-    shipped: 95,
+    ready: 70,
+    shipped: 85,
     completed: 100,
     returned: 20
   };
@@ -852,9 +838,6 @@ async function showHistoryModal(contractId, contractNumber = null) {
           'pending_rop': '#f59e0b',
           'approved': '#10b981',
           'rejected': '#ef4444',
-          'on_hold': '#8b5cf6',
-          'in_production': '#3b82f6',
-          'quality_check': '#06b6d4',
           'ready': '#84cc16',
           'shipped': '#f97316',
           'completed': '#059669',

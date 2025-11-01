@@ -270,13 +270,13 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 .page-header {
     display:flex; align-items:center; justify-content:space-between;
-    margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid #e5e7eb;
+    margin-bottom:32px; padding-bottom:24px; border-bottom:1px solid var(--border-color);
 }
 .header-content { display:flex; align-items:center; gap:16px; }
 .header-icon { width:48px; height:48px; background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);
-    border-radius:12px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:20px; }
-.page-title { font-size:28px; font-weight:700; color:#6b7280; margin:0; }
-.page-subtitle { font-size:14px; color:#6b7280; margin:4px 0 0 0; }
+    border-radius:12px; display:flex; align-items:center; justify-content:center; color:var(--white); font-size:20px; }
+.page-title { font-size:28px; font-weight:700; color:var(--text-secondary); margin:0; }
+.page-subtitle { font-size:14px; color:var(--text-secondary); margin:4px 0 0 0; }
 .header-actions { display:flex; gap:12px; flex-wrap:wrap; }
 
 .content-grid {
@@ -287,12 +287,12 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 /* Секции (как form-section) */
 .info-section {
-    background:#fff; border-radius:12px; padding:24px; border:1px solid #f3f4f6;
+    background:var(--bg-card); border-radius:12px; padding:24px; border:1px solid var(--border-color);
     box-shadow:0 1px 3px rgba(0,0,0,.1); animation:fadeIn .3s ease-out;
 }
 .section-header {
     display:flex; align-items:center; gap:12px; margin-bottom:16px; padding-bottom:12px;
-    border-bottom:2px solid #f3f4f6; font-weight:600; font-size:16px; color:#374151;
+    border-bottom:2px solid var(--border-color); font-weight:600; font-size:16px; color:var(--text-primary);
 }
 .section-header i { color:#1ba4e9; font-size:18px; }
 
@@ -301,15 +301,15 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 .info-list { margin:0; }
 .info-row { display:flex; align-items:flex-start; gap:12px; padding:10px 0; border-bottom:1px dashed #f1f5f9; }
 .info-row:last-child { border-bottom:none; }
-.info-row dt { width:45%; min-width:180px; color:#6b7280; font-weight:600; }
-.info-row dd { margin:0; color:#6b7280; }
+.info-row dt { width:45%; min-width:180px; color:var(--text-secondary); font-weight:600; }
+.info-row dd { margin:0; color:var(--text-secondary); }
 
 /* Финансы */
 .finance-list { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
-.finance-list li { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid #f3f4f6; border-radius:10px; background:#fafafa; }
+.finance-list li { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border:1px solid var(--border-color); border-radius:10px; background:#fafafa; }
 .finance-list li.to-pay { background:#eef2ff; border-color:#e0e7ff; }
-.finance-list span { color:#6b7280; }
-.finance-list strong { color:#6b7280; }
+.finance-list span { color:var(--text-secondary); }
+.finance-list strong { color:var(--text-secondary); }
 
 /* Файлы и действия */
 .file-actions { display:flex; flex-direction:column; gap:10px; }
@@ -322,17 +322,17 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
     cursor:pointer; transition:.2s;
 }
 .btn:hover { transform:translateY(-1px); }
-.btn-primary { background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%); color:#fff;
+.btn-primary { background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%); color:var(--white);
     box-shadow:0 2px 4px rgba(27,164,233,.2); }
-.btn-success { background:linear-gradient(135deg,#10b981 0%,#059669 100%); color:#fff;
+.btn-success { background:linear-gradient(135deg,#10b981 0%,#059669 100%); color:var(--white);
     box-shadow:0 2px 4px rgba(16,185,129,.2); }
-.btn-danger { background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); color:#fff;
+.btn-danger { background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); color:var(--white);
     box-shadow:0 2px 4px rgba(239,68,68,.2); }
-.btn-light { background:#f3f4f6; color:#374151; border:1px solid #e5e7eb; }
+.btn-light { background:#f3f4f6; color:var(--text-primary); border:1px solid var(--border-color); }
 .btn-light:hover { background:#e5e7eb; }
 
 /* Бейджи */
-.badge { display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; color:#fff; }
+.badge { display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; color:var(--white); }
 .badge-primary { background:#3b82f6; }
 .badge-success { background:#10b981; }
 .badge-warning { background:#f59e0b; }
@@ -348,7 +348,7 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
     align-items:center; justify-content:center;
 }
 .modal-content {
-    background:#fff; border-radius:16px; padding:32px; width:90%; max-width:460px;
+    background:var(--bg-card); border-radius:16px; padding:32px; width:90%; max-width:460px;
     box-shadow:0 25px 50px -12px rgba(0,0,0,.25); border:1px solid rgba(0,0,0,.1);
     animation:modalSlideIn .3s ease-out;
 }
@@ -360,16 +360,16 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
     display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:24px;
     box-shadow:0 4px 12px rgba(217,119,6,.2);
 }
-.modal-title { font-size:20px; font-weight:700; color:#6b7280; margin-bottom:8px; }
-.modal-subtitle { color:#6b7280; font-size:15px; margin:0; line-height:1.6; }
+.modal-title { font-size:20px; font-weight:700; color:var(--text-secondary); margin-bottom:8px; }
+.modal-subtitle { color:var(--text-secondary); font-size:15px; margin:0; line-height:1.6; }
 .modal-actions { display:flex; gap:12px; justify-content:center; margin-top:24px; }
 .modal-btn {
     padding:12px 24px; border-radius:10px; font-weight:600; font-size:15px; border:none;
     cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:.2s; min-width:120px; justify-content:center;
 }
-.modal-btn-cancel { background:#f3f4f6; color:#374151; border:1px solid #e5e7eb; }
+.modal-btn-cancel { background:#f3f4f6; color:var(--text-primary); border:1px solid var(--border-color); }
 .modal-btn-cancel:hover { background:#e5e7eb; }
-.modal-btn-delete { background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); color:#fff; }
+.modal-btn-delete { background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%); color:var(--white); }
 .modal-btn-delete:hover { background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%); }
 
 /* Адаптив */

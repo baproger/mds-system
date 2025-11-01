@@ -441,11 +441,11 @@
 <style>
 /* Современный минималистичный дизайн для workflow actions */
 .workflow-actions-modern {
-    background: #ffffff;
+    background: var(--bg-card);
     border-radius: 20px;
     padding: 2rem;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--border-color);
 }
 
 /* Заголовок секции */
@@ -453,7 +453,7 @@
     text-align: center;
     margin-bottom: 2.5rem;
     padding-bottom: 1.5rem;
-    border-bottom: 2px solid #f1f5f9;
+    border-bottom: 2px solid var(--border-color);
 }
 
 .workflow-title {
@@ -477,13 +477,13 @@
     margin: 0;
     font-size: 1.75rem;
     font-weight: 700;
-    color: #1e293b;
+    color: var(--text-primary);
     letter-spacing: -0.5px;
 }
 
 .workflow-subtitle {
     margin: 0;
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 1rem;
     font-weight: 400;
 }
@@ -497,8 +497,8 @@
 
 /* Карточки действий */
 .action-card {
-    background: #ffffff;
-    border: 2px solid #f1f5f9;
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
     border-radius: 16px;
     padding: 1.5rem;
     transition: all 0.3s ease;
@@ -538,7 +538,7 @@
     justify-content: center;
     margin-bottom: 1rem;
     font-size: 1.5rem;
-    color: white;
+    color: var(--white);
     transition: all 0.3s ease;
 }
 
@@ -591,12 +591,12 @@
     margin: 0 0 0.5rem 0;
     font-size: 1.25rem;
     font-weight: 600;
-    color: #1e293b;
+    color: var(--text-primary);
 }
 
 .action-content p {
     margin: 0 0 1.5rem 0;
-    color: #64748b;
+    color: var(--text-secondary);
     line-height: 1.6;
     font-size: 0.95rem;
 }
@@ -642,57 +642,57 @@
 /* Цвета кнопок */
 .submit-btn {
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
+    color: var(--white);
 }
 
 .approve-btn {
     background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
+    color: var(--white);
 }
 
 .reject-btn {
     background: linear-gradient(135deg, #ef4444, #dc2626);
-    color: white;
+    color: var(--white);
 }
 
 .hold-btn {
     background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
+    color: var(--white);
 }
 
 .return-btn {
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
+    color: var(--white);
 }
 
 .production-btn {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    color: white;
+    color: var(--white);
 }
 
 .quality-btn {
     background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: white;
+    color: var(--white);
 }
 
 .ready-btn {
     background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
+    color: var(--white);
 }
 
 .ship-btn {
     background: linear-gradient(135deg, #f59e0b, #d97706);
-    color: white;
+    color: var(--white);
 }
 
 .complete-btn {
     background: linear-gradient(135deg, #8b5cf6, #7c3aed);
-    color: white;
+    color: var(--white);
 }
 
 .history-btn {
     background: linear-gradient(135deg, #6b7280, #4b5563);
-    color: white;
+    color: var(--white);
 }
 
 /* Собственные стили для модальных окон */
@@ -716,7 +716,7 @@
 
 /* Модальный диалог */
 .modal-dialog {
-    background: white;
+    background: var(--bg-card);
     border-radius: 20px;
     box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
     max-width: 500px;
@@ -735,18 +735,18 @@
 
 /* Заголовок модального окна */
 .modal-header {
-    background: #ffffff;
-    color: #1f2937;
+    background: var(--bg-card);
+    color: var(--text-primary);
     padding: 28px 28px 20px;
     position: relative;
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .modal-title {
     margin: 0;
     font-size: 22px;
     font-weight: 600;
-    color: #111827;
+    color: var(--text-primary);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
@@ -755,12 +755,12 @@
     position: absolute;
     top: 24px;
     right: 24px;
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 50%;
     width: 36px;
     height: 36px;
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -771,16 +771,16 @@
 }
 
 .btn-close:hover {
-    background: #f3f4f6;
-    border-color: #d1d5db;
-    color: #374151;
+    background: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
     transform: scale(1.05);
 }
 
 /* Тело модального окна */
 .modal-body {
     padding: 28px;
-    background: white;
+    background: var(--bg-card);
 }
 
 /* Группа формы */
@@ -792,7 +792,7 @@
     display: block;
     margin-bottom: 10px;
     font-weight: 500;
-    color: #374151;
+    color: var(--text-primary);
     font-size: 14px;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
@@ -800,31 +800,31 @@
 .form-control {
     width: 100%;
     padding: 14px 18px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     font-size: 15px;
     transition: all 0.2s ease;
-    background: #ffffff;
+    background: var(--bg-card);
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    color: #1f2937;
+    color: var(--text-primary);
 }
 
 .form-control:focus {
     outline: none;
     border-color: #3b82f6;
-    background: white;
+    background: var(--bg-card);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .form-control::placeholder {
-    color: #9ca3af;
+    color: var(--text-muted);
 }
 
 /* Футер модального окна */
 .modal-footer {
     padding: 24px 28px 28px;
-    background: #fafafa;
-    border-top: 1px solid #f3f4f6;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
     display: flex;
     gap: 16px;
     justify-content: flex-end;
@@ -856,7 +856,7 @@
 
 .btn-secondary {
     background: #6b7280;
-    color: white;
+    color: var(--white);
 }
 
 .btn-secondary:hover {
@@ -865,7 +865,7 @@
 
 .btn-success {
     background: #10b981;
-    color: white;
+    color: var(--white);
 }
 
 .btn-success:hover {
@@ -874,7 +874,7 @@
 
 .btn-primary {
     background: #3b82f6;
-    color: white;
+    color: var(--white);
 }
 
 .btn-primary:hover {
@@ -883,7 +883,7 @@
 
 .btn-danger {
     background: #ef4444;
-    color: white;
+    color: var(--white);
 }
 
 .btn-danger:hover {
@@ -892,7 +892,7 @@
 
 .btn-warning {
     background: #f59e0b;
-    color: white;
+    color: var(--white);
 }
 
 .btn-warning:hover {
@@ -901,7 +901,7 @@
 
 .btn-info {
     background: #06b6d4;
-    color: white;
+    color: var(--white);
 }
 
 .btn-info:hover {

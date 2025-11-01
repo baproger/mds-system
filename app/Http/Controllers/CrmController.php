@@ -34,12 +34,11 @@ class CrmController extends Controller
         } elseif ($user->role === 'rop') {
             $branchId = $user->branch_id;
         } elseif ($user->role === 'production') {
-            // Production видит только договоры в производстве
+            // Production видит только договоры одобренные
             $contractsByStatus = Contract::forRole($user)->get()->groupBy('status');
             // Production видит только статусы, связанные с производством
             $statuses = [
-                Contract::STATUS_IN_PRODUCTION,
-                Contract::STATUS_QUALITY_CHECK,
+                Contract::STATUS_APPROVED,
                 Contract::STATUS_READY,
                 Contract::STATUS_SHIPPED
             ];
@@ -392,8 +391,6 @@ class CrmController extends Controller
         $actions = [
             Contract::STATUS_PENDING_ROP => 'submit_to_rop',
             Contract::STATUS_APPROVED => 'approve',
-            Contract::STATUS_IN_PRODUCTION => 'start_production',
-            Contract::STATUS_QUALITY_CHECK => 'quality_check',
             Contract::STATUS_READY => 'mark_ready',
             Contract::STATUS_SHIPPED => 'ship',
             Contract::STATUS_COMPLETED => 'complete',
