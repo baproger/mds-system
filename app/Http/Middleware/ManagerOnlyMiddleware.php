@@ -24,19 +24,8 @@ class ManagerOnlyMiddleware
         
         // Разрешаем доступ только для admin и manager
         if (!in_array($user->role, ['admin', 'manager'])) {
-            \Log::info('ManagerOnlyMiddleware: Access denied', [
-                'user_role' => $user->role,
-                'user_id' => $user->id,
-                'email' => $user->email
-            ]);
             abort(403, 'Доступ запрещен. Требуются права менеджера или администратора.');
         }
-        
-        \Log::info('ManagerOnlyMiddleware: Access granted', [
-            'user_role' => $user->role,
-            'user_id' => $user->id,
-            'email' => $user->email
-        ]);
 
         return $next($request);
     }

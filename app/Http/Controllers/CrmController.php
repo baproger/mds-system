@@ -198,24 +198,9 @@ class CrmController extends Controller
         // Специальное правило для менеджера: только DRAFT -> PENDING_ROP
         if ($user->role === 'manager') {
             if (!($contract->status === Contract::STATUS_DRAFT && $newStatus === Contract::STATUS_PENDING_ROP)) {
-                \Log::warning('Менеджер попытался изменить недопустимый статус', [
-                    'contract_id' => $contract->id,
-                    'from' => $contract->status,
-                    'to' => $newStatus,
-                    'user_id' => $user->id,
-                ]);
                 return response()->json(['error' => 'Менеджерам доступно только отправить на рассмотрение'], 403);
             }
         }
-
-        // Логируем для отладки
-        \Log::info('Обновление статуса договора', [
-            'contract_id' => $contract->id,
-            'old_status' => $contract->status,
-            'new_status' => $newStatus,
-            'user_id' => $user->id,
-            'user_role' => $user->role
-        ]);
 
         // Проверяем права на изменение статуса
         $action = $this->getActionForStatus($newStatus);
@@ -229,12 +214,6 @@ class CrmController extends Controller
             } elseif ($user->role === 'production' && $contract->canPerformAction('production_change_status', $user)) {
                 $action = 'production_change_status';
             } else {
-                \Log::warning('Попытка изменения статуса без прав', [
-                    'contract_id' => $contract->id,
-                    'user_id' => $user->id,
-                    'action' => $action,
-                    'user_role' => $user->role
-                ]);
                 return response()->json(['error' => 'Нет прав для изменения статуса'], 403);
             }
         }
@@ -245,12 +224,6 @@ class CrmController extends Controller
 
         // Логируем изменение
         $this->logStatusChange($contract, $oldStatus, $newStatus, $user, $comment);
-
-        \Log::info('Статус договора успешно обновлен', [
-            'contract_id' => $contract->id,
-            'old_status' => $oldStatus,
-            'new_status' => $newStatus
-        ]);
 
         return response()->json([
             'success' => true,
@@ -493,8 +466,6 @@ class CrmController extends Controller
             'changed_at' => now(),
             'comment' => $comment,
         ]);
-
-        \Log::info("Contract {$contract->contract_number} status changed from {$oldStatus} to {$newStatus} by user {$user->name}" . ($comment ? " with comment: {$comment}" : ""));
     }
 
     /**

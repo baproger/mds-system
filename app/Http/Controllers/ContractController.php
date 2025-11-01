@@ -45,15 +45,6 @@ class ContractController extends Controller
         $fusionModels = $calculationService->getFusionModels();
         $userBranch = Auth::user()->branch;
         
-        // Добавляем отладочную информацию
-        \Log::info('ContractController@create called', [
-            'route_name' => request()->route()->getName(),
-            'user_role' => Auth::user()->role,
-            'route_is_admin' => request()->routeIs('admin.*'),
-            'route_is_manager' => request()->routeIs('manager.*'),
-            'route_is_rop' => request()->routeIs('rop.*'),
-        ]);
-        
         // Проверяем, если это админский маршрут
         if (request()->routeIs('admin.*')) {
             return view('admin.contracts.create', compact('branches', 'managers', 'price', 'fusionModels', 'userBranch', 'calculationService'));

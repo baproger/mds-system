@@ -997,29 +997,19 @@
 </style>
 
 <script>
-// Отладочная информация
-console.log('Workflow actions script loaded');
-
 // Собственные функции для модальных окон
 function showModal(modalId) {
-    console.log(`Попытка открыть ${modalId}`);
-    
     const modalElement = document.getElementById(modalId);
     if (!modalElement) {
-        console.warn(`⚠️ Модальное окно с ID "${modalId}" не найдено`);
         return;
     }
     
     // Показываем модальное окно
     modalElement.classList.add('show');
     document.body.style.overflow = 'hidden'; // Блокируем прокрутку страницы
-    
-    console.log(`✅ ${modalId} открыт`);
 }
 
 function closeModal(modalId) {
-    console.log(`Закрытие ${modalId}`);
-    
     const modalElement = document.getElementById(modalId);
     if (!modalElement) {
         return;
@@ -1028,8 +1018,6 @@ function closeModal(modalId) {
     // Скрываем модальное окно
     modalElement.classList.remove('show');
     document.body.style.overflow = ''; // Возвращаем прокрутку страницы
-    
-    console.log(`✅ ${modalId} закрыт`);
 }
 
 // Закрытие модального окна при клике на оверлей
@@ -1093,19 +1081,6 @@ function showCompleteModal() {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM загружен, модальные окна готовы к работе');
-    
-    // Проверяем доступные модальные окна
-    const allModalElements = document.querySelectorAll('.modal');
-    console.log(`Найдено модальных окон на странице: ${allModalElements.length}`);
-    
-    allModalElements.forEach(modalElement => {
-        const modalId = modalElement.id;
-        if (modalId) {
-            console.log(`✅ Модальное окно "${modalId}" найдено`);
-        }
-    });
-    
-    console.log('✅ Модальные окна готовы к работе - нажимайте кнопки для их открытия');
+    // Модальные окна готовы к работе
 });
 </script>
