@@ -69,12 +69,11 @@ class CrmController extends Controller
         } elseif ($user->role === 'rop') {
             $branchId = $user->branch_id;
         } elseif ($user->role === 'production') {
-            // Production видит только договоры в производстве
+            // Production видит только договоры одобренные
             $contracts = Contract::forRole($user)->with(['user', 'branch'])->get();
             // Production видит только статусы, связанные с производством
             $productionStatuses = [
-                Contract::STATUS_IN_PRODUCTION,
-                Contract::STATUS_QUALITY_CHECK,
+                Contract::STATUS_APPROVED,
                 Contract::STATUS_READY,
                 Contract::STATUS_SHIPPED
             ];
@@ -176,9 +175,6 @@ class CrmController extends Controller
             Contract::STATUS_PENDING_ROP,
             Contract::STATUS_APPROVED,
             Contract::STATUS_REJECTED,
-            Contract::STATUS_ON_HOLD,
-            Contract::STATUS_IN_PRODUCTION,
-            Contract::STATUS_QUALITY_CHECK,
             Contract::STATUS_READY,
             Contract::STATUS_SHIPPED,
             Contract::STATUS_COMPLETED,
@@ -518,12 +514,10 @@ class CrmController extends Controller
         // Разрешаем возвращать на доработку (returned) из большинства этапов,
         // кроме завершенного (completed)
         $allowedTransitions = [
-            Contract::STATUS_PENDING_ROP => [Contract::STATUS_APPROVED, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
-            Contract::STATUS_APPROVED => [Contract::STATUS_IN_PRODUCTION, Contract::STATUS_REJECTED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
-            Contract::STATUS_IN_PRODUCTION => [Contract::STATUS_QUALITY_CHECK, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
-            Contract::STATUS_QUALITY_CHECK => [Contract::STATUS_READY, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
-            Contract::STATUS_READY => [Contract::STATUS_SHIPPED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
-            Contract::STATUS_SHIPPED => [Contract::STATUS_COMPLETED, Contract::STATUS_ON_HOLD, Contract::STATUS_RETURNED],
+            Contract::STATUS_PENDING_ROP => [Contract::STATUS_APPROVED, Contract::STATUS_REJECTED, Contract::STATUS_RETURNED],
+            Contract::STATUS_APPROVED => [Contract::STATUS_READY, Contract::STATUS_REJECTED, Contract::STATUS_RETURNED],
+            Contract::STATUS_READY => [Contract::STATUS_SHIPPED, Contract::STATUS_RETURNED],
+            Contract::STATUS_SHIPPED => [Contract::STATUS_COMPLETED, Contract::STATUS_RETURNED],
         ];
 
         $currentStatus = $contract->status;
