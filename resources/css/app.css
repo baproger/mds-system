@@ -3753,3 +3753,57 @@ body {
   .card-actions{ flex-wrap:wrap; gap:4px; }
   .btn-action{ min-width:24px; height:24px; padding:4px; }
 }
+
+/* ===== Уведомления ===== */
+.notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+  z-index: 10000;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 250px;
+  max-width: 400px;
+}
+
+.notification::before {
+  content: '\f00c';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  font-size: 16px;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.notification.error {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+}
+
+.notification.error::before {
+  content: '\f00d';
+}
+
+.dark-mode .notification {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 10px 25px rgba(5, 150, 105, 0.4);
+}
+
+.dark-mode .notification.error {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  box-shadow: 0 10px 25px rgba(220, 38, 38, 0.4);
+}

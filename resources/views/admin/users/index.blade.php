@@ -269,12 +269,12 @@
 }
 
 .form-section {
-    background: white;
+    /*background: white;*/
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f3f4f6;
+    /*box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #f3f4f6;*/
 }
 
 .section-header {
@@ -308,14 +308,14 @@
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    /*background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border-radius: 12px;*/
     padding: 20px;
     display: flex;
-    align-items: center;
+    /*align-items: center;
     gap: 16px;
-    transition: all 0.2s ease;
+    transition: all 0.2s ease;*/
 }
 
 .stat-card:hover {
@@ -340,16 +340,16 @@
 }
 
 .stat-number {
-    font-size: 16px;
+    /*font-size: .875rem;
     font-weight: 600;
-    color: #6b7280;
+    color: #6b7280;*/
     margin-bottom: 4px;
 }
 
 .stat-label {
-    font-size: 12px;
-    color: #6b7280;
-    text-transform: uppercase;
+    font-size: .875rem;
+    /*color: #6b7280;
+    text-transform: uppercase;*/
     letter-spacing: 0.5px;
     font-weight: 600;
 }
@@ -382,11 +382,11 @@
 .form-control {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e5e7eb;
+    /*border: 2px solid #e5e7eb;*/
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.2s ease;
-    background: #fafafa;
+    /*background: #fafafa;*/
 }
 
 .form-control:focus {

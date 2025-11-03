@@ -374,7 +374,7 @@ async function updateContractStatus(contractId, newStatus, item, oldStatus, comm
       // Обновляем UI карточки
       applyCardStatusUI(item, newStatus);
       updateColumnStats();
-      showNotification('Статус обновлен!', 'success');
+      showNotification('Заявка №' + contractId + ' перемещена в "' + statusLabel(newStatus) + '"', 'success');
     } else {
       throw new Error(data.message || 'Ошибка обновления');
     }
