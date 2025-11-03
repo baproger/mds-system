@@ -511,13 +511,13 @@ class CrmController extends Controller
         }
 
         // Определяем разрешенные переходы для разных ролей
-        // Разрешаем возвращать на доработку (returned) из большинства этапов,
-        // кроме завершенного (completed)
+        // Разрешаем возвращать на доработку (returned) из всех этапов
         $allowedTransitions = [
             Contract::STATUS_PENDING_ROP => [Contract::STATUS_APPROVED, Contract::STATUS_REJECTED, Contract::STATUS_RETURNED],
             Contract::STATUS_APPROVED => [Contract::STATUS_READY, Contract::STATUS_REJECTED, Contract::STATUS_RETURNED],
             Contract::STATUS_READY => [Contract::STATUS_SHIPPED, Contract::STATUS_RETURNED],
             Contract::STATUS_SHIPPED => [Contract::STATUS_COMPLETED, Contract::STATUS_RETURNED],
+            Contract::STATUS_COMPLETED => [Contract::STATUS_RETURNED],
         ];
 
         $currentStatus = $contract->status;

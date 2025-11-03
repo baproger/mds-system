@@ -204,8 +204,13 @@ function isValidStatusTransition(oldStatus, newStatus) {
   // Специальные статусы (не в основной воронке, но могут использоваться)
   const specialStatuses = ['rejected', 'returned'];
 
-  // Завершенные нельзя перемещать
-  if (oldStatus === 'completed') {
+  // Если перемещение из завершенного в доработку - разрешаем
+  if (oldStatus === 'completed' && newStatus === 'returned') {
+    return true;
+  }
+
+  // Завершенные нельзя перемещать в другие статусы
+  if (oldStatus === 'completed' && newStatus !== 'returned') {
     return false;
   }
 
