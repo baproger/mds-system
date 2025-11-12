@@ -6,6 +6,19 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', Auth::user()->role === 'admin' ? 'Администратор сайта' : (Auth::user()->role === 'manager' ? 'Менеджер' : 'Панель управления')) - MDS Doors</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        (function() {
+            try {
+                const storedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+                    document.documentElement.classList.add('dark-mode');
+                }
+            } catch (error) {
+                console.warn('Не удалось считать тему из localStorage', error);
+            }
+        })();
+    </script>
     @vite(['resources/css/app.css'])
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -253,24 +266,45 @@
             
             // Theme toggle functionality
             const themeToggle = document.getElementById('themeToggle');
-            if (themeToggle) {
-                // Check for saved theme preference or respect OS preference
-                if (localStorage.getItem('theme') === 'dark' || 
-                    (window.matchMedia('(prefers-color-scheme: dark)').matches && !localStorage.getItem('theme'))) {
-                    document.body.classList.add('dark-mode');
-                    themeToggle.checked = true;
+            const root = document.documentElement;
+            const prefersDarkMedia = window.matchMedia('(prefers-color-scheme: dark)');
+
+            const applyTheme = (isDark, { persist = true } = {}) => {
+                root.classList.toggle('dark-mode', isDark);
+                document.body.classList.toggle('dark-mode', isDark);
+                if (themeToggle) {
+                    themeToggle.checked = isDark;
                 }
-                
+                if (persist) {
+                    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                }
+            };
+
+            const resolveInitialTheme = () => {
+                const storedTheme = localStorage.getItem('theme');
+                if (storedTheme === 'dark') {
+                    return true;
+                }
+                if (storedTheme === 'light') {
+                    return false;
+                }
+                return prefersDarkMedia.matches;
+            };
+
+            const initialTheme = root.classList.contains('dark-mode') || resolveInitialTheme();
+            applyTheme(initialTheme, { persist: false });
+
+            if (themeToggle) {
                 themeToggle.addEventListener('change', function() {
-                    document.body.classList.toggle('dark-mode');
-                    
-                    if (document.body.classList.contains('dark-mode')) {
-                        localStorage.setItem('theme', 'dark');
-                    } else {
-                        localStorage.setItem('theme', 'light');
-                    }
+                    applyTheme(Boolean(this.checked));
                 });
             }
+
+            prefersDarkMedia.addEventListener('change', function(event) {
+                if (!localStorage.getItem('theme')) {
+                    applyTheme(event.matches, { persist: false });
+                }
+            });
         });
     </script>
 </body>

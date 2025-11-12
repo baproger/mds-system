@@ -80,7 +80,7 @@
         }
 
         .btn-primary {
-            background: white;
+            background: var(--bg-card);
             color: #1e293b;
         }
 

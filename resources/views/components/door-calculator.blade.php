@@ -83,8 +83,8 @@
 
 <style>
 .calculator-container {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    border: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #ffffff 0%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -96,7 +96,7 @@
     text-align: center;
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 2px solid #f1f5f9;
+    border-bottom: 2px solid var(--bg-secondary);
 }
 
 .calculator-title {
@@ -131,7 +131,7 @@
 .form-label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: #374151;
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -140,7 +140,7 @@
 .form-select,
 .form-input {
     padding: 0.75rem 1rem;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border-color);
     border-radius: 12px;
     font-size: 0.875rem;
     transition: all 0.3s ease;
@@ -157,8 +157,8 @@
 }
 
 .form-select:disabled {
-    background: #f1f5f9;
-    color: #9ca3af;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
     cursor: not-allowed;
 }
 
@@ -175,13 +175,13 @@
     cursor: pointer;
     padding: 0.75rem;
     border-radius: 12px;
-    background: #f8fafc;
-    border: 2px solid #e2e8f0;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
 .checkbox-label:hover {
-    background: #f1f5f9;
+    background: var(--bg-secondary);
     border-color: #cbd5e0;
 }
 

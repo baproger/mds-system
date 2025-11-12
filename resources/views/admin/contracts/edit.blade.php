@@ -572,7 +572,7 @@
 .page-header {
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
@@ -596,23 +596,23 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 0;
 }
 
 .page-subtitle {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 4px 0 0 0;
 }
 
 .form-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--bg-tertiary);
 }
 
 .section-header {
@@ -621,10 +621,10 @@
     gap: 12px;
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 2px solid var(--bg-tertiary);
     font-weight: 600;
     font-size: 16px;
-    color: #374151;
+    color: var(--text-primary);
 }
 
 .section-header i {
@@ -640,7 +640,7 @@
 
 .info-item {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-secondary);
 }
 
 .form-grid {
@@ -659,7 +659,7 @@
     gap: 8px;
     font-weight: 600;
     font-size: 14px;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
@@ -671,7 +671,7 @@
 .form-control {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.2s ease;
@@ -681,7 +681,7 @@
 .form-control:focus {
     outline: none;
     border-color: #1ba4e9;
-    background: white;
+    background: var(--bg-card);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -741,13 +741,13 @@
 }
 
 .btn-cancel {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
     border: 1px solid #d1d5db;
 }
 
 .btn-cancel:hover {
-    background: #e5e7eb;
+    background: var(--border-color);
     transform: translateY(-1px);
 }
 

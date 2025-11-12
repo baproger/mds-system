@@ -47,8 +47,8 @@
 }
 
 .status-secondary {
-    background: #f3f4f6;
-    color: #6b7280;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
     border-color: #d1d5db;
 }
 
@@ -77,9 +77,9 @@
 }
 
 .status-dark {
-    background: #374151;
-    color: #f9fafb;
-    border-color: #6b7280;
+    background: var(--text-primary);
+    color: var(--bg-secondary);
+    border-color: var(--text-secondary);
 }
 
 .version-badge {
@@ -87,9 +87,9 @@
     align-items: center;
     gap: 4px;
     padding: 4px 8px;
-    background: #f8fafc;
+    background: var(--bg-secondary);
     color: #64748b;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     font-size: 11px;
     font-weight: 500;

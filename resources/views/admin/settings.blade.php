@@ -40,7 +40,7 @@
                             Имя
                         </label>
                         <input type="text" value="{{ Auth::user()->name }}" 
-                               style="width: 100%; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white;">
+                               style="width: 100%; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: var(--bg-card);">
                     </div>
                     
                     <div>
@@ -48,7 +48,7 @@
                             Email
                         </label>
                         <input type="email" value="{{ Auth::user()->email }}" 
-                               style="width: 100%; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white;">
+                               style="width: 100%; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: var(--bg-card);">
                     </div>
                     
                     <div>
@@ -56,7 +56,7 @@
                             Телефон
                         </label>
                         <input type="tel" value="{{ Auth::user()->phone ?? '' }}" 
-                               style="width: 100%; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: white;">
+                               style="width: 100%; padding: var(--space-3); border: 1px solid var(--gray-300); border-radius: var(--radius-md); background: var(--bg-card);">
                     </div>
                     
                     <button type="submit" class="add-card-btn" style="margin-top: var(--space-4);">

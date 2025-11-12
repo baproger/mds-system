@@ -121,7 +121,7 @@
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
 }
 
 .form-control {
@@ -156,7 +156,7 @@
     gap: 1rem;
     justify-content: flex-start;
     padding-top: 1rem;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--border-color);
 }
 
 .btn-gradient-blue {

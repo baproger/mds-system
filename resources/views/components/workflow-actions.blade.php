@@ -583,7 +583,7 @@
 }
 
 .action-icon.history {
-    background: linear-gradient(135deg, #6b7280, #4b5563);
+    background: linear-gradient(135deg, var(--text-secondary), #4b5563);
 }
 
 /* Контент карточки */
@@ -691,7 +691,7 @@
 }
 
 .history-btn {
-    background: linear-gradient(135deg, #6b7280, #4b5563);
+    background: linear-gradient(135deg, var(--text-secondary), #4b5563);
     color: var(--white);
 }
 
@@ -855,7 +855,7 @@
 }
 
 .btn-secondary {
-    background: #6b7280;
+    background: var(--text-secondary);
     color: var(--white);
 }
 

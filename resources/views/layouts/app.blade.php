@@ -375,7 +375,7 @@
 
     .form-control {
         border-radius: 8px;
-        border: 2px solid #e5e7eb;
+        border: 2px solid var(--border-color);
         transition: all 0.3s ease;
     }
 

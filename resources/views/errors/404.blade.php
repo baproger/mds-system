@@ -40,7 +40,7 @@
             font-weight: 700;
             margin-bottom: 1rem;
             text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            background: linear-gradient(135deg, #ffffff 0%, var(--bg-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -80,7 +80,7 @@
         }
 
         .btn-primary {
-            background: white;
+            background: var(--bg-card);
             color: #1e293b;
         }
 

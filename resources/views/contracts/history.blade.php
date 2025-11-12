@@ -253,18 +253,18 @@
 
 /* Карточки */
 .info-card, .timeline-card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     margin-bottom: 2rem;
     overflow: hidden;
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--bg-secondary);
 }
 
 .info-header, .timeline-header {
-    background: #f8fafc;
+    background: var(--bg-secondary);
     padding: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -367,16 +367,16 @@
 .marker-line {
     width: 2px;
     height: 100%;
-    background: #e2e8f0;
+    background: var(--border-color);
     margin-top: 0.5rem;
 }
 
 .timeline-content-modern {
     flex: 1;
-    background: #f8fafc;
+    background: var(--bg-secondary);
     border-radius: 12px;
     padding: 1.25rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
@@ -402,10 +402,10 @@
 .content-time {
     font-size: 0.875rem;
     color: #64748b;
-    background: white;
+    background: var(--bg-card);
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
 }
 
 .content-body {
@@ -448,7 +448,7 @@
 }
 
 .comment-section {
-    background: white;
+    background: var(--bg-card);
     padding: 0.75rem;
     border-radius: 8px;
     border-left: 3px solid #3b82f6;
@@ -457,7 +457,7 @@
 
 .comment-section p {
     margin: 0;
-    color: #374151;
+    color: var(--text-primary);
     font-style: italic;
 }
 
@@ -467,10 +467,10 @@
     align-items: center;
     gap: 1rem;
     margin-bottom: 1rem;
-    background: white;
+    background: var(--bg-card);
     padding: 1rem;
     border-radius: 8px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
 }
 
 .change-old, .change-new {
@@ -525,7 +525,7 @@
 }
 
 .role-badge {
-    background: #f1f5f9;
+    background: var(--bg-secondary);
     color: #475569;
     padding: 0.25rem 0.5rem;
     border-radius: 12px;

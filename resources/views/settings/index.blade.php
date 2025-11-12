@@ -276,10 +276,10 @@
 .personnel-list{display:flex;flex-wrap:wrap;gap:6px}
 .personnel-tag{padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;gap:8px;transition:.2s;border:1px solid}
 .rop-tag{background:#eef2ff;color:#7c3aed;border-color:#c7d2fe}
-.manager-tag{background:#f1f5f9;color:#475569;border-color:#cbd5e1}
+.manager-tag{background:var(--bg-secondary);color:#475569;border-color:#cbd5e1}
 .branch-tag{background:#f0f9ff;color:#0369a1;border-color:#bae6fd}
 .contract-tag,.amount-tag{background:#f0fdf4;color:#166534;border-color:#bbf7d0}
-.month-tag{background:#f3f4f6;color:#6b7280;border-color:#d1d5db}
+.month-tag{background:var(--bg-tertiary);color:var(--text-secondary);border-color:#d1d5db}
 .email-tag{background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}
 .tag-icon{margin-right:6px;opacity:.85}
 

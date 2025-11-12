@@ -13,7 +13,7 @@ body .container-fluid {
 
 /* Заголовок страницы */
 .page-header {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -195,7 +195,7 @@ body .container-fluid {
 }
 
 .table-card-custom {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     border: 1px solid #e9ecef;
@@ -233,7 +233,7 @@ body .container-fluid {
 }
 
 .card-body-custom {
-    background: white;
+    background: var(--bg-card);
     padding: 30px;
 }
 
@@ -247,7 +247,7 @@ body .container-fluid {
     display: flex;
     align-items: center;
     gap: 15px;
-    background: white;
+    background: var(--bg-card);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     transition: all 0.3s ease;
     border: 1px solid #e9ecef;
@@ -304,7 +304,7 @@ body .container-fluid {
 }
 
 .info-table-custom {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -342,7 +342,7 @@ body .container-fluid {
 
 /* Стили для адреса установки */
 .address-container {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 20px;
     border: 1px solid #e9ecef;
@@ -538,7 +538,7 @@ body .container-fluid {
 
 /* Секция статистики */
 .stats-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 20px;
     margin-bottom: 30px;
@@ -568,7 +568,7 @@ body .container-fluid {
 }
 
 .stat-card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 20px;
     border: 1px solid #e9ecef;
@@ -619,7 +619,7 @@ body .container-fluid {
 
 /* Секция информации */
 .info-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -701,7 +701,7 @@ body .container-fluid {
 
 /* Финансовая секция */
 .finance-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -766,7 +766,7 @@ body .container-fluid {
 
 /* Секция адреса и действий */
 .address-actions-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -790,7 +790,7 @@ body .container-fluid {
 
 /* Секция адреса */
 .address-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -841,7 +841,7 @@ body .container-fluid {
 
 /* Секция workflow */
 .workflow-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -855,7 +855,7 @@ body .container-fluid {
 
 /* Секция действий */
 .actions-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -870,7 +870,7 @@ body .container-fluid {
 }
 
 .action-btn {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 20px;
     border: 1px solid #e9ecef;
@@ -956,7 +956,7 @@ body .container-fluid {
 
 /* Секция фотографий */
 .photos-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 30px;
     margin-bottom: 30px;
@@ -1044,7 +1044,7 @@ body .container-fluid {
 
 /* Стили для карточек */
 .card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     border: 1px solid #e9ecef;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -1102,7 +1102,7 @@ body .container-fluid {
 }
 
 .btn-secondary {
-    background: #6b7280;
+    background: var(--text-secondary);
     color: white;
 }
 
@@ -1814,7 +1814,7 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 }
 
 .modal-content {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 32px;
     max-width: 450px;
@@ -1858,13 +1858,13 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 .modal-title {
     font-size: 20px;
     font-weight: 700;
-    color: #6b7280 !important;
+    color: var(--text-secondary) !important;
     margin-bottom: 12px;
     line-height: 1.3;
 }
 
 .modal-subtitle {
-    color: #6b7280 !important;
+    color: var(--text-secondary) !important;
     font-size: 15px;
     line-height: 1.6;
     margin: 0;
@@ -1893,14 +1893,14 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 }
 
 .modal-btn-cancel {
-    background: #f3f4f6 !important;
-    color: #374151 !important;
-    border: 1px solid #e5e7eb !important;
+    background: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
 }
 
 .modal-btn-cancel:hover {
-    background: #e5e7eb !important;
-    color: #6b7280 !important;
+    background: var(--border-color) !important;
+    color: var(--text-secondary) !important;
     transform: translateY(-1px) !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
 }

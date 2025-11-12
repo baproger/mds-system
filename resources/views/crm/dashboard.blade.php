@@ -178,7 +178,7 @@
 .page-header {
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
@@ -202,23 +202,23 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 0;
 }
 
 .page-subtitle {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 4px 0 0 0;
 }
 
 .form-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 24px;
     margin-bottom: 24px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--bg-tertiary);
 }
 
 .section-header {
@@ -227,10 +227,10 @@
     gap: 12px;
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 2px solid var(--bg-tertiary);
     font-weight: 600;
     font-size: 16px;
-    color: #374151;
+    color: var(--text-primary);
 }
 
 .section-header i {
@@ -248,8 +248,8 @@
 }
 
 .stat-card {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-secondary) 100%);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -282,13 +282,13 @@
 .stat-number {
     font-size: 18px;
     font-weight: 600;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin-bottom: 4px;
 }
 
 .stat-label {
     font-size: 12px;
-    color: #6b7280;
+    color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-weight: 600;
@@ -298,7 +298,7 @@
     background: #fafafa;
     border-radius: 12px;
     padding: 20px;
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--bg-tertiary);
 }
 
 .chart-content {
@@ -317,10 +317,10 @@
 
 .chart-legend {
     flex: 1;
-    background: white;
+    background: var(--bg-card);
     border-radius: 8px;
     padding: 20px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
 }
 
 .legend-item {
@@ -333,7 +333,7 @@
 }
 
 .legend-item:hover {
-    background: #f9fafb;
+    background: var(--bg-secondary);
 }
 
 .legend-color {
@@ -353,15 +353,15 @@
 
 .legend-label {
     font-weight: 500;
-    color: #374151;
+    color: var(--text-primary);
     font-size: 14px;
 }
 
 .legend-count {
     font-weight: 600;
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 14px;
-    background: #f3f4f6;
+    background: var(--bg-tertiary);
     padding: 4px 8px;
     border-radius: 12px;
     min-width: 40px;
@@ -421,7 +421,7 @@
 .personnel-title {
     font-weight: 600;
     font-size: 15px;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
@@ -466,8 +466,8 @@
 }
 
 .date-tag {
-    background: #f3f4f6;
-    color: #6b7280;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
     border-color: #d1d5db;
 }
 
@@ -483,10 +483,10 @@
 
 .btn-action {
     background: #f8f9fa;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     padding: 6px 8px;
-    color: #6b7280;
+    color: var(--text-secondary);
     text-decoration: none;
     transition: all 0.2s ease;
     display: flex;

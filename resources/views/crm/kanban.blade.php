@@ -839,17 +839,17 @@ async function showHistoryModal(contractId, contractNumber = null) {
       list.innerHTML = data.history.map((item, index) => {
         const isLast = index === 0;
         const statusColors = {
-          'draft': '#6b7280',
+          'draft': 'var(--text-secondary)',
           'pending_rop': '#f59e0b',
           'approved': '#10b981',
           'rejected': '#ef4444',
           'ready': '#84cc16',
           'shipped': '#f97316',
           'completed': '#059669',
-          'returned': '#6b7280'
+          'returned': 'var(--text-secondary)'
         };
         
-        const oldColor = statusColors[item.old_status] || '#9ca3af';
+        const oldColor = statusColors[item.old_status] || 'var(--text-muted)';
         const newColor = statusColors[item.new_status] || '#3b82f6';
         
         return `
@@ -948,7 +948,7 @@ function getRoleLabel(role) {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(4px);
   z-index: 10000;
   align-items: center;
@@ -963,14 +963,15 @@ function getRoleLabel(role) {
 }
 
 .history-modal-content {
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 20px;
   width: 90%;
   max-width: 700px;
   max-height: 85vh;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--border-color);
   animation: historyModalSlideIn 0.3s ease-out;
 }
 
@@ -989,9 +990,9 @@ function getRoleLabel(role) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px 28px;
-  border-bottom: 1px solid #e5e7eb;
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   border-radius: 20px 20px 0 0;
 }
 
@@ -999,40 +1000,41 @@ function getRoleLabel(role) {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #1f2937;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .history-modal-title i {
   color: #3b82f6;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 .history-modal-close {
   background: transparent;
   border: none;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  color: #6b7280;
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .history-modal-close:hover {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
   transform: rotate(90deg);
 }
 
 .history-modal-body {
-  padding: 24px 28px;
+  padding: 24px;
   overflow-y: auto;
   flex: 1;
+  background: var(--bg-card);
 }
 
 .history-loader {
@@ -1051,7 +1053,7 @@ function getRoleLabel(role) {
 .history-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #e5e7eb;
+  border: 4px solid var(--border-color);
   border-top-color: #3b82f6;
   border-radius: 50%;
   animation: historySpinnerRotate 0.8s linear infinite;
@@ -1062,7 +1064,7 @@ function getRoleLabel(role) {
 }
 
 .history-loader span {
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 14px;
   font-weight: 500;
 }
@@ -1081,7 +1083,7 @@ function getRoleLabel(role) {
 }
 
 .history-item-latest {
-  background: linear-gradient(90deg, #eff6ff 0%, transparent 100%);
+  background: rgba(59, 130, 246, 0.08);
   border-radius: 12px;
   padding: 20px 16px;
   margin: 0 -16px;
@@ -1108,13 +1110,13 @@ function getRoleLabel(role) {
   width: 18px;
   height: 18px;
   border-width: 4px;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
 }
 
 .history-line {
   width: 2px;
   flex: 1;
-  background: linear-gradient(180deg, #e5e7eb 0%, transparent 100%);
+  background: linear-gradient(180deg, var(--border-color) 0%, transparent 100%);
   min-height: 40px;
   margin-top: 8px;
 }
@@ -1135,21 +1137,23 @@ function getRoleLabel(role) {
 
 .status-badge {
   padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 13px;
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 600;
-  border: 1px solid;
+  border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
 }
 
 .status-badge-old {
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .history-arrow {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 12px;
   flex-shrink: 0;
 }
@@ -1160,7 +1164,7 @@ function getRoleLabel(role) {
   gap: 20px;
   flex-wrap: wrap;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary);
 }
 
 .history-user,
@@ -1173,11 +1177,11 @@ function getRoleLabel(role) {
 .history-user i,
 .history-time i {
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .history-role {
-  color: #9ca3af;
+  color: var(--text-muted);
   font-size: 11px;
   font-weight: 400;
 }
@@ -1186,7 +1190,7 @@ function getRoleLabel(role) {
 .history-error {
   text-align: center;
   padding: 60px 20px;
-  color: #6b7280;
+  color: var(--text-secondary);
   font-size: 14px;
 }
 
@@ -1200,7 +1204,7 @@ function getRoleLabel(role) {
 }
 
 .history-modal-body::-webkit-scrollbar-track {
-  background: #f3f4f6;
+  background: var(--bg-tertiary);
   border-radius: 3px;
 }
 
@@ -1210,13 +1214,13 @@ function getRoleLabel(role) {
 }
 
 .history-modal-body::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: var(--text-muted);
 }
 
 .history-comment {
   margin-top: 12px;
   padding: 10px 14px;
-  background: #f9fafb;
+  background: var(--bg-secondary);
   border-left: 3px solid #3b82f6;
   border-radius: 8px;
   display: flex;
@@ -1224,7 +1228,7 @@ function getRoleLabel(role) {
   gap: 10px;
   font-size: 13px;
   line-height: 1.5;
-  color: #374151;
+  color: var(--text-primary);
 }
 
 .history-comment i {
@@ -1248,7 +1252,7 @@ function getRoleLabel(role) {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(15, 23, 42, 0.75);
   backdrop-filter: blur(4px);
   z-index: 10001;
   align-items: center;
@@ -1263,11 +1267,12 @@ function getRoleLabel(role) {
 }
 
 .comment-modal-content {
-  background: #ffffff;
+  background: var(--bg-card);
   border-radius: 20px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-color);
   animation: commentModalSlideIn 0.3s ease-out;
 }
 
@@ -1283,22 +1288,22 @@ function getRoleLabel(role) {
 }
 
 .comment-modal-header {
-  padding: 24px 28px;
-  border-bottom: 1px solid #e5e7eb;
-  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-secondary);
   border-radius: 20px 20px 0 0;
 }
 
 .comment-modal-title {
   font-size: 18px;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
 .comment-modal-subtitle {
-  font-size: 14px;
-  color: #6b7280;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 .comment-modal-status-label {
@@ -1313,7 +1318,8 @@ function getRoleLabel(role) {
 }
 
 .comment-modal-body {
-  padding: 24px 28px;
+  padding: 20px 24px;
+  background: var(--bg-card);
 }
 
 .comment-input-wrapper {
@@ -1324,7 +1330,7 @@ function getRoleLabel(role) {
   display: block;
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
@@ -1332,7 +1338,7 @@ function getRoleLabel(role) {
   width: 100%;
   min-height: 100px;
   padding: 12px 16px;
-  border: 2px solid #e5e7eb;
+  border: 2px solid var(--border-color);
   border-radius: 12px;
   font-size: 14px;
   font-family: Inter, system-ui, sans-serif;
@@ -1348,13 +1354,13 @@ function getRoleLabel(role) {
 }
 
 .comment-input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .comment-input-hint {
   margin-top: 8px;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-secondary);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -1381,12 +1387,12 @@ function getRoleLabel(role) {
 }
 
 .comment-btn-cancel {
-  background: #f3f4f6;
-  color: #374151;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .comment-btn-cancel:hover {
-  background: #e5e7eb;
+  background: var(--border-color);
   transform: translateY(-1px);
 }
 
@@ -1404,6 +1410,41 @@ function getRoleLabel(role) {
 
 .comment-btn:active {
   transform: translateY(0);
+}
+
+.status-badge[data-status="new"],
+.status-badge-new {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.25);
+  color: #2563eb;
+}
+
+.status-badge[data-status="pending"],
+.status-badge-pending {
+  background: rgba(245, 158, 11, 0.16);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #b7791f;
+}
+
+.status-badge[data-status="approved"],
+.status-badge-approved {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(16, 185, 129, 0.3);
+  color: #047857;
+}
+
+.status-badge[data-status="ready"],
+.status-badge-ready {
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.25);
+  color: #2563eb;
+}
+
+.status-badge[data-status="rejected"],
+.status-badge-rejected {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #b91c1c;
 }
 </style>
 

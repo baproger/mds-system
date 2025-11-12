@@ -145,7 +145,7 @@ body {
 .page-header {
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
@@ -169,20 +169,21 @@ body {
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #6b7280;
+    color: var(--text-primary);
     margin: 0;
 }
 
 .page-subtitle {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 4px 0 0 0;
 }
 
 .calculator-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
     overflow: hidden;
 }
 
@@ -216,35 +217,36 @@ body {
     gap: 8px;
     font-weight: 600;
     font-size: 14px;
-    color: #374151;
+    color: var(--text-secondary);
     margin-bottom: 8px;
 }
 
 .form-label i {
-    color: #1ba4e9;
+    color: var(--accent-primary);
     font-size: 16px;
 }
 
 .form-control {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.2s ease;
-    background: #fafafa;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .form-control:focus {
     outline: none;
-    border-color: #1ba4e9;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--accent-primary);
+    background: var(--bg-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
 }
 
 .form-control:disabled {
-    background: #f3f4f6;
-    color: #9ca3af;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
     cursor: not-allowed;
 }
 
@@ -253,27 +255,27 @@ body {
     align-items: center;
     gap: 12px;
     padding: 12px 16px;
-    background: #fafafa;
-    border: 2px solid #e5e7eb;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     transition: all 0.2s ease;
 }
 
 .checkbox-container:hover {
-    border-color: #1ba4e9;
-    background: white;
+    border-color: var(--accent-primary);
+    background: var(--bg-primary);
 }
 
 .form-checkbox {
     width: 18px;
     height: 18px;
-    accent-color: #1ba4e9;
+    accent-color: var(--accent-primary);
     cursor: pointer;
 }
 
 .checkbox-label {
     font-size: 14px;
-    color: #374151;
+    color: var(--text-secondary);
     cursor: pointer;
     margin: 0;
 }
@@ -308,8 +310,8 @@ body {
 
 .result-container {
     margin-top: 32px;
-    background: linear-gradient(135deg, #e6f5ec 0%, #d4edda 100%);
-    border: 1px solid #c3e6cb;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.08) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.25);
     border-radius: 12px;
     overflow: hidden;
     scroll-behavior: auto;
@@ -348,7 +350,7 @@ body {
 .btn-copy:hover { background: rgba(255,255,255,0.25); transform: translateY(-1px); }
 .result-content {
     padding: 24px;
-    color: #155724;
+    color: rgba(15, 87, 50, 0.95);
     font-size: 14px;
     line-height: 1.6;
 }
@@ -358,14 +360,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 8px 0;
-    border-bottom: 1px solid #c3e6cb;
+    border-bottom: 1px solid rgba(15, 87, 36, 0.2);
 }
 
 .result-item:last-child {
     border-bottom: none;
     font-weight: 700;
     font-size: 18px;
-    color: #0f5132;
+    color: rgba(15, 83, 45, 0.95);
 }
 
 .result-label {
@@ -399,6 +401,23 @@ body {
     .form-row {
         grid-template-columns: 1fr;
     }
+}
+
+.dark-mode .result-container {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.15) 100%);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.dark-mode .result-content {
+    color: rgba(209, 233, 221, 0.95);
+}
+
+.dark-mode .result-item {
+    border-bottom-color: rgba(209, 233, 221, 0.2);
+}
+
+.dark-mode .result-item:last-child {
+    color: rgba(129, 230, 169, 0.95);
 }
 </style>
 

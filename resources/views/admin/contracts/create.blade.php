@@ -526,7 +526,7 @@
     justify-content: flex-start;
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content { 
@@ -560,7 +560,7 @@
 
 .page-subtitle { 
     font-size: 14px; 
-    color: #6b7280; 
+    color: var(--text-secondary); 
     margin: 4px 0 0 0; 
 }
 
@@ -570,7 +570,7 @@
     padding: 24px; 
     margin-bottom: 24px;
     box-shadow: 0 1px 3px rgba(0,0,0,.1); 
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--bg-tertiary);
 }
 
 .section-header {
@@ -579,10 +579,10 @@
     gap: 12px;
     margin: 24px 0; 
     padding-bottom: 16px; 
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 2px solid var(--bg-tertiary);
     font-weight: 600; 
     font-size: 16px; 
-    color: #374151;
+    color: var(--text-primary);
 }
 
 .section-header i { 
@@ -612,7 +612,7 @@
     gap: 8px;
     font-weight: 600; 
     font-size: 14px; 
-    color: #374151; 
+    color: var(--text-primary); 
     margin-bottom: 8px;
 }
 
@@ -629,7 +629,7 @@
 .form-control {
     width: 100%; 
     padding: 12px 16px; 
-    border: 2px solid #e5e7eb; 
+    border: 2px solid var(--border-color); 
     border-radius: 8px;
     font-size: 14px; 
     transition: .2s; 
@@ -655,7 +655,7 @@
 }
 
 .form-text { 
-    color: #6b7280; 
+    color: var(--text-secondary); 
     font-size: 12px; 
     margin-top: 4px; 
 }
@@ -666,7 +666,7 @@
     gap: 12px;
     margin-top: 24px; 
     padding-top: 24px; 
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--bg-tertiary);
 }
 
 .btn {

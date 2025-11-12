@@ -77,7 +77,7 @@
     background: #ffffff;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #f1f5f9;
+    border: 1px solid var(--bg-secondary);
 }
 
 /* Role Sections */
@@ -96,7 +96,7 @@
     gap: 12px;
     margin-bottom: 20px;
     padding-bottom: 12px;
-    border-bottom: 2px solid #f8fafc;
+    border-bottom: 2px solid var(--bg-secondary);
 }
 
 .header-icon {
@@ -143,7 +143,7 @@
 /* Role Cards */
 .role-card {
     background: #ffffff;
-    border: 2px solid #f1f5f9;
+    border: 2px solid var(--bg-secondary);
     border-radius: 16px;
     padding: 20px;
     display: flex;
@@ -170,7 +170,7 @@
 
 .role-card:hover {
     transform: translateY(-4px);
-    border-color: #e2e8f0;
+    border-color: var(--border-color);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 
@@ -359,7 +359,7 @@
     width: 20px;
     height: 20px;
     margin: -10px 0 0 -10px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border-color);
     border-top: 2px solid #3b82f6;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -391,11 +391,11 @@
     }
     
     .section-title {
-        color: #f1f5f9;
+        color: var(--bg-secondary);
     }
     
     .role-name {
-        color: #f1f5f9;
+        color: var(--bg-secondary);
     }
     
     .role-description {

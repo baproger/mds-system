@@ -536,7 +536,7 @@ body{background:var(--bg-primary)}
 .form-label.required:after{content:" *";color:#ef4444}
 .form-text{color:var(--text-secondary);font-size:12px}
 
-.form-control{width:100%;padding:12px 16px;border:2px solid #e5e7eb;border-radius:8px;font-size:14px;transition:.2s;background:#fafafa}
+.form-control{width:100%;padding:12px 16px;border:2px solid var(--border-color);border-radius:8px;font-size:14px;transition:.2s;background:#fafafa}
 .form-control:focus{outline:none;border-color:#1ba4e9;background:var(--bg-card);box-shadow:0 0 0 3px rgba(27,164,233,.1)}
 .form-control.is-invalid{border-color:#ef4444}
 .invalid-feedback{color:#ef4444;font-size:12px;margin-top:4px}
@@ -544,8 +544,8 @@ body{background:var(--bg-primary)}
 .form-actions{display:flex;gap:12px;flex-wrap:wrap;padding-top:16px}
 .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
     .btn-sm{padding:8px 12px;font-size:12px}
-    .btn-cancel{background:#f3f4f6;color:var(--text-primary);border:1px solid #d1d5db}
-    .btn-cancel:hover{background:#e5e7eb;transform:translateY(-1px)}
+    .btn-cancel{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid #d1d5db}
+    .btn-cancel:hover{background:var(--border-color);transform:translateY(-1px)}
     .btn-save{color:var(--white);}
 .btn-save i{color:var(--white) !important;}
 .btn-save{background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);color:var(--white);box-shadow:0 2px 4px rgba(27,164,233,.2)}

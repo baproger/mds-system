@@ -17,16 +17,16 @@
             --error: #ef4444;
             
             /* Light theme */
-            --bg-light: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
-            --bg-secondary-light: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            --bg-light: linear-gradient(135deg, var(--bg-secondary) 0%, var(--border-color) 50%, var(--bg-secondary) 100%);
+            --bg-secondary-light: linear-gradient(135deg, #ffffff 0%, var(--bg-secondary) 100%);
             --text-light: #1e293b;
             --text-secondary-light: #64748b;
-            --border-light: #e2e8f0;
+            --border-light: var(--border-color);
             
             /* Dark theme */
             --bg-dark: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
             --bg-secondary-dark: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-            --text-dark: #f1f5f9;
+            --text-dark: var(--bg-secondary);
             --text-secondary-dark: #94a3b8;
             --border-dark: #475569;
             
@@ -552,7 +552,7 @@
         }
 
         .btn-light {
-            background: white;
+            background: var(--bg-card);
             color: var(--primary);
         }
 

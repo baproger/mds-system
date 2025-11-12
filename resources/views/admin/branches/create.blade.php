@@ -149,7 +149,7 @@
     justify-content: space-between;
     margin-bottom: 32px;
     padding-bottom: 24px;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .header-content {
@@ -173,13 +173,13 @@
 .page-title {
     font-size: 28px;
     font-weight: 700;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 0;
 }
 
 .page-subtitle {
     font-size: 14px;
-    color: #6b7280;
+    color: var(--text-secondary);
     margin: 4px 0 0 0;
 }
 
@@ -189,11 +189,11 @@
 }
 
 .form-section {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    border: 1px solid #f3f4f6;
+    border: 1px solid var(--bg-tertiary);
 }
 
 .section-header {
@@ -202,10 +202,10 @@
     gap: 12px;
     margin-bottom: 24px;
     padding-bottom: 16px;
-    border-bottom: 2px solid #f3f4f6;
+    border-bottom: 2px solid var(--bg-tertiary);
     font-weight: 600;
     font-size: 16px;
-    color: #374151;
+    color: var(--text-primary);
 }
 
 .section-header i {
@@ -235,19 +235,19 @@
     gap: 8px;
     font-weight: 600;
     font-size: 14px;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .form-label i {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
 .form-control {
     width: 100%;
     padding: 12px 16px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     border-radius: 8px;
     font-size: 14px;
     transition: all 0.2s ease;
@@ -257,7 +257,7 @@
 .form-control:focus {
     outline: none;
     border-color: #1ba4e9;
-    background: white;
+    background: var(--bg-card);
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -273,7 +273,7 @@
 }
 
 .form-text {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 12px;
     margin-top: 4px;
 }
@@ -283,10 +283,10 @@
 }
 
 .info-card {
-    background: #f8fafc;
+    background: var(--bg-secondary);
     border-radius: 8px;
     padding: 20px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--border-color);
     display: flex;
     gap: 16px;
 }
@@ -311,12 +311,12 @@
 .info-title {
     font-weight: 600;
     font-size: 14px;
-    color: #374151;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .info-text {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 13px;
 }
 
@@ -332,19 +332,19 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
-    background: white;
+    background: var(--bg-card);
     border-radius: 6px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--border-color);
 }
 
 .range-code {
     font-weight: 600;
-    color: #374151;
+    color: var(--text-primary);
     font-size: 12px;
 }
 
 .range-numbers {
-    color: #6b7280;
+    color: var(--text-secondary);
     font-size: 12px;
     font-family: monospace;
 }
@@ -355,7 +355,7 @@
     gap: 12px;
     margin-top: 24px;
     padding-top: 24px;
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid var(--bg-tertiary);
 }
 
 .btn {
@@ -378,12 +378,12 @@
 }
 
 .btn-secondary {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .btn-secondary:hover {
-    background: #e5e7eb;
+    background: var(--border-color);
     transform: translateY(-1px);
 }
 
@@ -398,12 +398,12 @@
 }
 
 .btn-cancel {
-    background: #f3f4f6;
-    color: #374151;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .btn-cancel:hover {
-    background: #e5e7eb;
+    background: var(--border-color);
     transform: translateY(-1px);
 }
 
