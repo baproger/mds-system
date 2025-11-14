@@ -174,12 +174,13 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 20px;
 }
 
@@ -248,12 +249,13 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 20px;
 }
 
@@ -282,8 +284,9 @@
 }
 
 .btn-module {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
     border: none;
     border-radius: 8px;
     padding: 8px 16px;
@@ -299,7 +302,7 @@
 .btn-module:hover {
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(27, 164, 233, 0.3);
-    color: white;
+    color: #1ba4e9;
     text-decoration: none;
 }
 
@@ -331,12 +334,13 @@
 .quick-action-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 18px;
     flex-shrink: 0;
 }

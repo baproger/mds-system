@@ -10,7 +10,7 @@
         :root {
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
-            --secondary: #8b5cf6;
+            --secondary: #1ba4e9;
             --accent: #ec4899;
             --success: #10b981;
             --warning: #f59e0b;
@@ -144,7 +144,7 @@
 
         .btn-primary {
             background: var(--primary);
-            color: white;
+            color: #1ba4e9;
             box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
         }
 
@@ -521,7 +521,7 @@
         /* CTA Section */
         .cta {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            color: #1ba4e9;
             padding: 5rem 0;
             text-align: center;
             border-radius: 20px;
@@ -563,13 +563,13 @@
 
         .btn-outline-light {
             background: transparent;
-            color: white;
+            color: #1ba4e9;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         .btn-outline-light:hover {
             background: rgba(255, 255, 255, 0.1);
-            border-color: white;
+            border-color: #1ba4e9;
         }
 
         /* Footer */
@@ -630,7 +630,7 @@
 
         .social-link:hover {
             background: var(--primary);
-            color: white;
+            color: #1ba4e9;
             transform: translateY(-3px);
         }
 

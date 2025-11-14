@@ -192,8 +192,9 @@
 }
 
 .calculate-btn {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
     border: none;
     padding: 1rem 2rem;
     border-radius: 12px;

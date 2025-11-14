@@ -83,7 +83,7 @@
                         <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                             <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--gray-300); transition: .4s; border-radius: 24px;">
-                                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                             </span>
                         </label>
                     </div>
@@ -96,7 +96,7 @@
                         <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                             <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary-blue); transition: .4s; border-radius: 24px;">
-                                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                             </span>
                         </label>
                     </div>
@@ -109,7 +109,7 @@
                         <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                             <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
                             <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--gray-300); transition: .4s; border-radius: 24px;">
-                                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                             </span>
                         </label>
                     </div>
@@ -134,7 +134,7 @@
                             <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                                 <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--gray-300); transition: .4s; border-radius: 24px;">
-                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                                 </span>
                             </label>
                         </div>
@@ -143,7 +143,7 @@
                             <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                                 <input type="checkbox" style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--gray-300); transition: .4s; border-radius: 24px;">
-                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                                 </span>
                             </label>
                         </div>
@@ -158,7 +158,7 @@
                             <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                                 <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary-blue); transition: .4s; border-radius: 24px;">
-                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                                 </span>
                             </label>
                         </div>
@@ -167,7 +167,7 @@
                             <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                                 <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary-blue); transition: .4s; border-radius: 24px;">
-                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                                 </span>
                             </label>
                         </div>
@@ -182,7 +182,7 @@
                             <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                                 <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary-blue); transition: .4s; border-radius: 24px;">
-                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                                 </span>
                             </label>
                         </div>
@@ -191,7 +191,7 @@
                             <label style="position: relative; display: inline-block; width: 50px; height: 24px;">
                                 <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
                                 <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--primary-blue); transition: .4s; border-radius: 24px;">
-                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%;"></span>
+                                    <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 29px; bottom: 3px; background-color: #1ba4e9; transition: .4s; border-radius: 50%;"></span>
                                 </span>
                             </label>
                         </div>
@@ -213,7 +213,7 @@
                     <h4 style="font-weight: 600; color: #991b1b; margin-bottom: var(--space-2);">Удалить аккаунт</h4>
                     <p style="color: #dc2626; font-size: 0.875rem;">Это действие нельзя отменить. Все данные будут удалены навсегда.</p>
                 </div>
-                <button style="padding: var(--space-2) var(--space-4); background: #dc2626; color: white; border: none; border-radius: var(--radius-md); font-weight: 500; cursor: pointer;">
+                <button style="padding: var(--space-2) var(--space-4); background: #dc2626; color: #1ba4e9; border: none; border-radius: var(--radius-md); font-weight: 500; cursor: pointer;">
                     Удалить аккаунт
                 </button>
             </div>

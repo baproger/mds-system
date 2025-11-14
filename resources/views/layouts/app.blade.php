@@ -18,7 +18,8 @@
 </head>
 <body class="bg-light">
     <!-- Навигация -->
-    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: #e0f2fe;
+    color: #1ba4e9;">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center fw-bold" href="{{ route("contracts.index") }}">
                 <img src="{{ asset('images/logo.png') }}" alt="MDS Doors" height="40">
@@ -352,13 +353,14 @@
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-        color: white;
+        background: #e0f2fe;
+    color: #1ba4e9;
+        color: #1ba4e9;
     }
 
     .btn-secondary {
         background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
-        color: white;
+        color: #1ba4e9;
     }
 
     .card {

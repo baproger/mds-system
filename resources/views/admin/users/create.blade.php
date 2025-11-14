@@ -197,12 +197,13 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 20px;
 }
 
@@ -343,7 +344,7 @@
 
 .role-info-item .personnel-icon {
     background: #f3e8ff;
-    color: #7c3aed;
+    color: #0284c7;
 }
 
 .admin-info-item .personnel-icon {
@@ -382,7 +383,7 @@
 
 .rop-tag {
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
+    color: #1ba4e9;
 }
 
 .rop-tag:hover {
@@ -464,8 +465,9 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
 }
 
 .btn-primary:hover {

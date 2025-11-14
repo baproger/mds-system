@@ -161,12 +161,12 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: 20px;
 }
 
@@ -294,12 +294,13 @@
 .info-icon {
     width: 32px;
     height: 32px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 14px;
     flex-shrink: 0;
 }
@@ -388,8 +389,9 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
 }
 
 .btn-primary:hover {

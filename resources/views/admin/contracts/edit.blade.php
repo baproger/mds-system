@@ -584,12 +584,13 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 20px;
 }
 
@@ -718,8 +719,9 @@
 }
 
 .btn-save {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
     box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
 }
 
@@ -730,7 +732,7 @@
 
 .btn-info {
     background: linear-gradient(135deg, #06b6d4, #0891b2);
-    color: white;
+    color: #1ba4e9;
     box-shadow: 0 2px 4px rgba(6, 182, 212, 0.2);
 }
 

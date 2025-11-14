@@ -521,7 +521,7 @@ body{background:var(--bg-primary)}
 .container-fluid{background:var(--bg-primary)}
 .page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--border-color)}
 .header-content{display:flex;align-items:center;gap:16px}
-.header-icon{width:48px;height:48px;background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--white);font-size:20px}
+.header-icon{width:48px;height:48px;background:#e0f2fe;color:#1ba4e9;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#1ba4e9;font-size:20px}
 .page-title{font-size:28px;font-weight:700;color:var(--text-secondary);margin:0}
 .page-subtitle{font-size:14px;color:var(--text-secondary);margin:4px 0 0 0}
 
@@ -546,11 +546,11 @@ body{background:var(--bg-primary)}
     .btn-sm{padding:8px 12px;font-size:12px}
     .btn-cancel{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid #d1d5db}
     .btn-cancel:hover{background:var(--border-color);transform:translateY(-1px)}
-    .btn-save{color:var(--white);}
+    .btn-save{color:#1ba4e9;}
 .btn-save i{color:var(--white) !important;}
-.btn-save{background:linear-gradient(135deg,#1ba4e9 0%,#ac76e3 100%);color:var(--white);box-shadow:0 2px 4px rgba(27,164,233,.2)}
+.btn-save{background:#e0f2fe;color:#1ba4e9;color:#1ba4e9;box-shadow:0 2px 4px rgba(27,164,233,.2)}
     .btn-save:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(27,164,233,.3)}
-    .btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:var(--white);box-shadow:0 2px 4px rgba(239,68,68,.2)}
+    .btn-danger{background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);color:#1ba4e9;box-shadow:0 2px 4px rgba(239,68,68,.2)}
     .btn-danger:hover{transform:translateY(-1px);box-shadow:0 4px 8px rgba(239,68,68,.3)}
 /* Анимации */
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}

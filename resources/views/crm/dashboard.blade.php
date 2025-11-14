@@ -149,7 +149,7 @@
                                     <span class="personnel-tag date-tag">
                                         <i class="fas fa-calendar-alt tag-icon"></i>{{ $contract->created_at->format('d.m.Y') }}
                                     </span>
-                                    <span class="personnel-tag status-tag" style="background-color: {{ \App\Models\Contract::getStatusColor($contract->status) }}; color: white;">
+                                    <span class="personnel-tag status-tag" style="background-color: {{ \App\Models\Contract::getStatusColor($contract->status) }}; color: #1ba4e9;">
                                         <i class="fas fa-circle tag-icon"></i>{{ \App\Models\Contract::getStatusLabel($contract->status) }}
                                     </span>
                                 </div>
@@ -190,12 +190,12 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: 20px;
 }
 
@@ -266,12 +266,13 @@
 .stat-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 20px;
 }
 
@@ -496,7 +497,7 @@
 
 .btn-action:hover {
     background: #1ba4e9;
-    color: white;
+    color: #1ba4e9;
     border-color: #1ba4e9;
     transform: translateY(-1px);
 }

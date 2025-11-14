@@ -26,7 +26,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #1ba4e9;
         }
         
         .error-container {
@@ -91,7 +91,7 @@
 
         .btn-secondary {
             background: transparent;
-            color: white;
+            color: #1ba4e9;
             border: 2px solid white;
         }
 

@@ -259,12 +259,12 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: 20px;
 }
 
@@ -451,7 +451,7 @@
     margin-right: 16px;
     flex-shrink: 0;
     background: rgba(147, 51, 234, 0.16);
-    color: #7c3aed;
+    color: #0284c7;
 }
 
 .manager-item .personnel-icon {
@@ -504,7 +504,7 @@
 .rop-tag {
     background: rgba(147, 51, 234, 0.16);
     border-color: rgba(147, 51, 234, 0.28);
-    color: #7c3aed;
+    color: #0284c7;
 }
 
 .dark-mode .rop-tag {
@@ -607,8 +607,9 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
 }
 
 .btn-primary:hover {
@@ -618,7 +619,7 @@
 
 .btn-danger {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-danger:hover {
@@ -700,7 +701,7 @@
 /* Стили для кнопки удаления */
 .btn-danger {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
+    color: #1ba4e9;
     box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }
 
@@ -750,7 +751,7 @@
     align-items: center;
     justify-content: center;
     margin: 0 auto 16px;
-    color: white;
+    color: #1ba4e9;
     font-size: 24px;
 }
 
@@ -798,7 +799,7 @@
 
 .modal-btn-delete {
     background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    color: white;
+    color: #1ba4e9;
     box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
 }
 

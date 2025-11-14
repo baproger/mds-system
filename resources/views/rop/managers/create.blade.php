@@ -162,13 +162,13 @@
 .btn-gradient-blue {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
     border: none;
-    color: white;
+    color: #1ba4e9;
     font-weight: 600;
 }
 
 .btn-gradient-blue:hover {
     filter: brightness(1.1);
-    color: white;
+    color: #1ba4e9;
 }
 </style>
 @endsection

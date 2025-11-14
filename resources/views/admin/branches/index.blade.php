@@ -189,12 +189,12 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: 20px;
 }
 
@@ -428,7 +428,7 @@
 .range-tag {
     background: rgba(124, 58, 237, 0.16);
     border-color: rgba(124, 58, 237, 0.28);
-    color: #7c3aed;
+    color: #0284c7;
 }
 
 .dark-mode .range-tag {
@@ -481,8 +481,9 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
 }
 
 .btn-primary:hover {
@@ -516,119 +517,6 @@
 .empty-state p {
     font-size: 16px;
     margin: 0;
-}
-
-/* Модальное окно */
-.custom-modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
-}
-
-.custom-modal.show {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.custom-modal-content {
-    background: var(--bg-card);
-    border-radius: 12px;
-    padding: 32px;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.custom-modal-icon {
-    width: 64px;
-    height: 64px;
-    background: rgba(245, 158, 11, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-    color: #b7791f;
-    font-size: 24px;
-}
-
-.custom-modal-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    margin-bottom: 8px;
-}
-
-.custom-modal-message {
-    color: var(--text-secondary);
-    margin-bottom: 16px;
-}
-
-.custom-modal-warning {
-    background: rgba(220, 38, 38, 0.12);
-    color: #dc2626;
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 24px;
-}
-
-.custom-modal-actions {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-}
-
-.custom-modal-btn {
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.custom-modal-btn-secondary {
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-}
-
-.custom-modal-btn-secondary:hover {
-    background: var(--border-color);
-}
-
-.custom-modal-btn-danger {
-    background: #dc2626;
-    color: white;
-}
-
-.custom-modal-btn-danger:hover {
-    background: #b91c1c;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.form-section {
-    animation: fadeIn 0.3s ease-out;
-}
-
-.form-section:nth-child(1) { animation-delay: 0.1s; }
-.form-section:nth-child(2) { animation-delay: 0.2s; }
-
-.personnel-item {
-    animation: fadeIn 0.3s ease-out;
 }
 
 /* Адаптивность */

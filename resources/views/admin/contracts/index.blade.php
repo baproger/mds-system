@@ -281,12 +281,12 @@
 .header-icon {
     width: 48px;
     height: 48px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
     font-size: 20px;
 }
 
@@ -615,8 +615,9 @@
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
 }
 
 .btn-primary:hover {
@@ -626,7 +627,7 @@
 
 .btn-danger {
     background: #ef4444;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-danger:hover {
@@ -853,24 +854,24 @@ document.getElementById('deleteModal').addEventListener('click', function(e) {
 
 .modal-btn-delete {
     background: #ef4444;
-    color: white;
+    color: #1ba4e9;
 }
 
 .modal-btn-delete:hover {
     background: #dc2626;
-    color: white;
+    color: #1ba4e9;
 }
 
 /* Кнопка удаления */
 .btn-danger {
     background: #ef4444;
-    color: white;
+    color: #1ba4e9;
     border: 1px solid #ef4444;
 }
 
 .btn-danger:hover {
     background: #dc2626;
-    color: white;
+    color: #1ba4e9;
     border-color: #dc2626;
 }
 </style>

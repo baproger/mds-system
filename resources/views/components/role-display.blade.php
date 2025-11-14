@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 16px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -118,7 +118,8 @@
 }
 
 .sales-icon {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
 }
 
 .admin-icon {
@@ -190,7 +191,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 18px;
     flex-shrink: 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -230,7 +231,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: white;
+    color: #1ba4e9;
     flex-shrink: 0;
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -248,7 +249,7 @@
 
 .rop-badge {
     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    color: white;
+    color: #1ba4e9;
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 10px;
@@ -266,7 +267,8 @@
 }
 
 .role-card[data-role="rop"] .role-icon {
-    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
 }
 
 .role-card[data-role="admin"] .role-icon {

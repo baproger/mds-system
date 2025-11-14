@@ -185,7 +185,7 @@
 /* Современный минималистичный дизайн */
 .page-header-modern {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    color: #1ba4e9;
     padding: 2rem 0;
     margin-bottom: 2rem;
     border-radius: 0 0 20px 20px;
@@ -236,7 +236,7 @@
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     background: rgba(255, 255, 255, 0.15);
-    color: white;
+    color: #1ba4e9;
     text-decoration: none;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -247,7 +247,7 @@
 .btn-modern:hover {
     background: rgba(255, 255, 255, 0.25);
     transform: translateY(-2px);
-    color: white;
+    color: #1ba4e9;
     text-decoration: none;
 }
 
@@ -278,7 +278,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 1.1rem;
 }
 
@@ -350,7 +350,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 1.1rem;
     position: relative;
     z-index: 2;

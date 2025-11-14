@@ -306,6 +306,86 @@
                 }
             });
         });
+
+        // Split Text для заголовков с анимацией
+        function applySplitText() {
+            const titles = document.querySelectorAll('.page-title, .section-title, .section-header span');
+            
+            // Intersection Observer для анимации при появлении в viewport
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        const title = entry.target;
+                        splitTextElement(title);
+                        observer.unobserve(title);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '-50px'
+            });
+            
+            titles.forEach(function(title) {
+                // Пропускаем, если уже обработан или содержит иконки
+                if (title.querySelector('.split-text-part1') || title.querySelector('i')) {
+                    return;
+                }
+                
+                observer.observe(title);
+            });
+        }
+        
+        function splitTextElement(title) {
+            const text = title.textContent.trim();
+            if (!text) return;
+            
+            const words = text.split(' ');
+            if (words.length < 2) {
+                // Если одно слово, просто показываем
+                title.style.opacity = '1';
+                return;
+            }
+            
+            const midPoint = Math.ceil(words.length / 2);
+            const part1 = words.slice(0, midPoint).join(' ');
+            const part2 = words.slice(midPoint).join(' ');
+            
+            title.innerHTML = '<span class="split-text-part1">' + part1 + '</span>' + 
+                             (part2 ? ' <span class="split-text-part2">' + part2 + '</span>' : '');
+        }
+
+        // Применяем при загрузке страницы
+        document.addEventListener('DOMContentLoaded', applySplitText);
+        
+        // Применяем после динамической загрузки контента
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', applySplitText);
+        } else {
+            applySplitText();
+        }
+
+        // Принудительная видимость элементов после завершения анимации
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedElements = document.querySelectorAll(
+                '.stat-card, .card, .table, .form-section, .page-header, .header-content, .personnel-item, .header-actions'
+            );
+            
+            animatedElements.forEach(function(element) {
+                // Слушаем завершение анимации
+                element.addEventListener('animationend', function() {
+                    this.style.opacity = '1';
+                    this.classList.add('animation-complete');
+                }, { once: true });
+                
+                // Fallback: если анимация не запустилась, показываем элемент через небольшую задержку
+                setTimeout(function() {
+                    if (element.style.opacity === '0' || getComputedStyle(element).opacity === '0') {
+                        element.style.opacity = '1';
+                        element.classList.add('animation-complete');
+                    }
+                }, 1000);
+            });
+        });
     </script>
 </body>
 </html> 

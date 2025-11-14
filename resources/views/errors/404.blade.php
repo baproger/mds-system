@@ -21,12 +21,13 @@
         
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-            background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+            background: #e0f2fe;
+    color: #1ba4e9;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: #1ba4e9;
         }
         
         .error-container {
@@ -91,7 +92,7 @@
 
         .btn-secondary {
             background: transparent;
-            color: white;
+            color: #1ba4e9;
             border: 2px solid white;
         }
 

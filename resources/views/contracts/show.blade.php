@@ -33,12 +33,13 @@ body .container-fluid {
 .header-icon {
     width: 60px;
     height: 60px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 24px;
     box-shadow: 0 4px 12px rgba(27, 164, 233, 0.3);
 }
@@ -99,7 +100,7 @@ body .container-fluid {
 }
 
 .breadcrumb-custom a:hover {
-    color: #ac76e3;
+    color: #0284c7;
 }
 
 .breadcrumb-custom .breadcrumb-item.active {
@@ -129,14 +130,14 @@ body .container-fluid {
     position: relative;
     overflow: hidden;
     background: #1ba4e9;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-admin-custom:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    background: #ac76e3;
-    color: white;
+    background: #0284c7;
+    color: #1ba4e9;
 }
 
 .btn-admin-custom.animate-pulse {
@@ -150,7 +151,7 @@ body .container-fluid {
 /* Стили для кнопок в карточках действий */
 .d-grid .btn-admin-custom {
     background: #1ba4e9;
-    color: white;
+    color: #1ba4e9;
     border: none;
     border-radius: 12px;
     padding: 15px 30px;
@@ -166,8 +167,8 @@ body .container-fluid {
 }
 
 .d-grid .btn-admin-custom:hover {
-    background: #ac76e3;
-    color: white;
+    background: #0284c7;
+    color: #1ba4e9;
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     text-decoration: none;
@@ -270,8 +271,9 @@ body .container-fluid {
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
     position: relative;
     z-index: 2;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
@@ -588,12 +590,13 @@ body .container-fluid {
 .stat-icon {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 16px;
     box-shadow: 0 4px 12px rgba(27, 164, 233, 0.3);
 }
@@ -735,12 +738,13 @@ body .container-fluid {
 .finance-icon {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 16px;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
@@ -818,12 +822,13 @@ body .container-fluid {
 .address-icon {
     width: 50px;
     height: 50px;
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
+    background: #e0f2fe;
+    color: #1ba4e9;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #1ba4e9;
     font-size: 16px;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
@@ -913,7 +918,7 @@ body .container-fluid {
     border-color: transparent;
 }
 .action-btn.export {
-    background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+    background: linear-gradient(135deg, #0284c7 0%, #0284c7 100%);
     color: #ffffff;
     border-color: transparent;
 }
@@ -935,7 +940,7 @@ body .container-fluid {
 .btn-gradient-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #ffffff !important; border: none; }
     .btn-gradient-blue { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #ffffff !important; border: none; }
     .btn-gradient-green { background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); color: #ffffff !important; border: none; }
-    .btn-gradient-indigo { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); color: #ffffff !important; border: none; }
+    .btn-gradient-indigo { background: linear-gradient(135deg, #0284c7 0%, #0284c7 100%); color: #ffffff !important; border: none; }
     .btn-gradient-red:hover, .btn-gradient-blue:hover, .btn-gradient-green:hover, .btn-gradient-indigo:hover { filter: brightness(0.95); color: #ffffff !important; }
 
 .print-btn:hover {
@@ -1094,7 +1099,7 @@ body .container-fluid {
 
 .btn-primary {
     background: #1ba4e9;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-primary:hover {
@@ -1103,7 +1108,7 @@ body .container-fluid {
 
 .btn-secondary {
     background: var(--text-secondary);
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-secondary:hover {
@@ -1112,7 +1117,7 @@ body .container-fluid {
 
 .btn-success {
     background: #10b981;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-success:hover {
@@ -1121,7 +1126,7 @@ body .container-fluid {
 
 .btn-info {
     background: #0ea5e9;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-info:hover {
@@ -1130,7 +1135,7 @@ body .container-fluid {
 
 .btn-warning {
     background: #f59e0b;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-warning:hover {
@@ -1139,7 +1144,7 @@ body .container-fluid {
 
 .btn-danger {
     background: #ef4444;
-    color: white;
+    color: #1ba4e9;
 }
 
 .btn-danger:hover {
@@ -1147,8 +1152,9 @@ body .container-fluid {
 }
 
 .btn-gradient {
-    background: linear-gradient(135deg, #1ba4e9 0%, #ac76e3 100%);
-    color: white;
+    background: #e0f2fe;
+    color: #1ba4e9;
+    color: #1ba4e9;
 }
 
 .btn-gradient:hover {

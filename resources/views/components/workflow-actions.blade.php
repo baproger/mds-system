@@ -563,7 +563,7 @@
 }
 
 .action-icon.production {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background: linear-gradient(135deg, #1ba4e9, #0284c7);
 }
 
 .action-icon.quality {
@@ -579,7 +579,7 @@
 }
 
 .action-icon.complete {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background: linear-gradient(135deg, #1ba4e9, #0284c7);
 }
 
 .action-icon.history {
@@ -666,7 +666,7 @@
 }
 
 .production-btn {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background: linear-gradient(135deg, #1ba4e9, #0284c7);
     color: var(--white);
 }
 
@@ -686,7 +686,7 @@
 }
 
 .complete-btn {
-    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background: linear-gradient(135deg, #1ba4e9, #0284c7);
     color: var(--white);
 }
 
